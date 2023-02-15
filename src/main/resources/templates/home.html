@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<#import "./fragments/layout.ftl" as layout/>
+<@layout.head title = "Home page"/>
+<body>
+    <div>
+    <@layout.header/>
+    </div>
+    <div>
+    <@layout.menu/>
+    </div>
+    <div>
+        <@layout.content>
+            <p>To start managing your data click one of the links on the left.</p>
+
+        </@layout.content>
+    </div>
+
+    <div>
+    <@layout.footer/>
+    </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <#import "./fragments/layout.ftl" as layout/>
+    <@layout.head title = "Edit Product"/>
+    <body>
+        <div>
+            <@layout.header/>
+        </div>
+        <div>
+            <@layout.menu/>
+        </div>
+        <div>
+            <@layout.content>
+                <h2>Editing Product</h2>
+                <form method="post" action="/products/edit/send">
+                    <label>
+                        Product id: <input type="text" name="id" value="${productDto.getId()}" readonly>
+                    </label>
+                    <br>
+                    <label>
+                        Product name: <input type="text" name="name" value="${productDto.getName()}">
+                    </label>
+                    <br>
+                    <label>
+                        <#setting locale="en_US">
+                        Product price: <input type="text" name="price" value="${productDto.getPrice()?string["0.##"]}">
+                    </label>
+                    <br>
+                    <label>
+                        Creation date: <input type="text" name="date" value="${productDto.getDate()?iso_utc}" readonly>
+                    </label>
+                    <br>
+                    <input type="submit" value="edit">
+                </form>
+                <br>
+                <form action="/products" method="get">
+                    <input type="submit" value="CANCEL">
+                </form>
+            </@layout.content>
+        </div>
+
+        <div>
+            <@layout.footer/>
+        </div>
+    </body>
+</html>

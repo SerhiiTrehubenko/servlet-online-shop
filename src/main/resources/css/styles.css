@@ -1,0 +1,74 @@
+.banner{
+    background: url("/images/tsa_banner.jpg") no-repeat ;
+    /*no-repeat 0px center;*/
+    height: 25em;
+    /*width: 1%*/
+}
+
+.menu{
+    background-color: #d5be44;
+    font-size: 60px;
+    line-height:30px;
+    width:150px;
+    float:left;
+    padding:25px;
+}
+
+.footer p {
+    color: #228B22;
+    font-size: 20px;
+    font-style: italic;
+    /*float: bottom;*/
+    width: 80em;
+    /*margin: 0 auto 0 auto;*/
+    padding: 400px;
+}
+
+table {
+    background-color: #FFFFE0;
+    border-collapse: collapse;
+    color: #000;
+}
+table thead{
+    background-color: #BDB76B;
+    color: white;
+    width: 50%;
+    font-weight: bold;
+}
+table td {
+    padding: 0.25em 1.5em 0em 1.5em;
+    border: 0;
+}
+
+table td {
+    border-bottom: 1px dotted #BDB76B;
+}
+.menu a:link {
+
+    color: #228B22;
+    text-decoration: underline;
+    font-size: 25px;
+    background: transparent;
+}
+
+.menu a:hover {
+    color: #0000FF;
+    text-decoration: underline;
+    font-size: 30px;
+    background: transparent;
+}
+
+.content {
+    font-size: 25px;
+    text-align: center;
+    background-color: #bcc0bc;
+    float: left;
+    margin-left: 100px;
+    width: 60em;
+    height: 13em;
+}
+ul {
+    list-style-image: url("../images/arrow-green.png");
+    background: no-repeat 0px center;
+    padding-left: 30px;
+}
