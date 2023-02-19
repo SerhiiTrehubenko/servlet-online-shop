@@ -13,5 +13,5 @@ public interface QueryGenerator {
 
     String update(Object object);
 
-    Map<String, Field> getMapOfEntityFields(Class<?> type);
+    Map<String, Field> getEntityColumns(Class<?> type);
 }

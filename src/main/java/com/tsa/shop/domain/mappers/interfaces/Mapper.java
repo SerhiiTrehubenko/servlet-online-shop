@@ -1,7 +1,7 @@
 package com.tsa.shop.domain.mappers.interfaces;
 
 public interface Mapper<T, E> {
-    T doMapping (E entity);
+    T toProductDto(E entity);
 
-    E doRemapping (T dto);
+    E toProduct(T dto);
 }

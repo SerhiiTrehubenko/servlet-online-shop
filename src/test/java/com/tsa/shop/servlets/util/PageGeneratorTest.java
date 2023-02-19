@@ -10,13 +10,13 @@ import java.util.HashMap;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PageGeneratorTest {
-
+    private final PageGenerator pageGenerator = new PageGenerator();
     @Test
     void testGetGeneratedPageAsStreamPageNameIsPresent() throws Exception {
         String expectedContent = "<title> Home page </title>";
 
         InputStream pageAsInputStream =
-                PageGenerator.getGeneratedPageAsStream(new HashMap<>(), UriPageConnector.HOME);
+                pageGenerator.getGeneratedPageAsStream(new HashMap<>(), UriPageConnector.HOME.getHtmlPage());
 
         String pageAsString = new String(pageAsInputStream.readAllBytes());
 
@@ -26,18 +26,18 @@ class PageGeneratorTest {
     @Test
     void testGetGeneratedPageAsStreamPageNameIsAbsent() {
         assertThrows(WebServerException.class,
-                () -> PageGenerator.getGeneratedPageAsStream(new HashMap<>(), "no-page.html"));
+                () -> pageGenerator.getGeneratedPageAsStream(new HashMap<>(), "no-page.html"));
     }
 
     @Test
     void testGetGeneratedPageAsStreamPageNameIsEmpty() {
         assertThrows(WebServerException.class,
-                () -> PageGenerator.getGeneratedPageAsStream(new HashMap<>(), ""));
+                () -> pageGenerator.getGeneratedPageAsStream(new HashMap<>(), ""));
     }
 
     @Test
     void testGetGeneratedPageAsStreamPageNameIsNull() {
         assertThrows(WebServerException.class,
-                () -> PageGenerator.getGeneratedPageAsStream(new HashMap<>(), (String) null));
+                () -> pageGenerator.getGeneratedPageAsStream(new HashMap<>(), (String) null));
     }
 }

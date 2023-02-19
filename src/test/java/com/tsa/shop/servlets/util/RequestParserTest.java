@@ -18,9 +18,10 @@ import static org.mockito.Mockito.when;
 class RequestParserTest {
 
     @Mock
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
-
+    private final RequestParser parser = new RequestParser();
+    private final UriCache cache = new UriCache().setUp();
     @Test
     void parseRequest() {
         String expectedMethod = "GET";
@@ -30,7 +31,7 @@ class RequestParserTest {
         String expectedParametersId = "15";
 
         mockHttpRequest();
-        Map<String, Object> parsedRequest = RequestParser.parseRequest(request);
+        Map<String, Object> parsedRequest = parser.parseRequest(request);
 
         assertEquals(expectedMethod, parsedRequest.get("method"));
         assertEquals(expectedUri, parsedRequest.get("URI"));
@@ -44,8 +45,8 @@ class RequestParserTest {
         mockHttpRequest();
         Long expectedId = 15L;
 
-        Map<String, Object> parsedRequest = RequestParser.parseRequest(request);
-        Long id = RequestParser.getId(parsedRequest);
+        Map<String, Object> parsedRequest = parser.parseRequest(request);
+        Long id = parser.getIdFromRequest(parsedRequest);
 
         assertEquals(expectedId, id);
     }
@@ -55,9 +56,9 @@ class RequestParserTest {
         mockHttpRequest();
         String expectedId = "15";
 
-        Map<String, Object> parsedRequest = RequestParser.parseRequest(request);
+        Map<String, Object> parsedRequest = parser.parseRequest(request);
 
-        Map<String, String[]> expectedParameters = RequestParser.getParameters(parsedRequest);
+        Map<String, String[]> expectedParameters = parser.getParameters(parsedRequest);
 
         assertEquals(expectedId, expectedParameters.get("id")[0]);
     }
@@ -67,8 +68,8 @@ class RequestParserTest {
         mockHttpRequest();
         String expectedPageName = "home.html";
 
-        Map<String, Object> parsedRequest = RequestParser.parseRequest(request);
-        UriPageConnector uriPageConnector = RequestParser.getUriConnector(parsedRequest, UriCacher.setCache());
+        Map<String, Object> parsedRequest = parser.parseRequest(request);
+        UriPageConnector uriPageConnector = parser.getUriPageConnector(parsedRequest);
 
         assertEquals(expectedPageName, uriPageConnector.getHtmlPage());
     }

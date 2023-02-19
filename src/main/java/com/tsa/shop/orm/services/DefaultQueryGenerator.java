@@ -60,7 +60,7 @@ public class DefaultQueryGenerator implements QueryGenerator {
                 WHERE, createConditionForQueryFromMap(map), SEMICOLON);
     }
     @Override
-    public Map<String, Field> getMapOfEntityFields(Class<?> type) {
+    public Map<String, Field> getEntityColumns(Class<?> type) {
         Deque<Class<?>> listOfSuperClasses = new ArrayDeque<>();
         enrichWithSuperClassesFromHierarchy(type, listOfSuperClasses);
 

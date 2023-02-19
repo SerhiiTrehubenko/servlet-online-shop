@@ -68,7 +68,7 @@ table td {
     height: 13em;
 }
 ul {
-    list-style-image: url("../images/arrow-green.png");
+    list-style-image: url("/images/arrow-green.png");
     background: no-repeat 0px center;
     padding-left: 30px;
 }

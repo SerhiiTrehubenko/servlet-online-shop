@@ -1,10 +1,8 @@
 package com.tsa.shop.servlets.services;
 
-import com.tsa.shop.ServletStarter;
 import com.tsa.shop.domain.dto.ProductDto;
 import com.tsa.shop.domain.interfaces.EntityService;
 import com.tsa.shop.domain.services.DefaultProductService;
-import com.tsa.shop.orm.util.EntityParser;
 import com.tsa.shop.servlets.enums.HttpStatus;
 import com.tsa.shop.servlets.enums.UriPageConnector;
 import com.tsa.shop.servlets.exceptions.WebServerException;
@@ -19,91 +17,103 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ProductRequestHandler implements RequestHandler {
 
+    private final static String PAGE_NOT_FOUND_MESSAGE = "the Page is not found";
     private final EntityService<ProductDto> service;
+    private final RequestParser requestParser;
+    private final PageGenerator pageGenerator;
+    private final ResponseWriter writer;
 
     public ProductRequestHandler() {
-        service = new DefaultProductService();
+        this(new DefaultProductService(), new RequestParser(),
+                new PageGenerator(), new ResponseWriter());
+    }
+
+    public ProductRequestHandler(EntityService<ProductDto> service, RequestParser requestParser,
+                                 PageGenerator pageGenerator, ResponseWriter writer) {
+        this.service = service;
+        this.requestParser = requestParser;
+        this.pageGenerator = pageGenerator;
+        this.writer = writer;
     }
 
     @Override
     public void handleGet(HttpServletRequest request, HttpServletResponse response) {
 
-        Map<String, Object> parsedRequest = RequestParser.parseRequest(request);
+        Map<String, Object> parsedRequest = requestParser.parseRequest(request);
 
-        UriPageConnector pageUri = RequestParser.getUriConnector(parsedRequest, ServletStarter.CASHED_URI);
+        UriPageConnector pageConnector = requestParser.getUriPageConnector(parsedRequest);
 
         try {
-            if (Objects.equals(UriPageConnector.PRODUCT_GET_ALL, pageUri)) {
+            if (UriPageConnector.PRODUCTS == pageConnector) {
 
                 List<ProductDto> productDtoList = service.findAll();
 
                 parsedRequest.put("products", productDtoList);
 
-                InputStream generatedPage = PageGenerator.getGeneratedPageAsStream(parsedRequest, pageUri);
-                ResponseWriter.writeSuccessResponse(response, HttpStatus.OK.getStatusCode(), generatedPage);
+                InputStream generatedPage = pageGenerator.getGeneratedPageAsStream(parsedRequest, pageConnector.getHtmlPage());
+                writer.writeSuccessResponse(response, HttpStatus.OK.getStatusCode(), generatedPage);
 
-            } else if (Objects.equals(UriPageConnector.PRODUCT_DELETE, pageUri)) {
+            } else if (UriPageConnector.PRODUCTS_DELETE == pageConnector) {
 
-                Long id = RequestParser.getId(parsedRequest);
-                service.delete(id);
+                Long productId = requestParser.getIdFromRequest(parsedRequest);
+                service.delete(productId);
 
-                redirect(response, UriPageConnector.PRODUCT_GET_ALL.getUri());
+                redirect(response, UriPageConnector.PRODUCTS.getUri());
 
-            } else if (Objects.equals(UriPageConnector.PRODUCTS_EDIT, pageUri)) {
+            } else if (UriPageConnector.PRODUCTS_EDIT == pageConnector) {
 
-                Long id = RequestParser.getId(parsedRequest);
-                ProductDto productDto = service.findById(id);
+                Long productId = requestParser.getIdFromRequest(parsedRequest);
+                ProductDto productDto = service.findById(productId);
+
                 parsedRequest.put("productDto", productDto);
 
-                InputStream generatedPage = PageGenerator.getGeneratedPageAsStream(parsedRequest, pageUri);
-                ResponseWriter.writeSuccessResponse(response, HttpStatus.OK.getStatusCode(), generatedPage);
+                InputStream generatedPage = pageGenerator.getGeneratedPageAsStream(parsedRequest, pageConnector.getHtmlPage());
+                writer.writeSuccessResponse(response, HttpStatus.OK.getStatusCode(), generatedPage);
 
-            } else if (Objects.equals(UriPageConnector.PRODUCT_ADD, pageUri)) {
+            } else if (UriPageConnector.PRODUCTS_ADD == pageConnector) {
 
-                InputStream generatedPage = PageGenerator.getGeneratedPageAsStream(parsedRequest, pageUri);
-                ResponseWriter.writeSuccessResponse(response, HttpStatus.OK.getStatusCode(), generatedPage);
+                InputStream generatedPage = pageGenerator.getGeneratedPageAsStream(parsedRequest, pageConnector.getHtmlPage());
+                writer.writeSuccessResponse(response, HttpStatus.OK.getStatusCode(), generatedPage);
 
             } else {
-                throw new WebServerException("the Page is not found", HttpStatus.NOT_FOUND);
+                throw new WebServerException(PAGE_NOT_FOUND_MESSAGE, HttpStatus.NOT_FOUND);
             }
 
         } catch (WebServerException e) {
-            ResponseWriter.writeErrorResponse(response, parsedRequest, e);
+            writer.writeErrorResponse(response, parsedRequest, e, pageGenerator);
         }
     }
 
     @Override
     public void handlePost(HttpServletRequest request, HttpServletResponse response) {
-        Map<String, Object> parsedRequest = RequestParser.parseRequest(request);
+        Map<String, Object> parsedRequest = requestParser.parseRequest(request);
 
-        UriPageConnector pageUri = RequestParser.getUriConnector(parsedRequest, ServletStarter.CASHED_URI);
+        UriPageConnector pageConnector = requestParser.getUriPageConnector(parsedRequest);
+
         try {
-            if (Objects.equals(UriPageConnector.PRODUCTS_EDIT_SEND, pageUri)) {
+            if (UriPageConnector.PRODUCTS_EDIT_SEND == pageConnector) {
 
-                var parameters = RequestParser.getParameters(parsedRequest);
-                ProductDto productDto = EntityParser.getDtoInstance(ProductDto.class, parameters);
+                var parameters = requestParser.getParameters(parsedRequest);
 
-                service.update(productDto);
-                redirect(response, UriPageConnector.PRODUCT_GET_ALL.getUri());
+                service.update(parameters);
+                redirect(response, UriPageConnector.PRODUCTS.getUri());
 
-            } else if (Objects.equals(UriPageConnector.PRODUCT_ADD, pageUri)) {
+            } else if (UriPageConnector.PRODUCTS_ADD == pageConnector) {
 
-                var parameters = RequestParser.getParameters(parsedRequest);
-                ProductDto productDto = EntityParser.getDtoInstance(ProductDto.class, parameters);
+                var parameters = requestParser.getParameters(parsedRequest);
 
-                service.add(productDto);
-                redirect(response, UriPageConnector.PRODUCT_GET_ALL.getUri());
+                service.add(parameters);
+                redirect(response, UriPageConnector.PRODUCTS.getUri());
 
             } else {
-                throw new WebServerException("the Page is not found", HttpStatus.NOT_FOUND);
+                throw new WebServerException(PAGE_NOT_FOUND_MESSAGE, HttpStatus.NOT_FOUND);
             }
 
         } catch (WebServerException e) {
-            ResponseWriter.writeErrorResponse(response, parsedRequest, e);
+            writer.writeErrorResponse(response, parsedRequest, e, pageGenerator);
         }
     }
 

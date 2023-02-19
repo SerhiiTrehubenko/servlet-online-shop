@@ -7,34 +7,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RequestParser {
-    public static Map<String, Object> parseRequest(HttpServletRequest request) {
+
+    private static final String URI = "URI";
+    private static final String PARAMETERS = "parameters";
+
+    public Map<String, Object> parseRequest(HttpServletRequest request) {
         Map<String, Object> parsedRequest = new HashMap<>();
 
         parsedRequest.put("method", request.getMethod());
-        parsedRequest.put("URI", request.getRequestURI());
+        parsedRequest.put(URI, request.getRequestURI());
         parsedRequest.put("URL", String.valueOf(request.getRequestURL()));
         parsedRequest.put("pathInfo", request.getPathInfo());
-        parsedRequest.put("parameters", request.getParameterMap());
+        parsedRequest.put(PARAMETERS, request.getParameterMap());
 
         return parsedRequest;
     }
 
-    public static Long getId(Map<String, Object> parsedRequest) {
-
+    public Long getIdFromRequest(Map<String, Object> parsedRequest) {
         Map<String, String[]> parameters = getParameters(parsedRequest);
 
         return Long.parseLong(parameters.get("id")[0]);
     }
 
-    public static Map<String, String[]> getParameters(Map<String, Object> parsedRequest) {
+    public Map<String, String[]> getParameters(Map<String, Object> parsedRequest) {
         @SuppressWarnings("unchecked")
-        Map<String, String[]> parameters = (Map<String, String[]>) parsedRequest.get("parameters");
+        Map<String, String[]> parameters = (Map<String, String[]>) parsedRequest.get(PARAMETERS);
         return parameters;
     }
 
-    public static UriPageConnector getUriConnector(Map<String, Object> parsedRequest, Map<String, UriPageConnector> mapOfCachedUri) {
-        String uriFromParsedRequest = String.valueOf(parsedRequest.get("URI"));
-//        var mapOfCachedUri = ServletStarter.CASHED_URI;
-        return mapOfCachedUri.get(uriFromParsedRequest);
+    public String getUri(Map<String, Object> parsedRequest) {
+        return String.valueOf(parsedRequest.get(URI));
+    }
+
+    public UriPageConnector getUriPageConnector(Map<String, Object> parsedRequest) {
+        String uri = getUri(parsedRequest);
+
+        return UriCache.getUriPageConnector(uri);
     }
 }

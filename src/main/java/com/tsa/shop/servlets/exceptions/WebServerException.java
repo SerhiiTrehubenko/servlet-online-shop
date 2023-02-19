@@ -4,10 +4,10 @@ import com.tsa.shop.servlets.enums.HttpStatus;
 
 public class WebServerException extends RuntimeException {
 
-    private final HttpStatus status;
+    private HttpStatus status;
 
-    public WebServerException(HttpStatus status) {
-        this.status = status;
+    public WebServerException(String message) {
+        super(message);
     }
 
     public WebServerException(String message, HttpStatus status) {

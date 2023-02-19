@@ -1,7 +1,6 @@
 package com.tsa.shop.orm.services;
 
 import com.tsa.shop.domain.entity.Product;
-import com.tsa.shop.orm.interfaces.QueryGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
@@ -16,7 +15,7 @@ class DefaultQueryGeneratorTest {
 
     @Test
     void getMapOfEntityFields() {
-       var map = generator.getMapOfEntityFields(Product.class);
+       var map = generator.getEntityColumns(Product.class);
 
         for (Map.Entry<String, Field> stringFieldEntry : map.entrySet()) {
             System.out.println(stringFieldEntry);

@@ -9,16 +9,4 @@ public interface RequestHandler {
     default void handlePost(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("NOT IMPLEMENTED");
     }
-
-    default void handleDelete(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("NOT IMPLEMENTED");
-    }
-
-    default void handleEdit(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("NOT IMPLEMENTED");
-    }
-
-    default void handleUpdate(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("NOT IMPLEMENTED");
-    }
 }

@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Servlet
 public class ProductServlet extends HttpServlet {
 
-    private final static String URI = UriPageConnector.PRODUCT_GET_ALL.getUri() + "/*";
+    private final static String URI = UriPageConnector.PRODUCTS.getUri() + "/*";
     private final RequestHandler requestHandler;
 
     public ProductServlet() {

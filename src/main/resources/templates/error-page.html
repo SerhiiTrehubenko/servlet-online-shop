@@ -12,7 +12,10 @@
     <div>
         <@layout.content>
             <p>${errorMessage}</p>
-
+            <br>
+            <form action="/products" method="get">
+                <input type="submit" value="CANCEL">
+            </form>
         </@layout.content>
     </div>
 

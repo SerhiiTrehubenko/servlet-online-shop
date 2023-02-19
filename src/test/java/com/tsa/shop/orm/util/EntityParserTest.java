@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EntityParserTest {
 
+    private final EntityParser parser = new EntityParser();
     @Test
     void testGetRequiredFieldsFromEntity() {
         String expectedId = "private java.lang.Long com.tsa.shop.domain.dto.ProductDto.id";
@@ -19,7 +20,7 @@ class EntityParserTest {
         String expectedDate = "private java.sql.Date com.tsa.shop.domain.dto.ProductDto.date";
 
 
-        Field[] fieldsResult = EntityParser.getRequiredFieldsFromEntity(ProductDto.class, getParameters());
+        Field[] fieldsResult = parser.getFields(ProductDto.class, getParameters());
 
         assertEquals(expectedId, fieldsResult[0].toString());
         assertEquals(expectedName, fieldsResult[1].toString());
@@ -31,9 +32,9 @@ class EntityParserTest {
     void testGetValuesForInstance() {
         Map<String, String[]> parameters = getParameters();
 
-        Field[] fields = EntityParser.getRequiredFieldsFromEntity(ProductDto.class, parameters);
+        Field[] fields = parser.getFields(ProductDto.class, parameters);
 
-        Object[] values = EntityParser.getValuesForInstance(fields, parameters);
+        Object[] values = parser.getValues(fields, parameters);
 
         assertEquals(parameters.get("id")[0], String.valueOf(values[0]));
         assertEquals(parameters.get("name")[0], String.valueOf(values[1]));
@@ -46,27 +47,27 @@ class EntityParserTest {
     void testConvertValue() {
         Map<String, String[]> parameters = getParameters();
 
-        Field[] fields = EntityParser.getRequiredFieldsFromEntity(ProductDto.class, parameters);
+        Field[] fields = parser.getFields(ProductDto.class, parameters);
 
-        Object[] values = EntityParser.getValuesForInstance(fields, parameters);
+        Object[] values = parser.getValues(fields, parameters);
 
-        assertEquals(Long.class, EntityParser.convertValue(fields[0], values[0]).getClass());
-        assertEquals(String.class, EntityParser.convertValue(fields[1], values[1]).getClass());
-        assertEquals(Double.class, EntityParser.convertValue(fields[2], values[2]).getClass());
-        assertEquals(Date.class, EntityParser.convertValue(fields[3], values[3]).getClass());
+        assertEquals(Long.class, parser.convertValue(fields[0], values[0]).getClass());
+        assertEquals(String.class, parser.convertValue(fields[1], values[1]).getClass());
+        assertEquals(Double.class, parser.convertValue(fields[2], values[2]).getClass());
+        assertEquals(Date.class, parser.convertValue(fields[3], values[3]).getClass());
     }
 
     @Test
     void testEnrichInstance() throws Exception {
         Map<String, String[]> parameters = getParameters();
 
-        Field[] fields = EntityParser.getRequiredFieldsFromEntity(ProductDto.class, parameters);
+        Field[] fields = parser.getFields(ProductDto.class, parameters);
 
-        Object[] values = EntityParser.getValuesForInstance(fields, parameters);
+        Object[] values = parser.getValues(fields, parameters);
 
         ProductDto productDto = ProductDto.class.getConstructor().newInstance();
 
-        EntityParser.enrichInstance(fields, values, productDto);
+        parser.enrichInstance(fields, values, productDto);
 
         assertEquals(parameters.get("id")[0], String.valueOf(productDto.getId()));
         assertEquals(parameters.get("name")[0], String.valueOf(productDto.getName()));
@@ -78,7 +79,7 @@ class EntityParserTest {
     void testGetInstance() {
         Map<String, String[]> stringMap = getParameters();
 
-        ProductDto productDto = EntityParser.getDtoInstance(ProductDto.class, stringMap);
+        ProductDto productDto = parser.getDtoInstance(ProductDto.class, stringMap);
 
         assertNotNull(productDto);
         assertEquals(15, productDto.getId());

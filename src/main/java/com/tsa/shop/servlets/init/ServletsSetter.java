@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 
 public class ServletsSetter {
 
-    private final static String DEFAULT_PACKAGE = "com.tsa.shop";
+    private final static String DEFAULT_SERVLETS_PACKAGE = "com.tsa.shop";
 
-    public static void setAllServletsInApp(ServletContextHandler servletContextHandler) {
-        List<Class<HttpServlet>> listOfHttpServletClasses = getHttpServletClasses();
-        List<HttpServlet> listOfHttpServletInstances = getInstancesOfHttpClasses(listOfHttpServletClasses);
+    public void setAllServletsInApp(ServletContextHandler servletContextHandler) {
+        List<Class<HttpServlet>> servletClasses = getHttpServletClasses();
+        List<HttpServlet> servletInstances = getHttpServletInstances(servletClasses);
 
-        listOfHttpServletInstances.forEach(instance -> {
+        servletInstances.forEach(instance -> {
             try {
                 Method methodGetUri = instance.getClass().getDeclaredMethod("getUri");
                 Object uri = methodGetUri.invoke(instance);
@@ -30,16 +30,16 @@ public class ServletsSetter {
         });
 
     }
-
-    static List<Class<HttpServlet>> getHttpServletClasses() {
-        Reflections reflections = new Reflections(DEFAULT_PACKAGE, Scanners.TypesAnnotated);
+    @SuppressWarnings("unchecked")
+    List<Class<HttpServlet>> getHttpServletClasses() {
+        Reflections reflections = new Reflections(DEFAULT_SERVLETS_PACKAGE, Scanners.TypesAnnotated);
         return reflections.getTypesAnnotatedWith(Servlet.class).stream()
                 .map(x -> (Class<HttpServlet>) x)
                 .collect(Collectors.toList());
     }
 
-    static List<HttpServlet> getInstancesOfHttpClasses(List<Class<HttpServlet>> listOfHttpServletClasses) {
-        return listOfHttpServletClasses.stream()
+    List<HttpServlet> getHttpServletInstances(List<Class<HttpServlet>> servletClasses) {
+        return servletClasses.stream()
                 .map(clazz -> {
                     try {
                         return clazz.getConstructor().newInstance();
