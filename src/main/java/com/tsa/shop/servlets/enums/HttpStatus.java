@@ -10,7 +10,7 @@ public enum HttpStatus {
 
     private final int status;
 
-    public int getStatusCode() {
+    public int getCode() {
         return status;
     }
 

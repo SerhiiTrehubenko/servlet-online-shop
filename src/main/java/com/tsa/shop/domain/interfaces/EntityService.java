@@ -1,16 +1,14 @@
 package com.tsa.shop.domain.interfaces;
 
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+public interface EntityService<T, E> {
 
-public interface EntityService<T> {
+    List<E> findAll();
 
-    List<T> findAll();
-
-    T findById(Serializable id);
+    E findById(Serializable id);
 
     void update(Map<String, String[]> parameters);
 

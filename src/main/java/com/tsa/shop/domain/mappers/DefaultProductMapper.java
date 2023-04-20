@@ -7,7 +7,7 @@ import com.tsa.shop.domain.mappers.interfaces.Mapper;
 import java.sql.Date;
 import java.util.Objects;
 
-public class DefaultProductMapper implements Mapper<ProductDto, Product> {
+public class DefaultProductMapper implements Mapper<Product, ProductDto> {
 
     @Override
     public ProductDto toProductDto(Product entity) {

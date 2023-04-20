@@ -20,7 +20,7 @@ public class WebServerException extends RuntimeException {
         this.status = status;
     }
 
-    public HttpStatus getStatus() {
+    public HttpStatus getHttpStatus() {
         return status;
     }
 

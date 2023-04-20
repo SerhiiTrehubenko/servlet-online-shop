@@ -1,52 +1,45 @@
 package com.tsa.shop.domain.services;
 
 import com.tsa.shop.database.repo.AbstractTsaRepository;
-import com.tsa.shop.database.repo.ProductRepository;
-import com.tsa.shop.domain.dto.ProductDto;
-import com.tsa.shop.domain.entity.Product;
 import com.tsa.shop.domain.interfaces.EntityService;
-import com.tsa.shop.domain.mappers.DefaultProductMapper;
 import com.tsa.shop.domain.mappers.interfaces.Mapper;
-import com.tsa.shop.orm.util.EntityParser;
+import com.tsa.shop.orm.interfaces.RequestDtoExtractor;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultProductService implements EntityService<ProductDto> {
+public class DefaultProductService<T, E> implements EntityService<T, E> {
 
-    private final AbstractTsaRepository<Product> repository;
-    private final Mapper<ProductDto, Product> mapper;
-    private final EntityParser parser;
+    private final AbstractTsaRepository<T> repository;
+    private final Mapper<T, E> mapper;
+    private final RequestDtoExtractor<E> parser;
 
-    public DefaultProductService() {
-        this(new ProductRepository(), new DefaultProductMapper(), new EntityParser());
-    }
 
-    public DefaultProductService(AbstractTsaRepository<Product> repository,
-                                 Mapper<ProductDto, Product> mapper, EntityParser parser) {
+    public DefaultProductService(AbstractTsaRepository<T> repository,
+                                 Mapper<T, E> mapper,
+                                 RequestDtoExtractor<E> parser) {
         this.repository = repository;
         this.mapper = mapper;
         this.parser = parser;
     }
 
     @Override
-    public List<ProductDto> findAll() {
-        List<Product> productList = repository.findAll();
+    public List<E> findAll() {
+        List<T> productList = repository.findAll();
         return productList.stream()
                 .map(mapper::toProductDto).toList();
     }
 
     @Override
-    public ProductDto findById(Serializable id) {
-        Product product = repository.findById(id);
+    public E findById(Serializable id) {
+        T product = repository.findById(id);
         return mapper.toProductDto(product);
     }
 
     @Override
     public void update(Map<String, String[]> parameters) {
-        ProductDto productDto = parser.getDtoInstance(ProductDto.class, parameters);
-        Product product = mapper.toProduct(productDto);
+        T product = getProductFrom(parameters);
         repository.update(product);
     }
 
@@ -57,8 +50,11 @@ public class DefaultProductService implements EntityService<ProductDto> {
 
     @Override
     public void add(Map<String, String[]> parameters) {
-        ProductDto productDto = parser.getDtoInstance(ProductDto.class, parameters);
-        Product product = mapper.toProduct(productDto);
+        T product = getProductFrom(parameters);
         repository.add(product);
+    }
+    private T getProductFrom(Map<String, String[]> parameters) {
+        E productDto = parser.createInstance().getDtoInstanceFromParameters(parameters);
+        return mapper.toProduct(productDto);
     }
 }
