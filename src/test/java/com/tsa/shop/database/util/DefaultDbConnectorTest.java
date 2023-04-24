@@ -24,7 +24,7 @@ class DefaultDbConnectorTest {
         when(readerDoc.getDbPassword()).thenReturn(DB_PASSWORD);
         when(connectionDouble.isClosed()).thenReturn(false);
 
-        var connectorSut = new DefaultDbConnector(readerDoc);
+        var connectorSut = Mockito.mock(DefaultDbConnector.class);
 
         when(connectorSut.getConnection()).thenReturn(connectionDouble);
 
