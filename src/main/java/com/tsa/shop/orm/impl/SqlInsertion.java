@@ -1,10 +1,10 @@
 package com.tsa.shop.orm.impl;
 
-import com.tsa.shop.orm.interfaces.EntityClassMeta;
+import com.tsa.shop.orm.interfaces.NameResolver;
 import com.tsa.shop.orm.interfaces.Sql;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.stream.Stream;
 
 public class SqlInsertion extends Sql {
 
@@ -14,41 +14,36 @@ public class SqlInsertion extends Sql {
     private final static String OPEN_BRACKET = " (";
     private final static String CLOSE_BRACKET = ")";
 
-    protected SqlInsertion(EntityClassMeta meta) {
-        super(meta);
+    protected SqlInsertion(NameResolver resolver) {
+        super(resolver);
     }
 
     @Override
     public String generateByObject(Object entityToInsert) {
-        requiredObjectComplyParsedClass(entityToInsert);
-        String tableName = meta.getTableName();
+        validateObject(entityToInsert);
 
-        return getQuery(INSERT, INTO, tableName, getColumnsNamesToInsert(), VALUES, getValuesToInsert(entityToInsert), SEMICOLON);
+        return getQuery(
+                INSERT, INTO, resolver.getTableName(),
+                getColumnsPart(),
+                VALUES, getValuesPart(),
+                SEMICOLON
+        );
     }
 
-    private void requiredObjectComplyParsedClass(Object entityToInsert) {
-        Objects.requireNonNull(entityToInsert, String.format("During initializing %s, provided Object for insertion was null", SqlInsertion.class.getName()));
-        Class<?> parsedClass = meta.getClassToParse();
-        Class<?> entityClass = entityToInsert.getClass();
-        if (!parsedClass.isAssignableFrom(entityClass)) {
-            throw new RuntimeException(String.format("Provided Instance: [%s] does not comply to parsed class: [%s]",
-                    entityToInsert.getClass().getName(), parsedClass.getName()));
-        }
+    private String getColumnsPart() {
+        List<String> columns = resolver.getColumns();
+        return toFormattedString(columns);
     }
 
-    private String getColumnsNamesToInsert() {
-        List<String> columns = meta.getColumnsNames();
-        return toFormatString(columns);
-    }
-
-    private String getValuesToInsert(Object entityToInsert) {
-        List<String> values = meta.getColumnsValues(entityToInsert);
-        return toFormatString(values);
+    private String getValuesPart() {
+        List<String> columns = resolver.getColumns();
+        List<String> placeholders = Stream.generate(() -> PLACE_HOLDER).limit(columns.size()).toList();
+        return toFormattedString(placeholders);
     }
 
     @Override
-    protected String toFormatString(List<String> arguments) {
-        String formatted = super.toFormatString(arguments);
+    protected String toFormattedString(List<String> arguments) {
+        String formatted = super.toFormattedString(arguments);
         return addBracketsBothSides(formatted);
     }
 

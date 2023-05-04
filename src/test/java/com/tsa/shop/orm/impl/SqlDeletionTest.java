@@ -1,8 +1,7 @@
 package com.tsa.shop.orm.impl;
 
 import com.tsa.shop.domain.entity.Product;
-import com.tsa.shop.orm.impl.DefaultEntityClassMeta;
-import com.tsa.shop.orm.impl.SqlDeletion;
+import com.tsa.shop.orm.interfaces.NameResolver;
 import com.tsa.shop.orm.interfaces.EntityClassMeta;
 import com.tsa.shop.orm.interfaces.Sql;
 import org.junit.jupiter.api.Test;
@@ -13,12 +12,13 @@ class SqlDeletionTest {
 
     @Test
     void shouldReturnQueryDeleteById() {
-        String expectedQuery = "DELETE FROM products WHERE product_id=10;";
+        String expectedQuery = "DELETE FROM products WHERE product_id=?;";
 
         EntityClassMeta meta = new DefaultEntityClassMeta(Product.class);
-        Sql generator = new SqlDeletion(meta);
+        NameResolver resolver = new DefaultNameResolver(meta);
+        Sql generator = new SqlDeletion(resolver);
 
-        String resultQuery = generator.generateById(10);
+        String resultQuery = generator.generateById();
 
         assertEquals(expectedQuery, resultQuery);
     }

@@ -6,17 +6,11 @@ import java.util.Map;
 import java.util.Set;
 
 public interface EntityClassMeta {
-    String getTableName();
-
-    List<String> getColumnsNames();
-
-    List<String> getColumnsValues(Object entityToInsert);
-
-    String getIdColumnName();
+    List<Field> getFields();
 
     Class<?> getClassToParse();
 
-    String getId(Object objectToInsert);
+    Set<Map.Entry<String, Field>> getAllFields();
 
-    Set<Map.Entry<String, Field>> getAllEntityColumns();
+    Field getIdField();
 }

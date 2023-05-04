@@ -2,10 +2,10 @@ package com.tsa.shop.orm.interfaces;
 
 public abstract class AbstractSqlFactory {
 
-    protected final EntityClassMeta meta;
+    protected final NameResolver resolver;
 
-    protected AbstractSqlFactory(EntityClassMeta meta) {
-        this.meta = meta;
+    protected AbstractSqlFactory(NameResolver resolver) {
+        this.resolver = resolver;
     }
 
     public abstract Sql createSelector();

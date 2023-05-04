@@ -1,9 +1,9 @@
 package com.tsa.shop.orm.interfaces;
 
-import java.io.Serializable;
+import com.tsa.shop.orm.impl.SqlInsertion;
+
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 public abstract class Sql {
 
@@ -14,20 +14,21 @@ public abstract class Sql {
     protected static final String SEMICOLON = ";";
     private static final String EMPTY_DELIMITER = "";
     protected static final String COMA_WHITESPACE_DELIMITER = ", ";
+    protected final static String PLACE_HOLDER = "?";
 
-    protected final EntityClassMeta meta;
+    protected final NameResolver resolver;
 
-    private final static List<Function<String, Object>> functions = List.of(Integer::parseInt, Double::parseDouble, "'%s'"::formatted);
 
-    protected Sql(EntityClassMeta meta) {
-        this.meta = meta;
+
+    protected Sql(NameResolver resolver) {
+        this.resolver = resolver;
     }
 
     public String generate() {
         throw new UnsupportedOperationException("The Class: [%s] does not implement the method: [generate();]".formatted(this.getClass().getName()));
     }
 
-    public String generateById(Serializable id) {
+    public String generateById() {
         throw new UnsupportedOperationException("The Class: [%s] does not implement the method: [generate(Serializable id);]".formatted(this.getClass().getName()));
     }
 
@@ -39,30 +40,25 @@ public abstract class Sql {
         return String.join(EMPTY_DELIMITER, args);
     }
 
-    protected String toFormatString(List<String> arguments) {
+    protected String toFormattedString(List<String> arguments) {
         return String.join(COMA_WHITESPACE_DELIMITER, arguments);
     }
 
-    protected String resolveId(Serializable id) {
-        String idAsString = Objects.toString(id);
-        return
-                functions.stream()
-                        .filter(function -> isResolvable(function, idAsString))
-                        .map(function -> resolve(function, idAsString))
-                        .findFirst()
-                        .orElseThrow(() -> new RuntimeException("id: [%s] should be Integer, Double or String".formatted(idAsString)));
+    protected void validateObject(Object entityToInsert) {
+        requiredNotNull(entityToInsert);
+        assertComplyWithEntity(entityToInsert);
     }
 
-    private boolean isResolvable(Function<String, Object> function, String id) {
-        try {
-            function.apply(id);
-            return true;
-        } catch (Exception ignored) {
-            return false;
+    private void requiredNotNull(Object entityToInsert) {
+        Objects.requireNonNull(entityToInsert, "During initializing %s, provided Object for insertion was null".formatted(SqlInsertion.class.getName()));
+    }
+
+    private void assertComplyWithEntity(Object entityToInsert) {
+        Class<?> parsedClass = resolver.getEntityClass();
+        Class<?> entityClass = entityToInsert.getClass();
+        if (!parsedClass.isAssignableFrom(entityClass)) {
+            throw new RuntimeException(String.format("Provided Instance: [%s] does not comply to parsed class: [%s]",
+                    entityToInsert.getClass().getName(), parsedClass.getName()));
         }
-    }
-
-    private String resolve(Function<String, Object> function, String id) {
-        return function.apply(id).toString();
     }
 }

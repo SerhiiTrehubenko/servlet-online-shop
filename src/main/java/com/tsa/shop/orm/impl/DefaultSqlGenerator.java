@@ -3,8 +3,6 @@ package com.tsa.shop.orm.impl;
 import com.tsa.shop.orm.interfaces.AbstractSqlFactory;
 import com.tsa.shop.orm.interfaces.AbstractSqlGenerator;
 
-import java.io.Serializable;
-
 public class DefaultSqlGenerator extends AbstractSqlGenerator {
 
     public DefaultSqlGenerator(AbstractSqlFactory factory) {
@@ -20,11 +18,11 @@ public class DefaultSqlGenerator extends AbstractSqlGenerator {
     }
 
     @Override
-    public String findById(Serializable id) {
+    public String findById() {
         if (isCreated(super.selection)) {
             selection = factory.createSelector();
         }
-        return selection.generateById(id);
+        return selection.generateById();
     }
 
     @Override
@@ -36,11 +34,11 @@ public class DefaultSqlGenerator extends AbstractSqlGenerator {
     }
 
     @Override
-    public String deleteById(Serializable id) {
+    public String deleteById() {
         if (isCreated(super.deletion)) {
             deletion = factory.createDeletion();
         }
-        return deletion.generateById(id);
+        return deletion.generateById();
     }
 
     @Override

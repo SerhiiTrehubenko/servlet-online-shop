@@ -1,6 +1,5 @@
 package com.tsa.shop.orm.interfaces;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 public abstract class AbstractSqlGenerator {
@@ -15,9 +14,9 @@ public abstract class AbstractSqlGenerator {
     }
 
     public abstract String findAll();
-    public abstract String findById(Serializable id);
+    public abstract String findById();
     public abstract String add(Object entityToInsert);
-    public abstract String deleteById(Serializable id);
+    public abstract String deleteById();
     public abstract String update(Object entityToInsert);
 
     protected boolean isCreated(Sql generator) {

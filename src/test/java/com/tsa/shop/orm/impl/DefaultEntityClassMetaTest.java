@@ -8,6 +8,7 @@ import com.tsa.shop.orm.annotation.Table;
 import com.tsa.shop.orm.interfaces.EntityClassMeta;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,9 @@ public class DefaultEntityClassMetaTest {
         @Column
         private String category;
     }
-    private static final class StreetForTest {}
+
+    private static final class StreetForTest {
+    }
 
     @Entity
     private static final class MailForTest extends AddressForTest {
@@ -60,75 +63,44 @@ public class DefaultEntityClassMetaTest {
     }
 
     @Test
-    void shouldReturnClassNameAsTableNameAnnotationTableIsAbsent() {
-        String expectedTableName = "addressfortest";
+    void shouldReturnFieldsAccordingAnnotationColumn() {
+        List<String> expectedFields =
+                List.of(
+                        "private java.lang.String com.tsa.shop.orm.impl.DefaultEntityClassMetaTest$AddressForTest.name",
+                        "private java.lang.String com.tsa.shop.orm.impl.DefaultEntityClassMetaTest$AddressForTest.category"
+                );
 
         Class<?> classToParse = AddressForTest.class;
         EntityClassMeta meta = new DefaultEntityClassMeta(classToParse);
 
-        String resultTableName = meta.getTableName();
+        List<Field> resultFields = meta.getFields();
 
-        assertEquals(expectedTableName, resultTableName);
+        assertEquals(2, resultFields.size());
+        assertEquals(expectedFields.get(0), resultFields.get(0).toString());
+        assertEquals(expectedFields.get(1), resultFields.get(1).toString());
+
     }
 
     @Test
-    void shouldCustomTableNameAnnotationValueContainsCustomTableName() {
-        String expectedTableName = "products";
-
-        Class<?> classToParse = Product.class;
-        EntityClassMeta meta = new DefaultEntityClassMeta(classToParse);
-
-        String resultTableName = meta.getTableName();
-
-        assertEquals(expectedTableName, resultTableName);
-    }
-
-    @Test
-    void shouldReturnSimpleNameOfClassWhenTableAnnotationIsPresentWithEmptyProperty() {
-        String expectedTableName = "addressfortest";
-
-        Class<?> classToParse = AddressForTest.class;
-        EntityClassMeta meta = new DefaultEntityClassMeta(classToParse);
-
-        String resultTableName = meta.getTableName();
-
-        assertEquals(expectedTableName, resultTableName);
-    }
-
-    @Test
-    void shouldReturnColumnsNamesAnnotationColumnValueIsDefault() {
-        String expectedColumnsNames = "name, category";
-
-        Class<?> classToParse = AddressForTest.class;
-        EntityClassMeta meta = new DefaultEntityClassMeta(classToParse);
-
-        List<String> resultColumnsNames = meta.getColumnsNames();
-
-        assertEquals(expectedColumnsNames, String.join(", ", resultColumnsNames));
-    }
-
-    @Test
-    void shouldReturnColumnsNamesAnnotationColumnValueIsPresent() {
-        String expectedColumnsNames = "product_name, product_price, creationdate";
-
-        Class<?> classToParse = Product.class;
-        EntityClassMeta meta = new DefaultEntityClassMeta(classToParse);
-
-        List<String> resultColumnsNames = meta.getColumnsNames();
-
-        assertEquals(expectedColumnsNames, String.join(", ", resultColumnsNames));
-    }
-
-    @Test
-    void shouldReturnColumnsNamesFromHierarchy() {
-        String expectedColumnsNames = "name, category, mail-price, mail-amount";
+    void shouldReturnFieldsFromHierarchyAccordingColumnAnnotation() {
+        List<String> expectedFields =
+                List.of(
+                        "private java.lang.String com.tsa.shop.orm.impl.DefaultEntityClassMetaTest$AddressForTest.name",
+                        "private java.lang.String com.tsa.shop.orm.impl.DefaultEntityClassMetaTest$AddressForTest.category",
+                        "private java.lang.String com.tsa.shop.orm.impl.DefaultEntityClassMetaTest$MailForTest.price",
+                        "private java.lang.String com.tsa.shop.orm.impl.DefaultEntityClassMetaTest$MailForTest.amount"
+                );
 
         Class<?> classToParse = MailForTest.class;
         EntityClassMeta meta = new DefaultEntityClassMeta(classToParse);
 
-        List<String> resultColumnsNames = meta.getColumnsNames();
+        List<Field> resultFields = meta.getFields();
 
-        assertEquals(expectedColumnsNames, String.join(", ", resultColumnsNames));
+        assertEquals(4, resultFields.size());
+        assertEquals(expectedFields.get(0), resultFields.get(0).toString());
+        assertEquals(expectedFields.get(1), resultFields.get(1).toString());
+        assertEquals(expectedFields.get(2), resultFields.get(2).toString());
+        assertEquals(expectedFields.get(3), resultFields.get(3).toString());
     }
 
     @Test
@@ -152,7 +124,6 @@ public class DefaultEntityClassMetaTest {
     }
 
 
-
     @Test
     void shouldThrowExceptionWhenEntityIdAnnotationIsAbsent() {
         String expectedExceptionMessage = "The class: [com.tsa.shop.orm.impl.DefaultEntityClassMetaTest$IdAnnotationsIsAbsent] does not have Id annotation";
@@ -170,7 +141,7 @@ public class DefaultEntityClassMetaTest {
         Class<?> classToParse = Product.class;
         EntityClassMeta meta = new DefaultEntityClassMeta(classToParse);
 
-        String result = meta.getAllEntityColumns().stream()
+        String result = meta.getAllFields().stream()
                 .map(entry -> "key=%s, value=%s%n".formatted(entry.getKey(), entry.getValue().getName()).trim())
                 .collect(Collectors.joining("; "));
 

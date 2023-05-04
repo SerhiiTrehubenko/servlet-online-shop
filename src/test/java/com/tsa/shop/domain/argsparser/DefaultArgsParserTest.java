@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DefaultArgsParserTest {
     private final static String WHITE_SPACE_DELIMITER = " ";
 
-    EnvironmentVariablesContext contextEmpty = new DefaultEnvironmentVariablesContext(Property.PORT, Property.FILE_PROPERTY);
-    ArgsParser argsParser = new DefaultArgsParser(contextEmpty);
+    private final EnvironmentVariablesContext contextEmpty = new DefaultEnvironmentVariablesContext(Property.PORT, Property.FILE_PROPERTY);
+    private final ArgsParser argsParser = new DefaultArgsParser(contextEmpty);
 
     @Test
     void shouldReturnDefaultPortProperty() {

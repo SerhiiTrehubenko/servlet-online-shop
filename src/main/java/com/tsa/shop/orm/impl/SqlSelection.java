@@ -1,31 +1,31 @@
 package com.tsa.shop.orm.impl;
 
-import com.tsa.shop.orm.interfaces.EntityClassMeta;
+import com.tsa.shop.orm.interfaces.NameResolver;
 import com.tsa.shop.orm.interfaces.Sql;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 public class SqlSelection extends Sql {
 
-    public SqlSelection(EntityClassMeta meta) {
-        super(meta);
+    public SqlSelection(NameResolver resolver) {
+        super(resolver);
     }
 
     @Override
     public String generate() {
         String columns = getColumns();
-        return getQuery(SELECT, columns, FROM, meta.getTableName(), SEMICOLON);
+        return getQuery(
+                SELECT, columns,
+                FROM, resolver.getTableName(),
+                SEMICOLON
+        );
     }
 
     @Override
-    public String generateById(Serializable id) {
-        Objects.requireNonNull(id);
+    public String generateById() {
         String columns = getColumns();
-        return getQuery(SELECT, columns, FROM, meta.getTableName(), WHERE, meta.getIdColumnName(), EQUALS, resolveId(id), SEMICOLON);
+        return getQuery(SELECT, columns, FROM, resolver.getTableName(), WHERE, resolver.getIdName(), EQUALS, PLACE_HOLDER, SEMICOLON);
     }
 
     private String getColumns() {
-        return toFormatString(meta.getColumnsNames()) + ", %s".formatted(meta.getIdColumnName());
+        return toFormattedString(resolver.getColumns()) + ", %s".formatted(resolver.getIdName());
     }
 }

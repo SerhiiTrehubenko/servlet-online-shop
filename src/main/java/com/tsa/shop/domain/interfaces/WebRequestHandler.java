@@ -7,12 +7,10 @@ import com.tsa.shop.servlets.interfaces.PageGenerator;
 import com.tsa.shop.servlets.interfaces.ServletRequestParser;
 import com.tsa.shop.servlets.interfaces.Response;
 import com.tsa.shop.servlets.interfaces.ResponseWriter;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
@@ -35,7 +33,7 @@ public abstract class WebRequestHandler extends HttpServlet {
     }
 
     @Override
-    protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
+    protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp);
 
     protected void writeSuccessResponse(HttpServletResponse servletResponse, InputStream content) {
         Response successResponse = getSuccessResponse(servletResponse, content);

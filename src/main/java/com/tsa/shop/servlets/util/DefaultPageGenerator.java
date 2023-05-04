@@ -3,6 +3,7 @@ package com.tsa.shop.servlets.util;
 import com.tsa.shop.servlets.enums.HttpStatus;
 import com.tsa.shop.servlets.exceptions.WebServerException;
 import com.tsa.shop.servlets.interfaces.PageGenerator;
+import freemarker.core.HTMLOutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -26,6 +27,7 @@ public class DefaultPageGenerator implements PageGenerator {
             throw new WebServerException("the Page Name cannot be null or empty", HttpStatus.NOT_FOUND);
         }
         try {
+            CONFIG.setOutputFormat(HTMLOutputFormat.INSTANCE);
             CONFIG.setClassForTemplateLoading(DefaultPageGenerator.class, TEMPLATES_DIR);
 
             StringWriter writer = new StringWriter();

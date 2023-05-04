@@ -43,18 +43,18 @@ public class DefaultProductService<T, E> implements EntityService<T, E> {
         repository.update(product);
     }
 
+    private T getProductFrom(Map<String, String[]> parameters) {
+        E productDto = parser.createInstance().getDtoInstanceFromParameters(parameters);
+        return mapper.toProduct(productDto);
+    }
+
     @Override
     public void delete(Serializable id) {
         repository.delete(id);
     }
-
     @Override
     public void add(Map<String, String[]> parameters) {
         T product = getProductFrom(parameters);
         repository.add(product);
-    }
-    private T getProductFrom(Map<String, String[]> parameters) {
-        E productDto = parser.createInstance().getDtoInstanceFromParameters(parameters);
-        return mapper.toProduct(productDto);
     }
 }
