@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
@@ -68,5 +69,13 @@ public abstract class WebRequestHandler extends HttpServlet {
     protected void logError(Object requestUri, WebServerException e) {
         System.out.println("HttpRequest URL: " + requestUri + " Time of request: " + new Date());
         e.printStackTrace();
+    }
+
+    protected void redirect(HttpServletResponse response, String uri) throws WebServerException {
+        try {
+            response.sendRedirect(uri);
+        } catch (IOException e) {
+            throw new WebServerException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

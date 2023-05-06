@@ -21,6 +21,12 @@ public class DefaultPageGenerator implements PageGenerator {
     private static final Configuration CONFIG = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
     private static final String TEMPLATES_DIR = "/templates";
 
+    @Override
+    public InputStream getGeneratedPageAsStream(String pageName) throws WebServerException {
+        Map<String, Object> emptyContent = Map.of();
+        return getGeneratedPageAsStream(emptyContent, pageName);
+    }
+
     public InputStream getGeneratedPageAsStream(Map<String, Object> parsedRequest, String pageName)
             throws WebServerException {
         if (Objects.isNull(pageName) || pageName.isEmpty()) {

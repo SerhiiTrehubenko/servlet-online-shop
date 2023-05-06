@@ -12,7 +12,7 @@ public class DefaultContentFileProvider implements ContentFileProvider {
     public InputStream getSourceFileAsStream(String uriFromRequest) throws WebServerException {
         InputStream inputStreamFromFile = getClass().getResourceAsStream(uriFromRequest);
         if (Objects.isNull(inputStreamFromFile)) {
-            throw new WebServerException("A source file is not found", HttpStatus.NOT_FOUND);
+            throw new WebServerException("Provided URL: [%s] is not supported".formatted(uriFromRequest), HttpStatus.NOT_FOUND);
         }
         return inputStreamFromFile;
     }

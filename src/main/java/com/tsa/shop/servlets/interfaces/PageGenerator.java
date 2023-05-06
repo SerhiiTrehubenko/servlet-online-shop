@@ -8,4 +8,6 @@ import java.util.Map;
 public interface PageGenerator {
     InputStream getGeneratedPageAsStream(Map<String, Object> parsedRequest, String pageName)
             throws WebServerException;
+    InputStream getGeneratedPageAsStream(String pageName)
+            throws WebServerException;
 }

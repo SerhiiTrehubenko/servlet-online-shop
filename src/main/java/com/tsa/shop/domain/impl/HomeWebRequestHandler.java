@@ -47,8 +47,7 @@ public class HomeWebRequestHandler extends WebRequestHandler {
     }
 
     private InputStream getHomePage(UriPageConnector pageConnector) {
-        Map<String, Object> emptyContent = Map.of();
-        return pageGenerator.getGeneratedPageAsStream(emptyContent, pageConnector.getHtmlPage());
+        return pageGenerator.getGeneratedPageAsStream(pageConnector.getHtmlPage());
     }
 
     private boolean file(UriPageConnector pageConnector) {
