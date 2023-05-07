@@ -4,6 +4,8 @@ import com.tsa.shop.database.interfaces.*;
 import com.tsa.shop.database.repo.AbstractTsaRepository;
 import com.tsa.shop.database.repo.ProductRepository;
 import com.tsa.shop.database.util.*;
+import com.tsa.shop.database.versioncontrol.DefaultFlywayBridge;
+import com.tsa.shop.database.versioncontrol.FlywayBridge;
 import com.tsa.shop.domain.argsparser.enums.Property;
 import com.tsa.shop.domain.argsparser.impl.DefaultArgsParser;
 import com.tsa.shop.domain.argsparser.impl.DefaultEnvironmentVariablesContext;
@@ -46,6 +48,10 @@ public class ServletStarter {
 
 //        Db connection
         DbConnector dbConnector = new DefaultDbConnector(propertyReader);
+
+//        flyway
+        FlywayBridge flywayBridge = new DefaultFlywayBridge(propertyReader);
+        flywayBridge.migrate();
 
 //        QueryGeneratorNew
         EntityClassMeta classMeta = new DefaultEntityClassMeta(Product.class);
