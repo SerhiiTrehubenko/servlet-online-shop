@@ -9,10 +9,10 @@ import java.util.Objects;
 
 public class DefaultContentFileProvider implements ContentFileProvider {
 
-    public InputStream getSourceFileAsStream(String uriFromRequest) throws WebServerException {
+    public InputStream getSourceFileAsStream(String uriFromRequest) {
         InputStream inputStreamFromFile = getClass().getResourceAsStream(uriFromRequest);
         if (Objects.isNull(inputStreamFromFile)) {
-            throw new WebServerException("Provided URL: [%s] is not supported".formatted(uriFromRequest), HttpStatus.NOT_FOUND);
+            throw new WebServerException("Provided URL: [%s] is not supported".formatted(uriFromRequest), HttpStatus.NOT_FOUND, this);
         }
         return inputStreamFromFile;
     }

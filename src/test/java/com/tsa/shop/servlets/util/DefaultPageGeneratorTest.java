@@ -31,13 +31,13 @@ class DefaultPageGeneratorTest {
 
     @Test
     void testGetGeneratedPageAsStreamPageNameIsEmpty() {
-        assertThrows(WebServerException.class,
+        assertThrows(java.lang.IllegalArgumentException.class,
                 () -> defaultPageGenerator.getGeneratedPageAsStream(new HashMap<>(), ""));
     }
 
     @Test
     void testGetGeneratedPageAsStreamPageNameIsNull() {
-        assertThrows(WebServerException.class,
+        assertThrows(java.lang.IllegalArgumentException.class,
                 () -> defaultPageGenerator.getGeneratedPageAsStream(new HashMap<>(), null));
     }
 }

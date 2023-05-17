@@ -1,5 +1,7 @@
 package com.tsa.shop.domain.impl;
 
+import com.tsa.shop.domain.logging.DomainLogger;
+import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.servlets.exceptions.WebServerException;
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
 import com.tsa.shop.servlets.interfaces.*;
@@ -18,8 +20,10 @@ public class HomeWebRequestHandler extends WebRequestHandler {
                                  PageGenerator pageGenerator,
                                  ResponseWriter responseWriter,
                                  Response response,
+                                 DomainLogger logger,
+                                 LogMessageGenerator logMessageGenerator,
                                  ContentFileProvider contentFileProvider) {
-        super(servletRequestParser, pageGenerator, responseWriter, response);
+        super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
         this.contentFileProvider = contentFileProvider;
     }
 
@@ -37,8 +41,14 @@ public class HomeWebRequestHandler extends WebRequestHandler {
             }
             writeSuccessResponse(servletResponse, content);
         } catch (WebServerException e) {
+            String loggingMessage = logMessageGenerator.getMessageFrom(e);
+            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
             writeErrorResponse(servletResponse, e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), e);
+
+        } catch (RuntimeException e) {
+            String loggingMessage = logMessageGenerator.getMessageFrom(e);
+            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
+            writeDefaultErrorResponse(servletResponse);
         }
     }
 
@@ -54,7 +64,7 @@ public class HomeWebRequestHandler extends WebRequestHandler {
         return Objects.isNull(pageConnector);
     }
 
-    private InputStream getFileContent(Map<String, Object> parsedRequest) throws WebServerException {
+    private InputStream getFileContent(Map<String, Object> parsedRequest) {
         String fileSourceUri = servletRequestParser.getUri(parsedRequest);
         return contentFileProvider.getSourceFileAsStream(fileSourceUri);
     }

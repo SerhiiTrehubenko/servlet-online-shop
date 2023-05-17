@@ -1,5 +1,7 @@
 package com.tsa.shop.domain.interfaces;
 
+import com.tsa.shop.domain.logging.DomainLogger;
+import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.servlets.enums.HttpStatus;
 import com.tsa.shop.servlets.enums.UriPageConnector;
 import com.tsa.shop.servlets.exceptions.WebServerException;
@@ -22,15 +24,23 @@ public abstract class WebRequestHandler extends HttpServlet {
     protected final PageGenerator pageGenerator;
     protected final ResponseWriter responseWriter;
     protected final Response response;
+    protected final DomainLogger logger;
+    protected final LogMessageGenerator logMessageGenerator;
+
 
     public WebRequestHandler(ServletRequestParser servletRequestParser,
                              PageGenerator pageGenerator,
                              ResponseWriter responseWriter,
-                             Response response) {
+                             Response response,
+                             DomainLogger logger,
+                             LogMessageGenerator logMessageGenerator) {
         this.servletRequestParser = servletRequestParser;
         this.pageGenerator = pageGenerator;
         this.responseWriter = responseWriter;
         this.response = response;
+        this.logger = logger;
+        logger.setClass(this.getClass());
+        this.logMessageGenerator = logMessageGenerator;
     }
 
     @Override
@@ -46,6 +56,11 @@ public abstract class WebRequestHandler extends HttpServlet {
                 .setServletResponse(servletResponse)
                 .setHttpStatus(HttpStatus.OK.getCode())
                 .setContent(content);
+    }
+
+    protected void writeDefaultErrorResponse(HttpServletResponse servletResponse) {
+        var error = new WebServerException("Oooops! Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        writeErrorResponse(servletResponse, error);
     }
 
     protected void writeErrorResponse(HttpServletResponse servletResponse, WebServerException e) {
@@ -66,16 +81,16 @@ public abstract class WebRequestHandler extends HttpServlet {
         return pageGenerator.getGeneratedPageAsStream(message, UriPageConnector.ERROR_PAGE.getHtmlPage());
     }
 
-    protected void logError(Object requestUri, WebServerException e) {
-        System.out.println("HttpRequest URL: " + requestUri + " Time of request: " + new Date());
-        e.printStackTrace();
+    protected void logError(Object requestUri, String message) {
+        String header = "HttpRequest URL: " + requestUri + " Time of request: " + new Date();
+        logger.error(header + "\n" + message);
     }
 
-    protected void redirect(HttpServletResponse response, String uri) throws WebServerException {
+    protected void redirect(HttpServletResponse response, String uri) {
         try {
             response.sendRedirect(uri);
         } catch (IOException e) {
-            throw new WebServerException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new WebServerException(e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 }

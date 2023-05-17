@@ -2,6 +2,8 @@ package com.tsa.shop.servlets.servlet;
 
 import com.tsa.shop.domain.interfaces.EntityService;
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
+import com.tsa.shop.domain.logging.DomainLogger;
+import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.servlets.enums.UriPageConnector;
 import com.tsa.shop.servlets.exceptions.WebServerException;
 import com.tsa.shop.servlets.interfaces.PageGenerator;
@@ -16,12 +18,14 @@ import java.util.Map;
 public class ProductDeleteWebRequestHandler<T, E> extends WebRequestHandler {
     private final EntityService<T, E> service;
 
-    public ProductDeleteWebRequestHandler(EntityService<T, E> service,
-                                           ServletRequestParser servletRequestParser,
-                                           PageGenerator pageGenerator,
-                                           Response response,
-                                           ResponseWriter responseWriter) {
-        super(servletRequestParser, pageGenerator, responseWriter, response);
+    public ProductDeleteWebRequestHandler(ServletRequestParser servletRequestParser,
+                                          PageGenerator pageGenerator,
+                                          ResponseWriter responseWriter,
+                                          Response response,
+                                          DomainLogger logger,
+                                          LogMessageGenerator logMessageGenerator,
+                                          EntityService<T, E> service) {
+        super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
         this.service = service;
     }
 
@@ -32,8 +36,13 @@ public class ProductDeleteWebRequestHandler<T, E> extends WebRequestHandler {
             deleteProduct(parsedRequest);
             redirect(servletResponse, UriPageConnector.PRODUCTS.getUri());
         } catch (WebServerException e) {
+            String loggingMessage = logMessageGenerator.getMessageFrom(e);
+            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
             writeErrorResponse(servletResponse, e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), e);
+        } catch (RuntimeException e) {
+            String loggingMessage = logMessageGenerator.getMessageFrom(e);
+            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
+            writeDefaultErrorResponse(servletResponse);
         }
     }
 

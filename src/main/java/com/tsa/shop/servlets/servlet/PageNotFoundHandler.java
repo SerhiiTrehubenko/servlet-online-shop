@@ -1,6 +1,8 @@
 package com.tsa.shop.servlets.servlet;
 
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
+import com.tsa.shop.domain.logging.DomainLogger;
+import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.servlets.enums.HttpStatus;
 import com.tsa.shop.servlets.exceptions.WebServerException;
 import com.tsa.shop.servlets.interfaces.PageGenerator;
@@ -17,10 +19,12 @@ public class PageNotFoundHandler extends WebRequestHandler {
     private final static String PAGE_NOT_FOUND_MESSAGE = "the Page with URL: [%s] is not found";
 
     public PageNotFoundHandler(ServletRequestParser servletRequestParser,
-                             PageGenerator pageGenerator,
-                             ResponseWriter responseWriter,
-                             Response response) {
-        super(servletRequestParser, pageGenerator, responseWriter, response);
+                               PageGenerator pageGenerator,
+                               ResponseWriter responseWriter,
+                               Response response,
+                               DomainLogger logger,
+                               LogMessageGenerator logMessageGenerator) {
+        super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
     }
 
     @Override
@@ -33,8 +37,9 @@ public class PageNotFoundHandler extends WebRequestHandler {
         try {
             throw new WebServerException(PAGE_NOT_FOUND_MESSAGE.formatted(parsedRequest.get(URL_FOR_ERROR_MESSAGE)), HttpStatus.NOT_FOUND);
         } catch (WebServerException e) {
+            String loggingMessage = logMessageGenerator.getMessageFrom(e);
+            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
             writeErrorResponse(servletResponse, e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), e);
         }
     }
 

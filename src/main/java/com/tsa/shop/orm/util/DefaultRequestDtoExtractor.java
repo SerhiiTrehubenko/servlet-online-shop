@@ -27,14 +27,16 @@ public class DefaultRequestDtoExtractor<E> implements RequestDtoExtractor<E> {
         return new DefaultRequestDtoExtractor<>(classDto);
     }
 
-    public E getDtoInstanceFromParameters(Map<String, String[]> parameters) throws WebServerException {
+    public E getDtoInstanceFromParameters(Map<String, String[]> parameters) {
         try {
             resolveFields(parameters);
             resolveValues(parameters);
 
             return getInstance();
+        } catch (IllegalArgumentException | WebServerException e) {
+            throw e;
         } catch (Exception e) {
-            throw new WebServerException(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new WebServerException("There was a problem during request processing", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 
@@ -70,9 +72,9 @@ public class DefaultRequestDtoExtractor<E> implements RequestDtoExtractor<E> {
         return instance;
     }
 
-    Serializable convertValue(Field field, String value) throws WebServerException {
+    Serializable convertValue(Field field, String value) {
         if (value.isEmpty()) {
-            throw new WebServerException("Field \"" + field.getName() + "\" cannot be empty");
+            throw new WebServerException("Value cannot be EMPTY", HttpStatus.BAD_REQUEST, this);
         }
         Class<?> fieldType = field.getType();
 
@@ -89,7 +91,7 @@ public class DefaultRequestDtoExtractor<E> implements RequestDtoExtractor<E> {
                 return Integer.parseInt(value);
             }
         } catch (NumberFormatException e) {
-            throw new WebServerException("Field \"" + field.getName() + "\" has wrong format");
+            throw new WebServerException("Field: [%s] has wrong format".formatted(field.getName()), e, HttpStatus.BAD_REQUEST, this);
         }
 
         return value;

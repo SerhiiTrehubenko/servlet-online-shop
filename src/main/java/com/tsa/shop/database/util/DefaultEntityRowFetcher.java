@@ -29,8 +29,10 @@ public class DefaultEntityRowFetcher<T> implements EntityRowFetcher<T> {
             Map<Field, Serializable> rowValues = rowDataExtractor.getValues(resultSetWithData);
 
             return getEntity(rowValues);
+        } catch (RuntimeException e) {
+            throw e;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("There was a problem during building an Entity: [%s]".formatted(getEntityClass().getName()),e);
         }
     }
 
@@ -42,7 +44,7 @@ public class DefaultEntityRowFetcher<T> implements EntityRowFetcher<T> {
             try {
                 column.set(entityInstance, value);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("There was a problem during setting value to the entity: [%s], field: [%s]".formatted(entityInstance.getClass().getName(), column.getName()), e);
             }
         });
 

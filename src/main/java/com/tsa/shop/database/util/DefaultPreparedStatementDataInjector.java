@@ -2,6 +2,8 @@ package com.tsa.shop.database.util;
 
 import com.tsa.shop.database.interfaces.PreparedStatementDataInjector;
 import com.tsa.shop.orm.interfaces.EntityClassMeta;
+import com.tsa.shop.servlets.enums.HttpStatus;
+import com.tsa.shop.servlets.exceptions.WebServerException;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -34,8 +36,7 @@ public class DefaultPreparedStatementDataInjector<T> implements PreparedStatemen
             }
         } catch (Exception e) {
             refreshIterator();
-            e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new WebServerException("There was a problem during column values injection into PreparedStatement", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
         refreshIterator();
         return statement;
@@ -64,8 +65,10 @@ public class DefaultPreparedStatementDataInjector<T> implements PreparedStatemen
         try {
             PreparedStatement payloadStatement = injectColumns(statement, entity);
             return injectId(payloadStatement, (Serializable) idField.get(entity));
+        } catch (WebServerException e) {
+            throw e;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new WebServerException("There was a problem during ID retrieving from : [%s]".formatted(entity.getClass().getName()), e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 
@@ -77,7 +80,7 @@ public class DefaultPreparedStatementDataInjector<T> implements PreparedStatemen
             psMethod.invoke(statement, indexIdParameter, resolvedId);
             return statement;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new WebServerException("There was a problem during injection ID into PreparedStatement", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 

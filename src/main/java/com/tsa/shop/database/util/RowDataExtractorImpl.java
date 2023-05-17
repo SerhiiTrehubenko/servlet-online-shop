@@ -29,6 +29,7 @@ public class RowDataExtractorImpl implements RowDataExtractor {
                 .map(entry -> new FieldValue(getField(entry), getValue(resultSet, entry)))
                 .collect(Collectors.toMap(FieldValue::field, FieldValue::value));
     }
+
     private Field getField(Map.Entry<String, Field> entry) {
         return entry.getValue();
     }
@@ -44,9 +45,10 @@ public class RowDataExtractorImpl implements RowDataExtractor {
 
             return method.apply(resultSet, columnName);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("There was a problem during a value extracting from ResultSet, field: [%s]".formatted(getField(entry)), e);
         }
     }
+
     record FieldValue(Field field, Serializable value) {
     }
 }

@@ -48,8 +48,8 @@ public abstract class AbstractTsaRepository<T> {
 
             return getEntities(rows);
 
-        } catch (Exception e) {
-            throw new WebServerException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (SQLException e) {
+            throw new WebServerException("There was a problem during executing [FIND ALL] query", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 
@@ -73,7 +73,7 @@ public abstract class AbstractTsaRepository<T> {
 
     private void entityNotFound(List<T> entities, String message) {
         if (entities.isEmpty()) {
-            throw new WebServerException(message, HttpStatus.NOT_FOUND);
+            throw new WebServerException(message, HttpStatus.NOT_FOUND, this);
         }
     }
 
@@ -98,8 +98,8 @@ public abstract class AbstractTsaRepository<T> {
 
             return getEntities(rows);
 
-        } catch (Exception e) {
-            throw new WebServerException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (SQLException e) {
+            throw new WebServerException("There was a problem during executing [FIND BY ID] query", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 
@@ -119,8 +119,7 @@ public abstract class AbstractTsaRepository<T> {
 
             payloadStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new WebServerException(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new WebServerException("There was a problem during executing [UPDATE] query", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 
@@ -138,8 +137,7 @@ public abstract class AbstractTsaRepository<T> {
 
             payloadStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new WebServerException(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new WebServerException("There was a problem during executing [DELETE] query", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 
@@ -155,8 +153,7 @@ public abstract class AbstractTsaRepository<T> {
 
             payloadStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new WebServerException(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new WebServerException("There was a problem during executing [ADD] query", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 

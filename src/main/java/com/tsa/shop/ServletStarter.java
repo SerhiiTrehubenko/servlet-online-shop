@@ -18,6 +18,12 @@ import com.tsa.shop.domain.entity.Product;
 import com.tsa.shop.domain.impl.HomeWebRequestHandler;
 import com.tsa.shop.domain.interfaces.EntityService;
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
+import com.tsa.shop.domain.logging.DomainLogger;
+import com.tsa.shop.domain.logging.DomainLoggerImpl;
+import com.tsa.shop.domain.logmessagegenerator.ExceptionInfoExtractor;
+import com.tsa.shop.domain.logmessagegenerator.ExceptionInfoExtractorImpl;
+import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
+import com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorImpl;
 import com.tsa.shop.domain.mappers.DefaultProductMapper;
 import com.tsa.shop.domain.mappers.interfaces.Mapper;
 import com.tsa.shop.domain.services.DefaultProductService;
@@ -82,37 +88,42 @@ public class ServletStarter {
 //        Service
         EntityService<Product, ProductDto> entityService = new DefaultProductService<>(productRepository, mapper, entityExtractor);
 
-//        Servlets
-        WebRequestHandler homeRequestHandler = new HomeWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, contentFileProvider);
+//        Logging
+        DomainLogger domainLogger = new DomainLoggerImpl();
+        ExceptionInfoExtractor exceptionInfoExtractor = new ExceptionInfoExtractorImpl();
+        LogMessageGenerator logMessageGenerator = new LogMessageGeneratorImpl(exceptionInfoExtractor);
 
-        WebRequestHandler productFindAllRequestHandler = new ProductFindAllWebRequestHandler<>(entityService, servletRequestParser, pageGenerator, response, responseWriter);
-        WebRequestHandler productDeleteRequestHandler = new ProductDeleteWebRequestHandler<>(entityService, servletRequestParser, pageGenerator, response, responseWriter);
-        WebRequestHandler productUpdateRequestHandler = new ProductUpdateWebRequestHandler<>(entityService, servletRequestParser, pageGenerator, response, responseWriter);
-        WebRequestHandler productAddRequestHandler = new ProductAddWebRequestHandler<>(entityService, servletRequestParser, pageGenerator, response, responseWriter);
-        WebRequestHandler pageNotFoundRequestHandler = new PageNotFoundHandler(servletRequestParser, pageGenerator, responseWriter, response);
+//        Servlets
+        WebRequestHandler homeRequestHandler = new HomeWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, contentFileProvider);
+
+        WebRequestHandler productFindAllRequestHandler = new ProductFindAllWebRequestHandler<>(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, entityService);
+        WebRequestHandler productDeleteRequestHandler = new ProductDeleteWebRequestHandler<>(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, entityService);
+        WebRequestHandler productUpdateRequestHandler = new ProductUpdateWebRequestHandler<>(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, entityService);
+        WebRequestHandler productAddRequestHandler = new ProductAddWebRequestHandler<>(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, entityService);
+        WebRequestHandler pageNotFoundRequestHandler = new PageNotFoundHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator);
 
 //        Set Servlets
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        String homeUri =  UriPageConnector.HOME.getUri();
+        String homeUri = UriPageConnector.HOME.getUri();
         servletContextHandler.addServlet(new ServletHolder(homeRequestHandler), homeUri);
-        String fileUri =  UriPageConnector.SLASH.getUri();
+        String fileUri = UriPageConnector.SLASH.getUri();
         servletContextHandler.addServlet(new ServletHolder(homeRequestHandler), fileUri);
 
-        String allProducts =  UriPageConnector.PRODUCTS.getUri();
+        String allProducts = UriPageConnector.PRODUCTS.getUri();
         servletContextHandler.addServlet(new ServletHolder(productFindAllRequestHandler), allProducts);
 
-        String deleteProduct =  UriPageConnector.PRODUCTS_DELETE.getUri();
+        String deleteProduct = UriPageConnector.PRODUCTS_DELETE.getUri();
         servletContextHandler.addServlet(new ServletHolder(productDeleteRequestHandler), deleteProduct);
 
-        String updateProductGet =  UriPageConnector.PRODUCTS_UPDATE.getUri();
-        String updateProductPost =  UriPageConnector.PRODUCTS_POST_UPDATE.getUri();
+        String updateProductGet = UriPageConnector.PRODUCTS_UPDATE.getUri();
+        String updateProductPost = UriPageConnector.PRODUCTS_POST_UPDATE.getUri();
         servletContextHandler.addServlet(new ServletHolder(productUpdateRequestHandler), updateProductGet);
         servletContextHandler.addServlet(new ServletHolder(productUpdateRequestHandler), updateProductPost);
 
-        String addProductGet =  UriPageConnector.PRODUCTS_ADD.getUri();
+        String addProductGet = UriPageConnector.PRODUCTS_ADD.getUri();
         servletContextHandler.addServlet(new ServletHolder(productAddRequestHandler), addProductGet);
 
-        String notFoundUri =  UriPageConnector.PRODUCTS.getUri() + "/*";
+        String notFoundUri = UriPageConnector.PRODUCTS.getUri() + "/*";
         servletContextHandler.addServlet(new ServletHolder(pageNotFoundRequestHandler), notFoundUri);
 
 //        Start Application

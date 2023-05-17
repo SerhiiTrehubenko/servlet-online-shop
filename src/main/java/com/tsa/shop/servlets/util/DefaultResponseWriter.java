@@ -21,14 +21,14 @@ public class DefaultResponseWriter implements ResponseWriter {
         return new DefaultResponseWriter();
     }
 
-    public void write(Response response) throws WebServerException {
+    public void write(Response response) {
         try (InputStream input = response.getContent()) {
             HttpServletResponse servletResponse = setHttpStatus(response);
             while (inputContainsData(input)) {
                 writeToServletResponse(servletResponse);
             }
         } catch (IOException e) {
-            throw new WebServerException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new WebServerException("There was a problem during Reading content", e, HttpStatus.INTERNAL_SERVER_ERROR, this);
         }
     }
 

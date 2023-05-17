@@ -1,6 +1,8 @@
 package com.tsa.shop.database.util;
 
 import com.tsa.shop.database.interfaces.IdResolver;
+import com.tsa.shop.servlets.enums.HttpStatus;
+import com.tsa.shop.servlets.exceptions.WebServerException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +19,7 @@ public class IdResolverImpl implements IdResolver {
                         .filter(function -> isResolvable(function, idAsString))
                         .map(function -> resolve(function, idAsString))
                         .findFirst()
-                        .orElseThrow(() -> new RuntimeException("id: [%s] should be Integer, Double or String".formatted(idAsString)));
+                        .orElseThrow(() -> new WebServerException("id: [%s] should be Integer, Double or String".formatted(idAsString), HttpStatus.BAD_REQUEST, this));
     }
 
     private boolean isResolvable(Function<String, Object> function, String id) {
