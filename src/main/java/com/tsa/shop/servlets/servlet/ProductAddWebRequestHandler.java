@@ -5,7 +5,6 @@ import com.tsa.shop.domain.interfaces.WebRequestHandler;
 import com.tsa.shop.domain.logging.DomainLogger;
 import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.servlets.enums.UriPageConnector;
-import com.tsa.shop.servlets.exceptions.WebServerException;
 import com.tsa.shop.servlets.interfaces.PageGenerator;
 import com.tsa.shop.servlets.interfaces.Response;
 import com.tsa.shop.servlets.interfaces.ResponseWriter;
@@ -32,40 +31,22 @@ public class ProductAddWebRequestHandler<T, E> extends WebRequestHandler {
 
     @Override
     protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        Map<String, Object> parsedRequest = servletRequestParser.parseRequest(servletRequest);
-        try {
-            UriPageConnector pageConnector = servletRequestParser.getUriPageConnector(parsedRequest);
-            InputStream content = getPageAddProduct(pageConnector.getHtmlPage());
-            writeSuccessResponse(servletResponse, content);
-        } catch (WebServerException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeErrorResponse(servletResponse, e);
-        } catch (RuntimeException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-        }
+        getTemplateMethod(servletRequest, servletResponse);
     }
 
-    private InputStream getPageAddProduct(String htmlPageName) {
-        return pageGenerator.getGeneratedPageAsStream(htmlPageName);
+    protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
+        return pageGenerator.getGeneratedPageAsStream(uriPageConnector.getHtmlPage());
     }
 
     @Override
     protected void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        Map<String, Object> parsedRequest = servletRequestParser.parseRequest(servletRequest);
-        try {
-            var parameters = servletRequestParser.getParameters(parsedRequest);
-            service.add(parameters);
-            redirect(servletResponse, UriPageConnector.PRODUCTS.getUri());
-        } catch (WebServerException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeErrorResponse(servletResponse, e);
-        } catch (RuntimeException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeDefaultErrorResponse(servletResponse);
-        }
+        postTemplateMethod(servletRequest, servletResponse);
+    }
+
+    @Override
+    protected void handlePostRequest(Map<String, Object> parsedRequest) {
+        var parameters = servletRequestParser.getParameters(parsedRequest);
+        service.add(parameters);
+        redirect(getResponse(parsedRequest), UriPageConnector.PRODUCTS.getUri());
     }
 }

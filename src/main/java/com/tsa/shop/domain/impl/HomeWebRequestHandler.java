@@ -2,7 +2,6 @@ package com.tsa.shop.domain.impl;
 
 import com.tsa.shop.domain.logging.DomainLogger;
 import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
-import com.tsa.shop.servlets.exceptions.WebServerException;
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
 import com.tsa.shop.servlets.interfaces.*;
 import com.tsa.shop.servlets.enums.UriPageConnector;
@@ -29,27 +28,18 @@ public class HomeWebRequestHandler extends WebRequestHandler {
 
     @Override
     protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        Map<String, Object> parsedRequest = servletRequestParser.parseRequest(servletRequest);
-        UriPageConnector pageConnector = servletRequestParser.getUriPageConnector(parsedRequest);
+        getTemplateMethod(servletRequest, servletResponse);
+    }
 
-        try {
-            InputStream content = InputStream.nullInputStream();
-            if (homePage(pageConnector)) {
-                content = getHomePage(pageConnector);
-            } else if (file(pageConnector)) {
-                content = getFileContent(parsedRequest);
-            }
-            writeSuccessResponse(servletResponse, content);
-        } catch (WebServerException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeErrorResponse(servletResponse, e);
-
-        } catch (RuntimeException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeDefaultErrorResponse(servletResponse);
+    @Override
+    protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
+        InputStream content = InputStream.nullInputStream();
+        if (homePage(uriPageConnector)) {
+            content = getHomePage(uriPageConnector);
+        } else if (file(uriPageConnector)) {
+            content = getFileContent(parsedRequest);
         }
+        return content;
     }
 
     private boolean homePage(UriPageConnector pageConnector) {

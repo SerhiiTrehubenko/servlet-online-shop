@@ -32,10 +32,8 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent() {
 //        ARRANGE
-        String expectedMessage = """
-                occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent(LogMessageGeneratorTest.java:40)
-                \tCause: - com.tsa.shop.servlets.exceptions.WebServerException: [no inner exceptions];
-                """;
+        String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent(LogMessageGeneratorTest.java:38)\n" +
+                "\tCause: - com.tsa.shop.servlets.exceptions.WebServerException: [no inner exceptions];\n";
 
         WebServerException exception = new WebServerException("no inner exceptions", HttpStatus.NOT_FOUND, this);
 
@@ -82,10 +80,8 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnValidMessageFromRuntimeException() {
 //        ARRANGE
-        String expected = """
-                occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnValidMessageFromRuntimeException(LogMessageGeneratorTest.java:90)
-                \tCause: - java.lang.RuntimeException: [Runtime exception];
-                """;
+        String expected = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnValidMessageFromRuntimeException(LogMessageGeneratorTest.java:86)\n" +
+                "\tCause: - java.lang.RuntimeException: [Runtime exception];\n";
 
         RuntimeException exception = new RuntimeException("Runtime exception");
 //      ACT

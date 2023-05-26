@@ -35,6 +35,6 @@
 </#macro>
 <#macro footer>
     <div class="footer">
-        <p>Copyright © 2021 by Serhii. All rights reserved.</p>
+        <p>Copyright © 2023 by Serhii. All rights reserved.</p>
     </div>
 </#macro>

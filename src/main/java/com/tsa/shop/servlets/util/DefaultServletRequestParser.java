@@ -2,15 +2,19 @@ package com.tsa.shop.servlets.util;
 
 import com.tsa.shop.servlets.enums.UriPageConnector;
 import com.tsa.shop.servlets.interfaces.ServletRequestParser;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class DefaultServletRequestParser implements ServletRequestParser {
-
+    private final static Cookie NULL_COOKIE = new Cookie("null", "null");
     private static final String URI = "URI";
     private static final String PARAMETERS = "parameters";
+    private static final String TOKEN_COOKIE = "token-cookie";
+
     private final UriCache cache;
 
     public DefaultServletRequestParser(UriCache cache) {
@@ -25,8 +29,16 @@ public class DefaultServletRequestParser implements ServletRequestParser {
         parsedRequest.put("URL", String.valueOf(request.getRequestURL()));
         parsedRequest.put("pathInfo", request.getPathInfo());
         parsedRequest.put(PARAMETERS, request.getParameterMap());
+        parsedRequest.put(TOKEN_COOKIE, getCookie(request));
 
         return parsedRequest;
+    }
+
+    private Object getCookie(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        return Arrays.stream(cookies)
+                .filter(cookie -> cookie.getName().equals("user-token"))
+                .findFirst().orElse(NULL_COOKIE);
     }
 
     public Long getIdFromRequest(Map<String, Object> parsedRequest) {
@@ -49,5 +61,10 @@ public class DefaultServletRequestParser implements ServletRequestParser {
         String uri = getUri(parsedRequest);
 
         return cache.getUriPageConnector(uri);
+    }
+
+    @Override
+    public Cookie getTokenCookie(Map<String, Object> parsedRequest) {
+        return (Cookie) parsedRequest.get(TOKEN_COOKIE);
     }
 }

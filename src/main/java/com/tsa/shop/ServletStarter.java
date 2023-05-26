@@ -20,6 +20,11 @@ import com.tsa.shop.domain.interfaces.EntityService;
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
 import com.tsa.shop.domain.logging.DomainLogger;
 import com.tsa.shop.domain.logging.DomainLoggerImpl;
+import com.tsa.shop.domain.login.impl.*;
+import com.tsa.shop.domain.login.interfaces.LogInFacade;
+import com.tsa.shop.domain.login.interfaces.LogInFactory;
+import com.tsa.shop.domain.login.interfaces.TokenRepository;
+import com.tsa.shop.domain.login.interfaces.UserRepository;
 import com.tsa.shop.domain.logmessagegenerator.ExceptionInfoExtractor;
 import com.tsa.shop.domain.logmessagegenerator.ExceptionInfoExtractorImpl;
 import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
@@ -40,6 +45,9 @@ import com.tsa.shop.servlets.util.*;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.util.security.Credential;
+
+import java.util.UUID;
 
 public class ServletStarter {
 
@@ -93,6 +101,13 @@ public class ServletStarter {
         ExceptionInfoExtractor exceptionInfoExtractor = new ExceptionInfoExtractorImpl();
         LogMessageGenerator logMessageGenerator = new LogMessageGeneratorImpl(exceptionInfoExtractor);
 
+//        Authentication
+        LogInFactory logInFactory = new LogInFactoryImpl();
+        UserRepository userRepository = new UserRepositoryImpl();
+        initializeUsers(userRepository);
+        TokenRepository tokenRepository = new DefaultTokenRepository();
+        LogInFacade logInFacade = new LogInFacadeImpl(logInFactory, userRepository, tokenRepository);
+
 //        Servlets
         WebRequestHandler homeRequestHandler = new HomeWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, contentFileProvider);
 
@@ -101,6 +116,10 @@ public class ServletStarter {
         WebRequestHandler productUpdateRequestHandler = new ProductUpdateWebRequestHandler<>(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, entityService);
         WebRequestHandler productAddRequestHandler = new ProductAddWebRequestHandler<>(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, entityService);
         WebRequestHandler pageNotFoundRequestHandler = new PageNotFoundHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator);
+
+//        LogIn Servlets
+        WebRequestHandler logInWebRequestHandler = new LogInWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, logInFacade);
+        WebRequestHandler logInDecoratorWebRequestHandler = new LogInDecoratorWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, tokenRepository, productAddRequestHandler);
 
 //        Set Servlets
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -121,15 +140,27 @@ public class ServletStarter {
         servletContextHandler.addServlet(new ServletHolder(productUpdateRequestHandler), updateProductPost);
 
         String addProductGet = UriPageConnector.PRODUCTS_ADD.getUri();
-        servletContextHandler.addServlet(new ServletHolder(productAddRequestHandler), addProductGet);
+        servletContextHandler.addServlet(new ServletHolder(logInDecoratorWebRequestHandler), addProductGet);
 
         String notFoundUri = UriPageConnector.PRODUCTS.getUri() + "/*";
         servletContextHandler.addServlet(new ServletHolder(pageNotFoundRequestHandler), notFoundUri);
+
+        String logInUri = UriPageConnector.LOG_IN_PAGE.getUri();
+        servletContextHandler.addServlet(new ServletHolder(logInWebRequestHandler), logInUri);
 
 //        Start Application
         Server server = new Server(propertyReader.getPort());
         server.setHandler(servletContextHandler);
 
         server.start();
+    }
+
+    private static void initializeUsers(UserRepository userRepository) {
+        String email = "tsa@gmail.com";
+        String password = "password123456";
+        UUID sole = UUID.randomUUID();
+        String passwordPlusSoleHash = Credential.MD5.getCredential(password + sole).toString();
+        User user = new User(email, passwordPlusSoleHash, sole.toString());
+        userRepository.addUser(user);
     }
 }

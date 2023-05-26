@@ -2,6 +2,7 @@ package com.tsa.shop.servlets.util;
 
 import com.tsa.shop.servlets.enums.UriPageConnector;
 import com.tsa.shop.servlets.interfaces.ServletRequestParser;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -90,6 +91,7 @@ class DefaultServletRequestParserTest {
                 "name", new String[]{"comp"},
                 "price", new String[]{"65.55"},
                 "date", new String[]{"2023-01-10"});
+        Cookie cookie = new Cookie("user-token", "token");
 
 
         when(request.getMethod()).thenReturn(expectedMethod);
@@ -97,5 +99,6 @@ class DefaultServletRequestParserTest {
         when(request.getRequestURL()).thenReturn(expectedUrl);
         when(request.getPathInfo()).thenReturn(expectedPathInfo);
         when(request.getParameterMap()).thenReturn(expectedParameters);
+        when(request.getCookies()).thenReturn(new Cookie[]{cookie});
     }
 }

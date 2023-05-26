@@ -8,7 +8,8 @@ public enum UriPageConnector {
     PRODUCTS_POST_UPDATE("/products/edit/send", UriPageConnector.PRODUCTS_PAGE),
     PRODUCTS("/products", UriPageConnector.PRODUCTS_PAGE),
     PRODUCTS_DELETE("/products/delete", UriPageConnector.PRODUCTS_PAGE),
-    ERROR_PAGE("stub-error", "error-page.html");
+    ERROR_PAGE("stub-url", "error-page.html"),
+    LOG_IN_PAGE("/login", "log-in-page.html");
 
     final static String PRODUCTS_PAGE = "products.html";
     final static String HOME_PAGE = "home.html";
