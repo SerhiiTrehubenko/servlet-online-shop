@@ -1,60 +1,65 @@
 package com.tsa.shop.domain.services;
 
-import com.tsa.shop.database.repo.AbstractTsaRepository;
-import com.tsa.shop.domain.interfaces.EntityService;
-import com.tsa.shop.domain.mappers.interfaces.Mapper;
-import com.tsa.shop.orm.interfaces.RequestDtoExtractor;
+import com.tsa.shop.database.dao.ProductDao;
+import com.tsa.shop.domain.dto.ProductDto;
+import com.tsa.shop.domain.entity.Product;
+import com.tsa.shop.domain.interfaces.DtoExtractor;
+import com.tsa.shop.domain.interfaces.ProductMapper;
+import com.tsa.shop.domain.interfaces.ProductService;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class DefaultProductService<T, E> implements EntityService<T, E> {
+public class DefaultProductService implements ProductService {
 
-    private final AbstractTsaRepository<T> repository;
-    private final Mapper<T, E> mapper;
-    private final RequestDtoExtractor<E> parser;
+    private final ProductDao productDao;
+    private final ProductMapper productMapper;
+    private final DtoExtractor dtoExtractor;
 
-
-    public DefaultProductService(AbstractTsaRepository<T> repository,
-                                 Mapper<T, E> mapper,
-                                 RequestDtoExtractor<E> parser) {
-        this.repository = repository;
-        this.mapper = mapper;
-        this.parser = parser;
+    public DefaultProductService(ProductDao productDao, ProductMapper productMapper, DtoExtractor dtoExtractor) {
+        this.productDao = productDao;
+        this.productMapper = productMapper;
+        this.dtoExtractor = dtoExtractor;
     }
 
     @Override
-    public List<E> findAll() {
-        List<T> productList = repository.findAll();
+    public List<ProductDto> findAll() {
+        List<Product> productList = productDao.findAll();
         return productList.stream()
-                .map(mapper::toProductDto).toList();
+                .map(productMapper::toProductDto).toList();
     }
 
     @Override
-    public E findById(Serializable id) {
-        T product = repository.findById(id);
-        return mapper.toProductDto(product);
+    public ProductDto findById(Serializable id) {
+        Product product = productDao.findById(id);
+        return productMapper.toProductDto(product);
     }
 
     @Override
     public void update(Map<String, String[]> parameters) {
-        T product = getProductFrom(parameters);
-        repository.update(product);
-    }
-
-    private T getProductFrom(Map<String, String[]> parameters) {
-        E productDto = parser.createInstance().getDtoInstanceFromParameters(parameters);
-        return mapper.toProduct(productDto);
+        Product product = getProductFrom(parameters);
+        productDao.update(product);
     }
 
     @Override
     public void delete(Serializable id) {
-        repository.delete(id);
+        productDao.delete(id);
     }
+
     @Override
     public void add(Map<String, String[]> parameters) {
-        T product = getProductFrom(parameters);
-        repository.add(product);
+        Product product = getPartialProductFrom(parameters);
+        productDao.add(product);
+    }
+
+    private Product getProductFrom(Map<String, String[]> parameters) {
+        ProductDto productDto = dtoExtractor.createInstance().getFullDtoInstanceFrom(parameters);
+        return productMapper.toProduct(productDto);
+    }
+
+    private Product getPartialProductFrom(Map<String, String[]> parameters) {
+        ProductDto productDto = dtoExtractor.createInstance().getPartialDtoInstanceFrom(parameters);
+        return productMapper.toProduct(productDto);
     }
 }
