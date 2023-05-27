@@ -1,6 +1,7 @@
 package com.tsa.shop.servlets.servlet;
 
-import com.tsa.shop.domain.interfaces.EntityService;
+import com.tsa.shop.domain.dto.ProductDto;
+import com.tsa.shop.domain.interfaces.ProductService;
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
 import com.tsa.shop.domain.logging.DomainLogger;
 import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
@@ -15,8 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.Map;
 
-public class ProductUpdateWebRequestHandler<T, E> extends WebRequestHandler {
-    private final EntityService<T, E> service;
+public class ProductUpdateWebRequestHandler extends WebRequestHandler {
+    private final ProductService service;
 
     public ProductUpdateWebRequestHandler(ServletRequestParser servletRequestParser,
                                           PageGenerator pageGenerator,
@@ -24,7 +25,7 @@ public class ProductUpdateWebRequestHandler<T, E> extends WebRequestHandler {
                                           Response response,
                                           DomainLogger logger,
                                           LogMessageGenerator logMessageGenerator,
-                                          EntityService<T, E> service) {
+                                          ProductService service) {
         super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
         this.service = service;
     }
@@ -36,7 +37,7 @@ public class ProductUpdateWebRequestHandler<T, E> extends WebRequestHandler {
 
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
         Long productId = servletRequestParser.getIdFromRequest(parsedRequest);
-        E productDto = service.findById(productId);
+        ProductDto productDto = service.findById(productId);
 
         parsedRequest.put("productDto", productDto);
 

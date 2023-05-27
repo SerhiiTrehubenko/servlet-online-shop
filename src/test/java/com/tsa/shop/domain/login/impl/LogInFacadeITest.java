@@ -31,18 +31,18 @@ public class LogInFacadeITest {
     @Test
     void shouldReturnCookieAfterProcessOfAuthentication() {
 
-//        UUID expectedToken = UUID.randomUUID();
-//        tokenRepository.add(expectedToken);
-//
-//        LogInFactory logInFactory = new LogInFactoryImpl();
-//        LogInFacade logInFacade = new LogInFacadeImpl(logInFactory, userRepository, tokenRepository);
-//
-//        Cookie responder = logInFacade.process(Map.of("name", new String[]{email}, "password", new String[]{password}));
-//
-//        assertNotNull(responder);
-//        assertEquals("user-token", responder.getName());
-//        assertNotNull(responder.getValue());
-//        assertFalse(responder.getValue().isEmpty());
-//        assertEquals(36, responder.getValue().length());
+        UUID expectedToken = UUID.randomUUID();
+        tokenRepository.add(expectedToken);
+
+        LogInFactory logInFactory = new LogInFactoryImpl();
+        LogInFacade logInFacade = new LogInFacadeImpl(logInFactory, userRepository, tokenRepository);
+
+        Cookie responder = logInFacade.process(Map.of("email", new String[]{email}, "password", new String[]{password}));
+
+        assertNotNull(responder);
+        assertEquals("user-token", responder.getName());
+        assertNotNull(responder.getValue());
+        assertFalse(responder.getValue().isEmpty());
+        assertEquals(36, responder.getValue().length());
     }
 }

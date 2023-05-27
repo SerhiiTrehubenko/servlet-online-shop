@@ -1,6 +1,7 @@
 package com.tsa.shop.servlets.servlet;
 
-import com.tsa.shop.domain.interfaces.EntityService;
+import com.tsa.shop.domain.dto.ProductDto;
+import com.tsa.shop.domain.interfaces.ProductService;
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
 import com.tsa.shop.domain.logging.DomainLogger;
 import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
@@ -13,9 +14,9 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-public class ProductFindAllWebRequestHandler<T, E> extends WebRequestHandler {
+public class ProductFindAllWebRequestHandler extends WebRequestHandler {
 
-    private final EntityService<T, E> service;
+    private final ProductService service;
 
     public ProductFindAllWebRequestHandler(ServletRequestParser servletRequestParser,
                                            PageGenerator pageGenerator,
@@ -23,7 +24,7 @@ public class ProductFindAllWebRequestHandler<T, E> extends WebRequestHandler {
                                            Response response,
                                            DomainLogger logger,
                                            LogMessageGenerator logMessageGenerator,
-                                           EntityService<T, E> service) {
+                                           ProductService service) {
         super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
         this.service = service;
     }
@@ -34,7 +35,7 @@ public class ProductFindAllWebRequestHandler<T, E> extends WebRequestHandler {
     }
 
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
-        List<E> productDtos = service.findAll();
+        List<ProductDto> productDtos = service.findAll();
         Map<String, Object> products = Map.of("products", productDtos);
 
         return pageGenerator.getGeneratedPageAsStream(products, uriPageConnector.getHtmlPage());

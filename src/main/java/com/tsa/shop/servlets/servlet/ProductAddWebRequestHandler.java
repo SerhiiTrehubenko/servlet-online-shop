@@ -1,6 +1,6 @@
 package com.tsa.shop.servlets.servlet;
 
-import com.tsa.shop.domain.interfaces.EntityService;
+import com.tsa.shop.domain.interfaces.ProductService;
 import com.tsa.shop.domain.interfaces.WebRequestHandler;
 import com.tsa.shop.domain.logging.DomainLogger;
 import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.Map;
 
-public class ProductAddWebRequestHandler<T, E> extends WebRequestHandler {
-    private final EntityService<T, E> service;
+public class ProductAddWebRequestHandler extends WebRequestHandler {
+    private final ProductService service;
 
     public ProductAddWebRequestHandler(ServletRequestParser servletRequestParser,
                                        PageGenerator pageGenerator,
@@ -24,7 +24,7 @@ public class ProductAddWebRequestHandler<T, E> extends WebRequestHandler {
                                        Response response,
                                        DomainLogger logger,
                                        LogMessageGenerator logMessageGenerator,
-                                       EntityService<T, E> service) {
+                                       ProductService service) {
         super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
         this.service = service;
     }
