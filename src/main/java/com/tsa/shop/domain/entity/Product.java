@@ -1,21 +1,11 @@
 package com.tsa.shop.domain.entity;
 
-import com.tsa.shop.orm.annotation.*;
-
 import java.sql.Date;
 
-@Entity
-@Table(name = "products")
 public class Product {
-    @Id(name = "product_id")
     private Long id;
-
-    @Column(name = "product_name")
     private String name;
-    @Column(name = "product_price")
     private double price;
-    @Column(name = "creationdate")
-    @Immutable
     private Date date;
 
     public Product() {

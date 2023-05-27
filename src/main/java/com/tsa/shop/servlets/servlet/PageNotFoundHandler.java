@@ -1,10 +1,10 @@
 package com.tsa.shop.servlets.servlet;
 
-import com.tsa.shop.domain.interfaces.WebRequestHandler;
-import com.tsa.shop.domain.logging.DomainLogger;
-import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
+import com.tsa.shop.servlets.WebRequestHandler;
+import com.tsa.shop.logging.DomainLogger;
+import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.servlets.enums.HttpStatus;
-import com.tsa.shop.servlets.exceptions.WebServerException;
+import com.tsa.shop.exceptions.WebServerException;
 import com.tsa.shop.servlets.interfaces.PageGenerator;
 import com.tsa.shop.servlets.interfaces.Response;
 import com.tsa.shop.servlets.interfaces.ResponseWriter;

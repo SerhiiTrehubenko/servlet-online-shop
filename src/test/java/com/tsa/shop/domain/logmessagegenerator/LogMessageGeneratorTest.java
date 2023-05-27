@@ -1,7 +1,11 @@
 package com.tsa.shop.domain.logmessagegenerator;
 
+import com.tsa.shop.logmessagegenerator.ExceptionInfoExtractor;
+import com.tsa.shop.logmessagegenerator.ExceptionInfoExtractorImpl;
+import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
+import com.tsa.shop.logmessagegenerator.LogMessageGeneratorImpl;
 import com.tsa.shop.servlets.enums.HttpStatus;
-import com.tsa.shop.servlets.exceptions.WebServerException;
+import com.tsa.shop.exceptions.WebServerException;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
@@ -32,8 +36,8 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent() {
 //        ARRANGE
-        String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent(LogMessageGeneratorTest.java:38)\n" +
-                "\tCause: - com.tsa.shop.servlets.exceptions.WebServerException: [no inner exceptions];\n";
+        String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent(LogMessageGeneratorTest.java:42)\n" +
+                "\tCause: - com.tsa.shop.exceptions.WebServerException: [no inner exceptions];\n";
 
         WebServerException exception = new WebServerException("no inner exceptions", HttpStatus.NOT_FOUND, this);
 
@@ -47,8 +51,8 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnLogMessageFromWebserverExceptionCauseHierarchyHasOneLevel() {
 //        ARRANGE
-        String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.simulateIOExceptionInInputStream(LogMessageGeneratorTest.java:17)\n" +
-                "\tCause: - com.tsa.shop.servlets.exceptions.WebServerException: [has IOException in hierarchy];\n" +
+        String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.simulateIOExceptionInInputStream(LogMessageGeneratorTest.java:21)\n" +
+                "\tCause: - com.tsa.shop.exceptions.WebServerException: [has IOException in hierarchy];\n" +
                 "\t\tCause: - java.io.FileNotFoundException: [notExist.txt (Не удается найти указанный файл)];\n";
 //        ACT
         try {
@@ -62,8 +66,8 @@ public class LogMessageGeneratorTest {
 
     @Test
     void shouldReturnLogMessageFromWebserverExceptionCauseHierarchyHasTwoLevels() {
-        String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.simulateCauseHierarchyTwoLevel(LogMessageGeneratorTest.java:25)\n" +
-                "\tCause: - com.tsa.shop.servlets.exceptions.WebServerException: [has IOException in hierarchy];\n" +
+        String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.simulateCauseHierarchyTwoLevel(LogMessageGeneratorTest.java:29)\n" +
+                "\tCause: - com.tsa.shop.exceptions.WebServerException: [has IOException in hierarchy];\n" +
                 "\t\tCause: - java.lang.Exception: [Exception];\n" +
                 "\t\t\tCause: - java.io.FileNotFoundException: [notExist.txt (Не удается найти указанный файл)];\n";
 //        ACT
@@ -80,7 +84,7 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnValidMessageFromRuntimeException() {
 //        ARRANGE
-        String expected = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnValidMessageFromRuntimeException(LogMessageGeneratorTest.java:86)\n" +
+        String expected = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnValidMessageFromRuntimeException(LogMessageGeneratorTest.java:90)\n" +
                 "\tCause: - java.lang.RuntimeException: [Runtime exception];\n";
 
         RuntimeException exception = new RuntimeException("Runtime exception");

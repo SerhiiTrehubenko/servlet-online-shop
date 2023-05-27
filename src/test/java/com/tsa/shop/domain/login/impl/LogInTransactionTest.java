@@ -1,8 +1,10 @@
 package com.tsa.shop.domain.login.impl;
 
-import com.tsa.shop.domain.interfaces.Command;
-import com.tsa.shop.domain.login.interfaces.*;
-import com.tsa.shop.servlets.exceptions.WebServerException;
+import com.tsa.shop.transaction.Command;
+import com.tsa.shop.login.impl.LogInTransaction;
+import com.tsa.shop.login.impl.User;
+import com.tsa.shop.login.interfaces.*;
+import com.tsa.shop.exceptions.WebServerException;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

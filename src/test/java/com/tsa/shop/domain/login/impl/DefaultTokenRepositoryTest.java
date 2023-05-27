@@ -1,6 +1,7 @@
 package com.tsa.shop.domain.login.impl;
 
-import com.tsa.shop.domain.login.interfaces.TokenRepository;
+import com.tsa.shop.login.impl.DefaultTokenRepository;
+import com.tsa.shop.login.interfaces.TokenRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

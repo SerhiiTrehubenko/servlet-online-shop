@@ -1,6 +1,8 @@
 package com.tsa.shop.database.versioncontrol;
 
-import com.tsa.shop.domain.argsparser.interfaces.PropertyReader;
+import com.tsa.shop.argsparser.interfaces.PropertyReader;
+import com.tsa.shop.flyway.DefaultFlywayBridge;
+import com.tsa.shop.flyway.FlywayBridge;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;

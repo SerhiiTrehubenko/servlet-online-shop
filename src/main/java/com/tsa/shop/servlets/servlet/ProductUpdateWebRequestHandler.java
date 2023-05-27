@@ -1,10 +1,10 @@
 package com.tsa.shop.servlets.servlet;
 
 import com.tsa.shop.domain.dto.ProductDto;
-import com.tsa.shop.domain.interfaces.ProductService;
-import com.tsa.shop.domain.interfaces.WebRequestHandler;
-import com.tsa.shop.domain.logging.DomainLogger;
-import com.tsa.shop.domain.logmessagegenerator.LogMessageGenerator;
+import com.tsa.shop.services.interfaces.ProductService;
+import com.tsa.shop.servlets.WebRequestHandler;
+import com.tsa.shop.logging.DomainLogger;
+import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.servlets.enums.UriPageConnector;
 import com.tsa.shop.servlets.interfaces.PageGenerator;
 import com.tsa.shop.servlets.interfaces.Response;

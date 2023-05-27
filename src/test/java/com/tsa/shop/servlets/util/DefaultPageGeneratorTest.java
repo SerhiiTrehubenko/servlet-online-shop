@@ -1,7 +1,8 @@
 package com.tsa.shop.servlets.util;
 
 import com.tsa.shop.servlets.enums.UriPageConnector;
-import com.tsa.shop.servlets.exceptions.WebServerException;
+import com.tsa.shop.exceptions.WebServerException;
+import com.tsa.shop.servlets.impl.DefaultPageGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;

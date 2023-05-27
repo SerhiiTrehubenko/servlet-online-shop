@@ -1,10 +1,10 @@
 package com.tsa.shop.domain.argsparser;
 
-import com.tsa.shop.domain.argsparser.impl.DefaultEnvironmentVariablesContext;
-import com.tsa.shop.domain.argsparser.impl.DefaultArgsParser;
-import com.tsa.shop.domain.argsparser.interfaces.ArgsParser;
-import com.tsa.shop.domain.argsparser.enums.Property;
-import com.tsa.shop.domain.argsparser.interfaces.EnvironmentVariablesContext;
+import com.tsa.shop.argsparser.impl.DefaultEnvironmentVariablesContext;
+import com.tsa.shop.argsparser.impl.DefaultArgsParser;
+import com.tsa.shop.argsparser.interfaces.ArgsParser;
+import com.tsa.shop.argsparser.enums.Property;
+import com.tsa.shop.argsparser.interfaces.EnvironmentVariablesContext;
 import org.junit.jupiter.api.Test;
 
 import java.io.Serializable;

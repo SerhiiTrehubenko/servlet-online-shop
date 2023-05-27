@@ -1,6 +1,7 @@
 package com.tsa.shop.database.util;
 
-import com.tsa.shop.domain.argsparser.interfaces.PropertyReader;
+import com.tsa.shop.database.implementation.DefaultDbConnector;
+import com.tsa.shop.argsparser.interfaces.PropertyReader;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
