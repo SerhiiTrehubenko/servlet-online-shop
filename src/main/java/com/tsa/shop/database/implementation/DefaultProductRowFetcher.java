@@ -1,7 +1,7 @@
 package com.tsa.shop.database.implementation;
 
 import com.tsa.shop.database.interfaces.ProductRowFetcher;
-import com.tsa.shop.domain.entity.Product;
+import com.tsa.shop.domain.Product;
 
 import java.sql.Date;
 import java.sql.ResultSet;

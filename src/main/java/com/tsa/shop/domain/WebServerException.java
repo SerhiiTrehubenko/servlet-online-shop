@@ -1,6 +1,4 @@
-package com.tsa.shop.exceptions;
-
-import com.tsa.shop.servlets.enums.HttpStatus;
+package com.tsa.shop.domain;
 
 public class WebServerException extends RuntimeException {
 

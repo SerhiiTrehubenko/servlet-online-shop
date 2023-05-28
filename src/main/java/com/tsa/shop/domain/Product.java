@@ -1,20 +1,25 @@
-package com.tsa.shop.domain.dto;
+package com.tsa.shop.domain;
 
 import java.sql.Date;
 
-public class ProductDto {
+public class Product {
     private Long id;
     private String name;
     private double price;
     private Date date;
 
-    public ProductDto() {
+    public Product() {
     }
 
-    public ProductDto(Long id,
-                      String name,
-                      double price,
-                      Date date) {
+    public Product(String name, double price) {
+        this(null, name, price, null);
+    }
+
+    public Product(Long id, String name, double price) {
+        this(id, name, price, null);
+    }
+
+    public Product(Long id, String name, double price, Date date) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -55,7 +60,7 @@ public class ProductDto {
 
     @Override
     public String toString() {
-        return "ProductDto{" +
+        return "Product{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", price=" + price +

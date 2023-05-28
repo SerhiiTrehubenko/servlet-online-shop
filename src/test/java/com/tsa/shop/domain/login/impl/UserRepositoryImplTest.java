@@ -1,8 +1,8 @@
 package com.tsa.shop.domain.login.impl;
 
-import com.tsa.shop.login.impl.User;
-import com.tsa.shop.login.impl.UserRepositoryImpl;
-import com.tsa.shop.login.interfaces.UserRepository;
+import com.tsa.shop.domain.User;
+import com.tsa.shop.login.repoimpl.UserRepositoryImpl;
+import com.tsa.shop.login.repo.UserRepository;
 import org.eclipse.jetty.util.security.Credential;
 import org.junit.jupiter.api.Test;
 

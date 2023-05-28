@@ -1,5 +1,7 @@
 package com.tsa.shop.login.interfaces;
 
+import com.tsa.shop.login.repo.TokenRepository;
+import com.tsa.shop.login.repo.UserRepository;
 import com.tsa.shop.transaction.Command;
 
 import java.util.Map;

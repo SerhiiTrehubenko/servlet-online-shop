@@ -4,8 +4,8 @@ import com.tsa.shop.logmessagegenerator.ExceptionInfoExtractor;
 import com.tsa.shop.logmessagegenerator.ExceptionInfoExtractorImpl;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.logmessagegenerator.LogMessageGeneratorImpl;
-import com.tsa.shop.servlets.enums.HttpStatus;
-import com.tsa.shop.exceptions.WebServerException;
+import com.tsa.shop.domain.HttpStatus;
+import com.tsa.shop.domain.WebServerException;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
@@ -37,7 +37,7 @@ public class LogMessageGeneratorTest {
     void shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent() {
 //        ARRANGE
         String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent(LogMessageGeneratorTest.java:42)\n" +
-                "\tCause: - com.tsa.shop.exceptions.WebServerException: [no inner exceptions];\n";
+                "\tCause: - com.tsa.shop.domain.WebServerException: [no inner exceptions];\n";
 
         WebServerException exception = new WebServerException("no inner exceptions", HttpStatus.NOT_FOUND, this);
 
@@ -52,7 +52,7 @@ public class LogMessageGeneratorTest {
     void shouldReturnLogMessageFromWebserverExceptionCauseHierarchyHasOneLevel() {
 //        ARRANGE
         String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.simulateIOExceptionInInputStream(LogMessageGeneratorTest.java:21)\n" +
-                "\tCause: - com.tsa.shop.exceptions.WebServerException: [has IOException in hierarchy];\n" +
+                "\tCause: - com.tsa.shop.domain.WebServerException: [has IOException in hierarchy];\n" +
                 "\t\tCause: - java.io.FileNotFoundException: [notExist.txt (Не удается найти указанный файл)];\n";
 //        ACT
         try {
@@ -67,7 +67,7 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnLogMessageFromWebserverExceptionCauseHierarchyHasTwoLevels() {
         String expectedMessage = "occurrence code line: com.tsa.shop.domain.logmessagegenerator.LogMessageGeneratorTest.simulateCauseHierarchyTwoLevel(LogMessageGeneratorTest.java:29)\n" +
-                "\tCause: - com.tsa.shop.exceptions.WebServerException: [has IOException in hierarchy];\n" +
+                "\tCause: - com.tsa.shop.domain.WebServerException: [has IOException in hierarchy];\n" +
                 "\t\tCause: - java.lang.Exception: [Exception];\n" +
                 "\t\t\tCause: - java.io.FileNotFoundException: [notExist.txt (Не удается найти указанный файл)];\n";
 //        ACT

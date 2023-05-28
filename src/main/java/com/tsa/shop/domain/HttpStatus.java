@@ -1,4 +1,4 @@
-package com.tsa.shop.servlets.enums;
+package com.tsa.shop.domain;
 
 public enum HttpStatus {
 

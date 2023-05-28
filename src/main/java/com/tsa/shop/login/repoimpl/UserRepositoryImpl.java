@@ -1,6 +1,7 @@
-package com.tsa.shop.login.impl;
+package com.tsa.shop.login.repoimpl;
 
-import com.tsa.shop.login.interfaces.UserRepository;
+import com.tsa.shop.domain.User;
+import com.tsa.shop.login.repo.UserRepository;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

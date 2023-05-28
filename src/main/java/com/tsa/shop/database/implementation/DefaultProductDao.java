@@ -4,7 +4,7 @@ import com.tsa.shop.database.interfaces.DbConnector;
 import com.tsa.shop.database.interfaces.PSResolver;
 import com.tsa.shop.database.interfaces.ProductDao;
 import com.tsa.shop.database.interfaces.ProductRowFetcher;
-import com.tsa.shop.domain.entity.Product;
+import com.tsa.shop.domain.Product;
 
 import java.io.Serializable;
 import java.sql.ResultSet;

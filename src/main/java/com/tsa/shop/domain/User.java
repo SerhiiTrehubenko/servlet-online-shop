@@ -1,4 +1,4 @@
-package com.tsa.shop.login.impl;
+package com.tsa.shop.domain;
 
 public class User {
     private final String email;

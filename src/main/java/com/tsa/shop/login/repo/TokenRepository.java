@@ -1,4 +1,4 @@
-package com.tsa.shop.login.interfaces;
+package com.tsa.shop.login.repo;
 
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
 package com.tsa.shop.servlets.impl;
 
-import com.tsa.shop.servlets.enums.UriPageConnector;
+import com.tsa.shop.domain.UriPageConnector;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

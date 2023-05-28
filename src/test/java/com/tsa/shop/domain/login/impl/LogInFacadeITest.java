@@ -1,10 +1,13 @@
 package com.tsa.shop.domain.login.impl;
 
+import com.tsa.shop.login.repoimpl.DefaultTokenRepository;
+import com.tsa.shop.login.repoimpl.UserRepositoryImpl;
+import com.tsa.shop.domain.User;
 import com.tsa.shop.login.impl.*;
 import com.tsa.shop.login.interfaces.LogInFacade;
 import com.tsa.shop.login.interfaces.LogInFactory;
-import com.tsa.shop.login.interfaces.TokenRepository;
-import com.tsa.shop.login.interfaces.UserRepository;
+import com.tsa.shop.login.repo.TokenRepository;
+import com.tsa.shop.login.repo.UserRepository;
 import jakarta.servlet.http.Cookie;
 import org.eclipse.jetty.util.security.Credential;
 import org.junit.jupiter.api.BeforeEach;

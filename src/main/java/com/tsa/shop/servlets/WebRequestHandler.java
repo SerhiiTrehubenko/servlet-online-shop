@@ -2,9 +2,9 @@ package com.tsa.shop.servlets;
 
 import com.tsa.shop.logging.DomainLogger;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
-import com.tsa.shop.servlets.enums.HttpStatus;
-import com.tsa.shop.servlets.enums.UriPageConnector;
-import com.tsa.shop.exceptions.WebServerException;
+import com.tsa.shop.domain.HttpStatus;
+import com.tsa.shop.domain.UriPageConnector;
+import com.tsa.shop.domain.WebServerException;
 import com.tsa.shop.servlets.interfaces.PageGenerator;
 import com.tsa.shop.servlets.interfaces.ServletRequestParser;
 import com.tsa.shop.servlets.interfaces.Response;

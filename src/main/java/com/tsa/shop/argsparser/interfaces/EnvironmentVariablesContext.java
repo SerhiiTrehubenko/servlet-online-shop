@@ -1,6 +1,6 @@
 package com.tsa.shop.argsparser.interfaces;
 
-import com.tsa.shop.argsparser.enums.Property;
+import com.tsa.shop.domain.Property;
 
 import java.io.Serializable;
 

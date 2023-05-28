@@ -1,9 +1,12 @@
 package com.tsa.shop.login.impl;
 
+import com.tsa.shop.login.repo.TokenRepository;
+import com.tsa.shop.login.repo.UserRepository;
+import com.tsa.shop.domain.User;
 import com.tsa.shop.transaction.Command;
 import com.tsa.shop.login.interfaces.*;
-import com.tsa.shop.servlets.enums.HttpStatus;
-import com.tsa.shop.exceptions.WebServerException;
+import com.tsa.shop.domain.HttpStatus;
+import com.tsa.shop.domain.WebServerException;
 import jakarta.servlet.http.Cookie;
 
 import java.util.Objects;

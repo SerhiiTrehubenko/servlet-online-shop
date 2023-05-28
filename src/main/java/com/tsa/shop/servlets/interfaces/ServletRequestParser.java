@@ -1,6 +1,6 @@
 package com.tsa.shop.servlets.interfaces;
 
-import com.tsa.shop.servlets.enums.UriPageConnector;
+import com.tsa.shop.domain.UriPageConnector;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 

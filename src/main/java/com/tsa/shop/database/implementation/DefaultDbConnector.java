@@ -2,8 +2,8 @@ package com.tsa.shop.database.implementation;
 
 import com.tsa.shop.database.interfaces.DbConnector;
 import com.tsa.shop.argsparser.interfaces.PropertyReader;
-import com.tsa.shop.servlets.enums.HttpStatus;
-import com.tsa.shop.exceptions.WebServerException;
+import com.tsa.shop.domain.HttpStatus;
+import com.tsa.shop.domain.WebServerException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

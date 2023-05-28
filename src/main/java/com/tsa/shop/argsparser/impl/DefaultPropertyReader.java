@@ -1,7 +1,7 @@
 package com.tsa.shop.argsparser.impl;
 
 import com.tsa.shop.argsparser.interfaces.EnvironmentVariablesContext;
-import com.tsa.shop.argsparser.enums.Property;
+import com.tsa.shop.domain.Property;
 import com.tsa.shop.argsparser.interfaces.PropertyReader;
 
 import java.io.Serializable;

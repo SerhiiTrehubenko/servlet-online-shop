@@ -1,6 +1,4 @@
-package com.tsa.shop.services.interfaces;
-
-import com.tsa.shop.domain.dto.ProductDto;
+package com.tsa.shop.domain;
 
 import java.util.Map;
 

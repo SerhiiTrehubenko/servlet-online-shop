@@ -1,8 +1,8 @@
-package com.tsa.shop.mapper.impl;
+package com.tsa.shop.services;
 
-import com.tsa.shop.domain.dto.ProductDto;
-import com.tsa.shop.domain.entity.Product;
-import com.tsa.shop.mapper.interfaces.ProductMapper;
+import com.tsa.shop.domain.ProductDto;
+import com.tsa.shop.domain.Product;
+import com.tsa.shop.domain.ProductMapper;
 
 import java.sql.Date;
 import java.util.Objects;

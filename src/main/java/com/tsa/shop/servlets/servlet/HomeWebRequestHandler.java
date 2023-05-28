@@ -4,7 +4,7 @@ import com.tsa.shop.logging.DomainLogger;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.servlets.WebRequestHandler;
 import com.tsa.shop.servlets.interfaces.*;
-import com.tsa.shop.servlets.enums.UriPageConnector;
+import com.tsa.shop.domain.UriPageConnector;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

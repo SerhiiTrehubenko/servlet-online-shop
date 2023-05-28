@@ -1,7 +1,7 @@
 package com.tsa.shop.servlets.impl;
 
-import com.tsa.shop.servlets.enums.HttpStatus;
-import com.tsa.shop.exceptions.WebServerException;
+import com.tsa.shop.domain.HttpStatus;
+import com.tsa.shop.domain.WebServerException;
 import com.tsa.shop.servlets.interfaces.ContentFileProvider;
 
 import java.io.InputStream;

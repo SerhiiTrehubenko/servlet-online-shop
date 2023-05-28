@@ -3,7 +3,7 @@ package com.tsa.shop.domain.argsparser;
 import com.tsa.shop.argsparser.impl.DefaultEnvironmentVariablesContext;
 import com.tsa.shop.argsparser.impl.DefaultArgsParser;
 import com.tsa.shop.argsparser.interfaces.ArgsParser;
-import com.tsa.shop.argsparser.enums.Property;
+import com.tsa.shop.domain.Property;
 import com.tsa.shop.argsparser.interfaces.EnvironmentVariablesContext;
 import org.junit.jupiter.api.Test;
 

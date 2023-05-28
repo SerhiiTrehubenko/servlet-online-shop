@@ -1,6 +1,6 @@
-package com.tsa.shop.login.impl;
+package com.tsa.shop.login.repoimpl;
 
-import com.tsa.shop.login.interfaces.TokenRepository;
+import com.tsa.shop.login.repo.TokenRepository;
 
 import java.util.Map;
 import java.util.UUID;

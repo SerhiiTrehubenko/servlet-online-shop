@@ -1,6 +1,6 @@
-package com.tsa.shop.services.interfaces;
+package com.tsa.shop.domain;
 
-import com.tsa.shop.domain.dto.ProductDto;
+import com.tsa.shop.domain.ProductDto;
 
 import java.io.Serializable;
 import java.util.List;

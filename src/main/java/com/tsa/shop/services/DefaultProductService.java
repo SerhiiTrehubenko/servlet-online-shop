@@ -1,11 +1,11 @@
-package com.tsa.shop.services.impl;
+package com.tsa.shop.services;
 
 import com.tsa.shop.database.interfaces.ProductDao;
-import com.tsa.shop.domain.dto.ProductDto;
-import com.tsa.shop.domain.entity.Product;
-import com.tsa.shop.services.interfaces.DtoExtractor;
-import com.tsa.shop.mapper.interfaces.ProductMapper;
-import com.tsa.shop.services.interfaces.ProductService;
+import com.tsa.shop.domain.ProductDto;
+import com.tsa.shop.domain.Product;
+import com.tsa.shop.domain.DtoExtractor;
+import com.tsa.shop.domain.ProductMapper;
+import com.tsa.shop.domain.ProductService;
 
 import java.io.Serializable;
 import java.util.List;

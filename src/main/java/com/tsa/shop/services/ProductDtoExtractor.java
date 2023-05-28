@@ -1,9 +1,9 @@
-package com.tsa.shop.services.impl;
+package com.tsa.shop.services;
 
-import com.tsa.shop.domain.dto.ProductDto;
-import com.tsa.shop.services.interfaces.DtoExtractor;
-import com.tsa.shop.servlets.enums.HttpStatus;
-import com.tsa.shop.exceptions.WebServerException;
+import com.tsa.shop.domain.ProductDto;
+import com.tsa.shop.domain.DtoExtractor;
+import com.tsa.shop.domain.HttpStatus;
+import com.tsa.shop.domain.WebServerException;
 
 import java.sql.Date;
 import java.time.LocalDate;

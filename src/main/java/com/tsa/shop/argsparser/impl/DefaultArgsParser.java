@@ -1,9 +1,9 @@
 package com.tsa.shop.argsparser.impl;
 
-import com.tsa.shop.argsparser.enums.Property;
 import com.tsa.shop.argsparser.interfaces.ArgsParser;
 import com.tsa.shop.argsparser.interfaces.EnvironmentVariablesContext;
 import com.tsa.shop.argsparser.interfaces.Expression;
+import com.tsa.shop.domain.Property;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,15 +54,8 @@ public class DefaultArgsParser implements ArgsParser {
 
     Expression resolveNode() {
         Property propertyType = resolveProperty();
-        return propertyType.createExpressionNode(getArgValue(propertyType));
-    }
-
-    String getArgValue(Property propertyType) {
-        try {
-            return argsIterator.next();
-        } catch (Exception e) {
-            throw new RuntimeException("Provided arg tag: [%s] does not have a value".formatted(propertyType.getTag()));
-        }
+        String argValue = getArgValue(propertyType);
+        return new ExpressionNode(propertyType.getTag(), propertyType.getProperty(argValue));
     }
 
     private Property resolveProperty() {
@@ -73,6 +66,14 @@ public class DefaultArgsParser implements ArgsParser {
             }
         }
         throw new RuntimeException("The Provided tad: [%s] does not comply to incomeTag scheme".formatted(incomeTag));
+    }
+
+    String getArgValue(Property propertyType) {
+        try {
+            return argsIterator.next();
+        } catch (Exception e) {
+            throw new RuntimeException("Provided arg tag: [%s] does not have a value".formatted(propertyType.getTag()));
+        }
     }
 
     private void chainNode(Expression currentNode) {

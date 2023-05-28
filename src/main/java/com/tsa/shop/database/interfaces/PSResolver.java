@@ -1,6 +1,6 @@
 package com.tsa.shop.database.interfaces;
 
-import com.tsa.shop.domain.entity.Product;
+import com.tsa.shop.domain.Product;
 
 import java.io.Serializable;
 import java.sql.Connection;

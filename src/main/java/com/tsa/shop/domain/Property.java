@@ -1,7 +1,4 @@
-package com.tsa.shop.argsparser.enums;
-
-import com.tsa.shop.argsparser.impl.ExpressionNode;
-import com.tsa.shop.argsparser.interfaces.Expression;
+package com.tsa.shop.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -51,13 +48,9 @@ public enum Property {
         return property;
     }
 
-    protected abstract Serializable getProperty(Serializable parameter);
+    public abstract Serializable getProperty(Serializable parameter);
 
     public String getTag() {
         return tag;
-    }
-
-    public Expression createExpressionNode(String content) {
-        return new ExpressionNode(tag, getProperty(content));
     }
 }

@@ -4,7 +4,7 @@ import com.tsa.shop.servlets.WebRequestHandler;
 import com.tsa.shop.logging.DomainLogger;
 import com.tsa.shop.login.interfaces.LogInFacade;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
-import com.tsa.shop.servlets.enums.UriPageConnector;
+import com.tsa.shop.domain.UriPageConnector;
 import com.tsa.shop.servlets.interfaces.PageGenerator;
 import com.tsa.shop.servlets.interfaces.Response;
 import com.tsa.shop.servlets.interfaces.ResponseWriter;
