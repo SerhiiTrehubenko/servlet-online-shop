@@ -1,12 +1,12 @@
 package com.tsa.shop.domain;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public class ProductDto {
     private Long id;
     private String name;
     private double price;
-    private Date date;
+    private Timestamp date;
 
     public ProductDto() {
     }
@@ -14,7 +14,7 @@ public class ProductDto {
     public ProductDto(Long id,
                       String name,
                       double price,
-                      Date date) {
+                      Timestamp date) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -45,11 +45,11 @@ public class ProductDto {
         this.price = price;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

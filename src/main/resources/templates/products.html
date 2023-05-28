@@ -35,7 +35,7 @@
                                 <#setting locale="en_US">
                                 ${product.getPrice()}
                             </td>
-                            <td>${product.getDate()?iso_utc}</td>
+                            <td>${product.getDate()?string["yyyy-MM-dd"]}</td>
                             <td>
                                 <form method="get" action="/products/delete">
                                     <input type="hidden" name="id" value="${product.getId()}">

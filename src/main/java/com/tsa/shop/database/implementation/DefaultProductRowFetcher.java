@@ -5,6 +5,7 @@ import com.tsa.shop.domain.Product;
 
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 
 public class DefaultProductRowFetcher implements ProductRowFetcher {
     @Override
@@ -12,7 +13,7 @@ public class DefaultProductRowFetcher implements ProductRowFetcher {
         Long id = row.getLong(1);
         String name = row.getString(2);
         double price = row.getDouble(3);
-        Date date = row.getDate(4);
+        Timestamp date = row.getTimestamp(4);
         return new Product(id, name, price, date);
     }
 }

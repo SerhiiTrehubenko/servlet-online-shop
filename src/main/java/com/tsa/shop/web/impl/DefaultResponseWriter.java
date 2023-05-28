@@ -1,9 +1,9 @@
-package com.tsa.shop.servlets.impl;
+package com.tsa.shop.web.impl;
 
 import com.tsa.shop.domain.HttpStatus;
 import com.tsa.shop.domain.WebServerException;
-import com.tsa.shop.servlets.interfaces.Response;
-import com.tsa.shop.servlets.interfaces.ResponseWriter;
+import com.tsa.shop.web.interfaces.Response;
+import com.tsa.shop.web.interfaces.ResponseWriter;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;

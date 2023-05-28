@@ -1,9 +1,9 @@
-package com.tsa.shop.servlets.servlet;
+package com.tsa.shop.web.servlet;
 
 import com.tsa.shop.logging.DomainLogger;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
-import com.tsa.shop.servlets.WebRequestHandler;
-import com.tsa.shop.servlets.interfaces.*;
+import com.tsa.shop.web.interfaces.*;
+import com.tsa.shop.web.WebRequestHandler;
 import com.tsa.shop.domain.UriPageConnector;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

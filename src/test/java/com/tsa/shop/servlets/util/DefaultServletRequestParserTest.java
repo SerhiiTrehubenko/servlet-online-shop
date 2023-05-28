@@ -1,9 +1,9 @@
 package com.tsa.shop.servlets.util;
 
 import com.tsa.shop.domain.UriPageConnector;
-import com.tsa.shop.servlets.impl.DefaultServletRequestParser;
-import com.tsa.shop.servlets.impl.UriCache;
-import com.tsa.shop.servlets.interfaces.ServletRequestParser;
+import com.tsa.shop.web.impl.DefaultServletRequestParser;
+import com.tsa.shop.web.impl.UriCache;
+import com.tsa.shop.web.interfaces.ServletRequestParser;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;

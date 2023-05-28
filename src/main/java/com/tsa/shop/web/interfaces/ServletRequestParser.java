@@ -1,4 +1,4 @@
-package com.tsa.shop.servlets.interfaces;
+package com.tsa.shop.web.interfaces;
 
 import com.tsa.shop.domain.UriPageConnector;
 import jakarta.servlet.http.Cookie;

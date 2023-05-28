@@ -75,7 +75,7 @@ public class DefaultPSResolver implements PSResolver {
         try {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setDate(3, product.getDate());
+            preparedStatement.setTimestamp(3, product.getDate());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

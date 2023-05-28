@@ -1,4 +1,4 @@
-package com.tsa.shop.servlets.impl;
+package com.tsa.shop.web.impl;
 
 import com.tsa.shop.domain.UriPageConnector;
 

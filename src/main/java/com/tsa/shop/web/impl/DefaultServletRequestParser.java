@@ -1,7 +1,7 @@
-package com.tsa.shop.servlets.impl;
+package com.tsa.shop.web.impl;
 
 import com.tsa.shop.domain.UriPageConnector;
-import com.tsa.shop.servlets.interfaces.ServletRequestParser;
+import com.tsa.shop.web.interfaces.ServletRequestParser;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 

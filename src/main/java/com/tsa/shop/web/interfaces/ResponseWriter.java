@@ -1,4 +1,4 @@
-package com.tsa.shop.servlets.interfaces;
+package com.tsa.shop.web.interfaces;
 
 public interface ResponseWriter {
     void write(Response response);

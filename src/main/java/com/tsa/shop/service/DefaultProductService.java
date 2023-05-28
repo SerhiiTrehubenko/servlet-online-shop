@@ -1,4 +1,4 @@
-package com.tsa.shop.services;
+package com.tsa.shop.service;
 
 import com.tsa.shop.database.interfaces.ProductDao;
 import com.tsa.shop.domain.ProductDto;

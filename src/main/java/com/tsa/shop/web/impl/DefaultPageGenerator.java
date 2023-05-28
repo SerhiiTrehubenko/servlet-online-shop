@@ -1,8 +1,8 @@
-package com.tsa.shop.servlets.impl;
+package com.tsa.shop.web.impl;
 
 import com.tsa.shop.domain.HttpStatus;
 import com.tsa.shop.domain.WebServerException;
-import com.tsa.shop.servlets.interfaces.PageGenerator;
+import com.tsa.shop.web.interfaces.PageGenerator;
 import freemarker.core.HTMLOutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;

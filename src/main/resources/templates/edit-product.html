@@ -27,7 +27,7 @@
                     </label>
                     <br>
                     <label>
-                        Creation date: <input type="text" name="date" value="${productDto.getDate()?iso_utc}" readonly>
+                        Creation date: <input type="text" name="date" value="${productDto.getDate()?string["yyyy-MM-dd HH:mm:ss"]}" readonly>
                     </label>
                     <br>
                     <input type="submit" value="edit">

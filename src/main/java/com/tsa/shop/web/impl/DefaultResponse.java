@@ -1,6 +1,6 @@
-package com.tsa.shop.servlets.impl;
+package com.tsa.shop.web.impl;
 
-import com.tsa.shop.servlets.interfaces.Response;
+import com.tsa.shop.web.interfaces.Response;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.InputStream;

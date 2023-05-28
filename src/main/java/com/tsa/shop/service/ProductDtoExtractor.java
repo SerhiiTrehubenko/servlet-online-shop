@@ -1,12 +1,12 @@
-package com.tsa.shop.services;
+package com.tsa.shop.service;
 
 import com.tsa.shop.domain.ProductDto;
 import com.tsa.shop.domain.DtoExtractor;
 import com.tsa.shop.domain.HttpStatus;
 import com.tsa.shop.domain.WebServerException;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 public class ProductDtoExtractor implements DtoExtractor {
@@ -17,7 +17,7 @@ public class ProductDtoExtractor implements DtoExtractor {
         Long id = Long.parseLong(parameters.get("id")[VALUE]);
         String name = getName(parameters);
         double price = parseDouble(parameters);
-        Date date = Date.valueOf(parameters.get("date")[VALUE]);
+        Timestamp date = Timestamp.valueOf(parameters.get("date")[VALUE]);
         return new ProductDto(id, name, price, date);
     }
 
@@ -38,7 +38,7 @@ public class ProductDtoExtractor implements DtoExtractor {
     public ProductDto getPartialDtoInstanceFrom(Map<String, String[]> parameters) {
         String name = getName(parameters);
         double price = parseDouble(parameters);
-        Date date = Date.valueOf(LocalDate.now());
+        Timestamp date = Timestamp.valueOf(LocalDateTime.now());
         ProductDto productDto = new ProductDto();
         productDto.setName(name);
         productDto.setPrice(price);
