@@ -10,7 +10,6 @@ import com.tsa.shop.login.interfaces.LogInFacade;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.domain.UriPageConnector;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.InputStream;
@@ -31,26 +30,24 @@ public class LogInWebRequestHandler extends WebRequestHandler {
     }
 
     @Override
-    protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        getTemplateMethod(servletRequest, servletResponse);
-    }
-
-    @Override
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
         return pageGenerator.getGeneratedPageAsStream(uriPageConnector.getHtmlPage());
     }
 
     @Override
-    protected void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        postTemplateMethod(servletRequest, servletResponse);
+    protected void handlePostRequest(Map<String, Object> parsedRequest) {
+        Cookie cookieOnSuccess = authenticate(parsedRequest);
+        writeToResponse(cookieOnSuccess, parsedRequest);
+        redirect(getResponse(parsedRequest), UriPageConnector.HOME.getUri());
     }
 
-    @Override
-    protected void handlePostRequest(Map<String, Object> parsedRequest) {
+    private Cookie authenticate(Map<String, Object> parsedRequest) {
         var parameters = servletRequestParser.getParameters(parsedRequest);
-        final Cookie cookie = logInFacade.process(parameters);
+        return logInFacade.process(parameters);
+    }
+
+    private void writeToResponse(Cookie cookie, Map<String, Object> parsedRequest) {
         HttpServletResponse httpServletResponse = getResponse(parsedRequest);
         httpServletResponse.addCookie(cookie);
-        redirect(httpServletResponse, UriPageConnector.HOME.getUri());
     }
 }

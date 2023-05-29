@@ -5,8 +5,6 @@ import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.web.interfaces.*;
 import com.tsa.shop.web.WebRequestHandler;
 import com.tsa.shop.domain.UriPageConnector;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -24,11 +22,6 @@ public class HomeWebRequestHandler extends WebRequestHandler {
                                  ContentFileProvider contentFileProvider) {
         super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
         this.contentFileProvider = contentFileProvider;
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        getTemplateMethod(servletRequest, servletResponse);
     }
 
     @Override

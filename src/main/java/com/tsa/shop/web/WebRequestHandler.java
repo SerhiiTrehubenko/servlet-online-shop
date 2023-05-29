@@ -46,9 +46,7 @@ public abstract class WebRequestHandler extends HttpServlet {
     }
 
     @Override
-    protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp);
-
-    protected void getTemplateMethod(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+    protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         Map<String, Object> webDtoHost = makeWebDtoHost(servletRequest, servletResponse);
         try {
             UriPageConnector pageConnector = servletRequestParser.getUriPageConnector(webDtoHost);
@@ -60,6 +58,7 @@ public abstract class WebRequestHandler extends HttpServlet {
             processInternalException(webDtoHost, e);
         }
     }
+
     private Map<String, Object> makeWebDtoHost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         Map<String, Object> parsedRequest = servletRequestParser.parseRequest(servletRequest);
         parsedRequest.put(KEY_REQUEST, servletRequest);
@@ -126,7 +125,8 @@ public abstract class WebRequestHandler extends HttpServlet {
         writeErrorResponse(servletResponse, error);
     }
 
-    protected void postTemplateMethod(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+    @Override
+    protected void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         Map<String, Object> webDtoHost = makeWebDtoHost(servletRequest, servletResponse);
         try {
             handlePostRequest(webDtoHost);

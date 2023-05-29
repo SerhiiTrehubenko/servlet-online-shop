@@ -10,8 +10,6 @@ import com.tsa.shop.logging.DomainLogger;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.domain.HttpStatus;
 import com.tsa.shop.domain.WebServerException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -30,22 +28,12 @@ public class PageNotFoundHandler extends WebRequestHandler {
     }
 
     @Override
-    protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        getTemplateMethod(servletRequest, servletResponse);
-    }
-
-    @Override
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
         throw defaultException(parsedRequest);
     }
 
     private WebServerException defaultException(Map<String, Object> parsedRequest) {
         return new WebServerException(PAGE_NOT_FOUND_MESSAGE.formatted(parsedRequest.get(URL_FOR_ERROR_MESSAGE)), HttpStatus.NOT_FOUND, this);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        postTemplateMethod(servletRequest, servletResponse);
     }
 
     @Override

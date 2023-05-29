@@ -9,8 +9,6 @@ import com.tsa.shop.web.interfaces.ServletRequestParser;
 import com.tsa.shop.logging.DomainLogger;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.domain.UriPageConnector;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -29,18 +27,8 @@ public class ProductAddWebRequestHandler extends WebRequestHandler {
         this.service = service;
     }
 
-    @Override
-    protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        getTemplateMethod(servletRequest, servletResponse);
-    }
-
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
         return pageGenerator.getGeneratedPageAsStream(uriPageConnector.getHtmlPage());
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        postTemplateMethod(servletRequest, servletResponse);
     }
 
     @Override

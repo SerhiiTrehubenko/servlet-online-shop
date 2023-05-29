@@ -10,8 +10,6 @@ import com.tsa.shop.web.interfaces.ServletRequestParser;
 import com.tsa.shop.logging.DomainLogger;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.domain.UriPageConnector;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.InputStream;
 import java.util.List;
@@ -30,11 +28,6 @@ public class ProductFindAllWebRequestHandler extends WebRequestHandler {
                                            ProductService service) {
         super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
         this.service = service;
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        getTemplateMethod(servletRequest, servletResponse);
     }
 
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {

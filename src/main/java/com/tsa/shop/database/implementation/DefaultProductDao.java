@@ -28,13 +28,12 @@ public class DefaultProductDao implements ProductDao {
         String findAllQuery = QueryProvider.PRODUCT_FIND_All.getQuery();
         List<Product> products = new LinkedList<>();
         try (var connection = connector.getConnection();
-             var statment = psResolver.prepareStatement(connection, findAllQuery)) {
-            ResultSet rows = statment.executeQuery();
+             var statment = psResolver.prepareStatement(connection, findAllQuery);
+             ResultSet rows = statment.executeQuery()) {
 
             while (rows.next()) {
                 products.add(productRowFetcher.getProduct(rows));
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -47,9 +46,9 @@ public class DefaultProductDao implements ProductDao {
         String findByIdQuery = QueryProvider.PRODUCT_FIND_BY_ID.getQuery();
         Product product = null;
         try (var connection = connector.getConnection();
-             var statment = psResolver.prepareStatement(connection, findByIdQuery)) {
+             var statment = psResolver.prepareStatement(connection, findByIdQuery);
+             ResultSet rows = statment.resolveFindById(incomeId)) {
 
-            ResultSet rows = statment.resolveFindById(incomeId);
             while (rows.next()) {
                 product = productRowFetcher.getProduct(rows);
             }
