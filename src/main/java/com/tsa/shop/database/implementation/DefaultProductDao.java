@@ -50,11 +50,9 @@ public class DefaultProductDao implements ProductDao {
              var statment = psResolver.prepareStatement(connection, findByIdQuery)) {
 
             ResultSet rows = statment.resolveFindById(incomeId);
-
             while (rows.next()) {
                 product = productRowFetcher.getProduct(rows);
             }
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -80,7 +78,6 @@ public class DefaultProductDao implements ProductDao {
         String updateQuery = QueryProvider.PRODUCT_DELETE.getQuery();
         try (var connection = connector.getConnection();
              var statment = psResolver.prepareStatement(connection, updateQuery)) {
-
 
             statment.resolveDelete(incomeId);
             statment.execute();

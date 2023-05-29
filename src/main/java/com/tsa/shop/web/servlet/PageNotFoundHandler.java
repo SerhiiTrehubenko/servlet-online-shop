@@ -1,5 +1,6 @@
 package com.tsa.shop.web.servlet;
 
+import com.tsa.shop.domain.UriPageConnector;
 import com.tsa.shop.web.WebRequestHandler;
 import com.tsa.shop.web.interfaces.PageGenerator;
 import com.tsa.shop.web.interfaces.Response;
@@ -12,6 +13,7 @@ import com.tsa.shop.domain.WebServerException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.InputStream;
 import java.util.Map;
 
 public class PageNotFoundHandler extends WebRequestHandler {
@@ -29,22 +31,25 @@ public class PageNotFoundHandler extends WebRequestHandler {
 
     @Override
     protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        writePageNotFoundResponse(servletRequest, servletResponse);
+        getTemplateMethod(servletRequest, servletResponse);
     }
 
-    private void writePageNotFoundResponse(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        Map<String, Object> parsedRequest = servletRequestParser.parseRequest(servletRequest);
-        try {
-            throw new WebServerException(PAGE_NOT_FOUND_MESSAGE.formatted(parsedRequest.get(URL_FOR_ERROR_MESSAGE)), HttpStatus.NOT_FOUND);
-        } catch (WebServerException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeErrorResponse(servletResponse, e);
-        }
+    @Override
+    protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
+        throw defaultException(parsedRequest);
+    }
+
+    private WebServerException defaultException(Map<String, Object> parsedRequest) {
+        return new WebServerException(PAGE_NOT_FOUND_MESSAGE.formatted(parsedRequest.get(URL_FOR_ERROR_MESSAGE)), HttpStatus.NOT_FOUND, this);
     }
 
     @Override
     protected void doPost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        writePageNotFoundResponse(servletRequest, servletResponse);
+        postTemplateMethod(servletRequest, servletResponse);
+    }
+
+    @Override
+    protected void handlePostRequest(Map<String, Object> parsedRequest) {
+        throw defaultException(parsedRequest);
     }
 }

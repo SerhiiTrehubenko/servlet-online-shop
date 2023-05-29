@@ -18,7 +18,7 @@ public class DefaultPSResolver implements PSResolver {
         this(null);
     }
 
-    public DefaultPSResolver(PreparedStatement preparedStatement) {
+    private DefaultPSResolver(PreparedStatement preparedStatement) {
         this.preparedStatement = preparedStatement;
     }
 

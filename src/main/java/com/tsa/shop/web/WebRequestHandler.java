@@ -49,57 +49,27 @@ public abstract class WebRequestHandler extends HttpServlet {
     protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp);
 
     protected void getTemplateMethod(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        Map<String, Object> webDtoHost = makeWebDtoHost(servletRequest, servletResponse);
+        try {
+            UriPageConnector pageConnector = servletRequestParser.getUriPageConnector(webDtoHost);
+            InputStream content = handleGetRequest(webDtoHost, pageConnector);
+            writeSuccessResponse(servletResponse, content);
+        } catch (WebServerException e) {
+            processWebServerException(webDtoHost, e);
+        } catch (RuntimeException e) {
+            processInternalException(webDtoHost, e);
+        }
+    }
+    private Map<String, Object> makeWebDtoHost(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         Map<String, Object> parsedRequest = servletRequestParser.parseRequest(servletRequest);
         parsedRequest.put(KEY_REQUEST, servletRequest);
         parsedRequest.put(KEY_RESPONSE, servletResponse);
-        try {
-            UriPageConnector pageConnector = servletRequestParser.getUriPageConnector(parsedRequest);
-            InputStream content = handleGetRequest(parsedRequest, pageConnector);
-            writeSuccessResponse(servletResponse, content);
-        } catch (WebServerException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeErrorResponse(servletResponse, e);
-        } catch (RuntimeException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeDefaultErrorResponse(servletResponse);
-        }
+        return parsedRequest;
     }
 
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
         throw new UnsupportedOperationException();
     }
-
-    protected void postTemplateMethod(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
-        Map<String, Object> parsedRequest = servletRequestParser.parseRequest(servletRequest);
-        parsedRequest.put(KEY_REQUEST, servletRequest);
-        parsedRequest.put(KEY_RESPONSE, servletResponse);
-        try {
-            handlePostRequest(parsedRequest);
-        } catch (WebServerException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeErrorResponse(servletResponse, e);
-        } catch (RuntimeException e) {
-            String loggingMessage = logMessageGenerator.getMessageFrom(e);
-            logError(parsedRequest.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
-            writeDefaultErrorResponse(servletResponse);
-        }
-    }
-
-    protected void handlePostRequest(Map<String, Object> parsedRequest) {
-        throw new UnsupportedOperationException();
-    }
-
-    protected HttpServletRequest getRequest(Map<String, Object> parsedRequest) {
-        return (HttpServletRequest) parsedRequest.get(KEY_REQUEST);
-    }
-
-    protected HttpServletResponse getResponse(Map<String, Object> parsedRequest) {
-        return (HttpServletResponse) parsedRequest.get("HttpServletResponse");
-    }
-
     protected void writeSuccessResponse(HttpServletResponse servletResponse, InputStream content) {
         Response successResponse = getSuccessResponse(servletResponse, content);
         responseWriter.createInstance().write(successResponse);
@@ -112,9 +82,19 @@ public abstract class WebRequestHandler extends HttpServlet {
                 .setContent(content);
     }
 
-    protected void writeDefaultErrorResponse(HttpServletResponse servletResponse) {
-        var error = new WebServerException("Oooops! Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
-        writeErrorResponse(servletResponse, error);
+    private void processWebServerException(Map<String, Object> webDtoHost, WebServerException e) {
+        String loggingMessage = logMessageGenerator.getMessageFrom(e);
+        logError(webDtoHost.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
+        writeErrorResponse(getResponse(webDtoHost), e);
+    }
+
+    protected HttpServletResponse getResponse(Map<String, Object> parsedRequest) {
+        return (HttpServletResponse) parsedRequest.get(KEY_RESPONSE);
+    }
+
+    protected void logError(Object requestUri, String message) {
+        String header = "HttpRequest URL: " + requestUri + " Time of request: " + new Date();
+        logger.error(header + "\n" + message);
     }
 
     protected void writeErrorResponse(HttpServletResponse servletResponse, WebServerException e) {
@@ -135,9 +115,34 @@ public abstract class WebRequestHandler extends HttpServlet {
         return pageGenerator.getGeneratedPageAsStream(message, UriPageConnector.ERROR_PAGE.getHtmlPage());
     }
 
-    protected void logError(Object requestUri, String message) {
-        String header = "HttpRequest URL: " + requestUri + " Time of request: " + new Date();
-        logger.error(header + "\n" + message);
+    private void processInternalException(Map<String, Object> webDtoHost, RuntimeException e) {
+        String loggingMessage = logMessageGenerator.getMessageFrom(e);
+        logError(webDtoHost.get(URL_FOR_ERROR_MESSAGE), loggingMessage);
+        writeDefaultErrorResponse(getResponse(webDtoHost));
+    }
+
+    protected void writeDefaultErrorResponse(HttpServletResponse servletResponse) {
+        var error = new WebServerException("Oooops! Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+        writeErrorResponse(servletResponse, error);
+    }
+
+    protected void postTemplateMethod(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
+        Map<String, Object> webDtoHost = makeWebDtoHost(servletRequest, servletResponse);
+        try {
+            handlePostRequest(webDtoHost);
+        } catch (WebServerException e) {
+            processWebServerException(webDtoHost, e);
+        } catch (RuntimeException e) {
+            processInternalException(webDtoHost, e);
+        }
+    }
+
+    protected void handlePostRequest(Map<String, Object> parsedRequest) {
+        throw new UnsupportedOperationException();
+    }
+
+    protected HttpServletRequest getRequest(Map<String, Object> parsedRequest) {
+        return (HttpServletRequest) parsedRequest.get(KEY_REQUEST);
     }
 
     protected void redirect(HttpServletResponse response, String uri) {
