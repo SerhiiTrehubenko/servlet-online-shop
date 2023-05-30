@@ -44,7 +44,8 @@ public class DefaultProductService implements ProductService {
 
     @Override
     public void delete(Serializable id) {
-        productDao.delete(id);
+        Product product = productDao.findById(id);
+        productDao.delete(product);
     }
 
     @Override

@@ -32,7 +32,9 @@ public class ProductDeleteWebRequestHandler extends WebRequestHandler {
     @Override
     protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {
         super.doGet(servletRequest, servletResponse);
-        redirect(servletResponse, UriPageConnector.PRODUCTS.getUri());
+        if (servletResponse.getStatus() == 200) {
+            redirect(servletResponse, UriPageConnector.PRODUCTS.getUri());
+        }
     }
 
     @Override

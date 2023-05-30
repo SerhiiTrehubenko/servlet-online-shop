@@ -4,12 +4,16 @@ import com.tsa.shop.database.interfaces.DbConnector;
 import com.tsa.shop.database.interfaces.PSResolver;
 import com.tsa.shop.database.interfaces.ProductDao;
 import com.tsa.shop.database.interfaces.ProductRowFetcher;
+import com.tsa.shop.domain.HttpStatus;
 import com.tsa.shop.domain.Product;
+import com.tsa.shop.domain.WebServerException;
 
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.BiConsumer;
 
 public class JdbcProductDao implements ProductDao {
 
@@ -37,8 +41,14 @@ public class JdbcProductDao implements ProductDao {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
+        checkEmptyDb(products);
         return products;
+    }
+
+    private void checkEmptyDb(List<Product> products) {
+        if (products.isEmpty()) {
+            throw new WebServerException("the Db is empty", HttpStatus.NOT_FOUND, this);
+        }
     }
 
     @Override
@@ -55,44 +65,42 @@ public class JdbcProductDao implements ProductDao {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
+        checkPresence(product, incomeId);
         return product;
+    }
+
+    private void checkPresence(Product product, Serializable incomeId) {
+        if (Objects.isNull(product)) {
+            throw new WebServerException("A Product with id:[%s] has not be found".formatted(Objects.toString(incomeId)), HttpStatus.NOT_FOUND, this);
+        }
     }
 
     @Override
     public void update(Product product) {
         String updateQuery = QueryProvider.PRODUCT_UPDATE.getQuery();
-        try (var connection = connector.getConnection();
-             var statment = psResolver.prepareStatement(connection, updateQuery)) {
-
-            statment.resolveUpdate(product);
-            statment.execute();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        process(PSResolver::resolveUpdate, product, updateQuery);
     }
 
     @Override
-    public void delete(Serializable incomeId) {
+    public void delete(Product product) {
         String updateQuery = QueryProvider.PRODUCT_DELETE.getQuery();
-        try (var connection = connector.getConnection();
-             var statment = psResolver.prepareStatement(connection, updateQuery)) {
-
-            statment.resolveDelete(incomeId);
-            statment.execute();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        process(PSResolver::resolveDelete, product, updateQuery);
     }
 
     @Override
     public void add(Product product) {
         String updateQuery = QueryProvider.PRODUCT_INSERT.getQuery();
+        process(PSResolver::resolveInsert, product, updateQuery);
+    }
+
+    private void process(BiConsumer<PSResolver, Product> biConsumer, Product product, String updateQuery) {
         try (var connection = connector.getConnection();
              var statment = psResolver.prepareStatement(connection, updateQuery)) {
 
-            statment.resolveInsert(product);
+            biConsumer.accept(statment, product);
             statment.execute();
+        } catch (WebServerException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

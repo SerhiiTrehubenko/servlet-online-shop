@@ -15,7 +15,7 @@ public interface PSResolver extends AutoCloseable {
 
     void resolveUpdate(Product product);
 
-    void resolveDelete(Serializable incomeId);
+    void resolveDelete(Product product);
     void resolveInsert(Product product);
 
     void execute();

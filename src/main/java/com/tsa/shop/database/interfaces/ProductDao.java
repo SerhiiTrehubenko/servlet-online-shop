@@ -9,6 +9,6 @@ public interface ProductDao {
     List<Product> findAll();
     Product findById(Serializable id);
     void update(Product product);
-    void delete(Serializable id);
+    void delete(Product product);
     void add(Product product);
 }

@@ -1,7 +1,9 @@
 package com.tsa.shop.database.jdbc;
 
 import com.tsa.shop.database.interfaces.PSResolver;
+import com.tsa.shop.domain.HttpStatus;
 import com.tsa.shop.domain.Product;
+import com.tsa.shop.domain.WebServerException;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -62,9 +64,9 @@ public class DefaultPSResolver implements PSResolver {
     }
 
     @Override
-    public void resolveDelete(Serializable incomeId) {
+    public void resolveDelete(Product product) {
         try {
-            preparedStatement.setLong(1, Long.parseLong(Objects.toString(incomeId)));
+            preparedStatement.setLong(1, product.getId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,7 +88,7 @@ public class DefaultPSResolver implements PSResolver {
         try {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new WebServerException(e.getLocalizedMessage(), e, HttpStatus.BAD_REQUEST, this);
         }
     }
 
