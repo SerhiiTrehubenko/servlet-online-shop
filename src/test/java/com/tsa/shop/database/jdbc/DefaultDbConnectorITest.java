@@ -1,6 +1,5 @@
-package com.tsa.shop.database.util;
+package com.tsa.shop.database.jdbc;
 
-import com.tsa.shop.database.implementation.DefaultDbConnector;
 import com.tsa.shop.argsparser.interfaces.PropertyReader;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-class DefaultDbConnectorTest {
+class DefaultDbConnectorITest {
     private final static String DB_URL = "jdbc:postgresql://192.168.0.169:5432/shop";
     private final static String DB_USER_NAME = "postgres";
     private final static String DB_PASSWORD = "password";

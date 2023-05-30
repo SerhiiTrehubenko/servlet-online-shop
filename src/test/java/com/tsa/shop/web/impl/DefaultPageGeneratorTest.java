@@ -1,4 +1,4 @@
-package com.tsa.shop.servlets.util;
+package com.tsa.shop.web.impl;
 
 import com.tsa.shop.domain.UriPageConnector;
 import com.tsa.shop.domain.WebServerException;

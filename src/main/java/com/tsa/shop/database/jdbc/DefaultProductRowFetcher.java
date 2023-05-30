@@ -1,9 +1,8 @@
-package com.tsa.shop.database.implementation;
+package com.tsa.shop.database.jdbc;
 
 import com.tsa.shop.database.interfaces.ProductRowFetcher;
 import com.tsa.shop.domain.Product;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 

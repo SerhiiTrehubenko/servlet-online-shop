@@ -1,6 +1,6 @@
 package com.tsa.shop.application;
 
-import com.tsa.shop.database.implementation.*;
+import com.tsa.shop.database.jdbc.*;
 import com.tsa.shop.database.interfaces.*;
 import com.tsa.shop.domain.User;
 import com.tsa.shop.flyway.DefaultFlywayBridge;
@@ -71,7 +71,7 @@ public class ServletStarter {
 //        NEW DAO Product
         ProductRowFetcher productRowFetcher = new DefaultProductRowFetcher();
         PSResolver psResolver = new DefaultPSResolver();
-        ProductDao productDao = new DefaultProductDao(dbConnector, psResolver, productRowFetcher);
+        ProductDao productDao = new JdbcProductDao(dbConnector, psResolver, productRowFetcher);
         DtoExtractor dtoExtractor = new ProductDtoExtractor();
         ProductMapper productMapper = new DefaultProductMapper();
         ProductService productService = new DefaultProductService(productDao, productMapper, dtoExtractor);

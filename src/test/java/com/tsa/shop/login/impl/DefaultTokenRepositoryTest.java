@@ -1,4 +1,4 @@
-package com.tsa.shop.domain.login.impl;
+package com.tsa.shop.login.impl;
 
 import com.tsa.shop.login.repoimpl.DefaultTokenRepository;
 import com.tsa.shop.login.repo.TokenRepository;

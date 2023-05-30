@@ -1,4 +1,4 @@
-package com.tsa.shop.database.implementation;
+package com.tsa.shop.database.jdbc;
 
 public enum QueryProvider {
     PRODUCT_FIND_All("SELECT * FROM products;"),

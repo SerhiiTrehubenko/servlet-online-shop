@@ -1,7 +1,5 @@
-package com.tsa.shop.domain.argsparser;
+package com.tsa.shop.argsparser.impl;
 
-import com.tsa.shop.argsparser.impl.DefaultEnvironmentVariablesContext;
-import com.tsa.shop.argsparser.impl.DefaultArgsParser;
 import com.tsa.shop.argsparser.interfaces.ArgsParser;
 import com.tsa.shop.domain.Property;
 import com.tsa.shop.argsparser.interfaces.EnvironmentVariablesContext;

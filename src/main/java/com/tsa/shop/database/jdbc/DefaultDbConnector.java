@@ -1,4 +1,4 @@
-package com.tsa.shop.database.implementation;
+package com.tsa.shop.database.jdbc;
 
 import com.tsa.shop.database.interfaces.DbConnector;
 import com.tsa.shop.argsparser.interfaces.PropertyReader;

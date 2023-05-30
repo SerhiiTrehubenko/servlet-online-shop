@@ -1,4 +1,4 @@
-package com.tsa.shop.database.implementation;
+package com.tsa.shop.database.jdbc;
 
 import com.tsa.shop.database.interfaces.DbConnector;
 import com.tsa.shop.database.interfaces.PSResolver;
@@ -11,13 +11,13 @@ import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
-public class DefaultProductDao implements ProductDao {
+public class JdbcProductDao implements ProductDao {
 
     private final DbConnector connector;
     private final PSResolver psResolver;
     private final ProductRowFetcher productRowFetcher;
 
-    public DefaultProductDao(DbConnector connector, PSResolver psResolver, ProductRowFetcher productRowFetcher) {
+    public JdbcProductDao(DbConnector connector, PSResolver psResolver, ProductRowFetcher productRowFetcher) {
         this.connector = connector;
         this.psResolver = psResolver;
         this.productRowFetcher = productRowFetcher;
