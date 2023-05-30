@@ -24,10 +24,9 @@
                     <#list products as product>
                         <tr>
                             <td>
-                                <form method="get" action="/products/edit">
-                                    <input type="hidden" name="id" value="${product.getId()}">
-                                    <input type="submit" value="edit">
-                                </form>
+                                <a href="/products/edit?id=${product.getId()}">
+                                    <img src="/images/edit-button.png" width="75" height="35">
+                                </a>
                             </td>
                             <td>${product.getId()}</td>
                             <td>${product.getName()}</td>
@@ -37,10 +36,9 @@
                             </td>
                             <td>${product.getDate()?string["yyyy-MM-dd"]}</td>
                             <td>
-                                <form method="get" action="/products/delete">
-                                    <input type="hidden" name="id" value="${product.getId()}">
-                                    <input type="submit" value="delete">
-                                </form>
+                                <a href="/products/delete?id=${product.getId()}">
+                                    <img src="/images/delete-button.png" width="75" height="35">
+                                </a>
                             </td>
                         </tr>
                     </#list>
