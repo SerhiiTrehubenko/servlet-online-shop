@@ -2,11 +2,17 @@ language: java
 jdk: oraclejdk17
 
 addons:
-  postgresql: "14"
+  postgresql: '14'
   apt:
     packages:
       - postgresql-14
+      - postgresql-client-14
 services:
   - postgresql
+
+before_install:
+  - sudo sed -i 's|peer|trust|' /etc/postgresql/14/main/pg_hba.conf
+  - sudo service postgresql@14-main restart
+
 before_script:
   - psql -c 'create database shop;' -U postgres
