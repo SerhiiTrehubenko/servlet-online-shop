@@ -1,6 +1,5 @@
 language: java
-rvm:
-  - 17
+
 services:
   - postgresql
 before_script:
