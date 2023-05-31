@@ -7,7 +7,7 @@ import static org.mockito.Mockito.*;
 
 public class DefaultFlywayBridgeITest {
 
-    private final static String DB_URL = "jdbc:postgresql://localhost:5432/shop";
+    private final static String DB_URL = "jdbc:postgresql://localhost:5433/shop";
     private final static String DB_USER_NAME = "postgres";
     private final static String DB_PASSWORD = "password";
 
