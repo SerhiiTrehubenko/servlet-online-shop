@@ -18,8 +18,14 @@ import java.util.Objects;
 
 public class DefaultPageGenerator implements PageGenerator {
 
-    private static final Configuration CONFIG = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+    private final Configuration config;
     private static final String TEMPLATES_DIR = "/templates";
+
+    public DefaultPageGenerator() {
+        config = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        config.setOutputFormat(HTMLOutputFormat.INSTANCE);
+        config.setClassForTemplateLoading(DefaultPageGenerator.class, TEMPLATES_DIR);
+    }
 
     @Override
     public InputStream getGeneratedPageAsStream(String pageName) {
@@ -32,12 +38,9 @@ public class DefaultPageGenerator implements PageGenerator {
             throw new IllegalArgumentException("the Page Name cannot be null or empty");
         }
         try {
-            CONFIG.setOutputFormat(HTMLOutputFormat.INSTANCE);
-            CONFIG.setClassForTemplateLoading(DefaultPageGenerator.class, TEMPLATES_DIR);
-
             StringWriter writer = new StringWriter();
 
-            Template template = CONFIG.getTemplate(pageName);
+            Template template = config.getTemplate(pageName);
             template.process(parsedRequest, writer);
 
             return new ByteArrayInputStream(writer.toString().getBytes());
