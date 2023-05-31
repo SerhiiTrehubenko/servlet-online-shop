@@ -3,10 +3,7 @@ jdk: oraclejdk17
 
 addons:
   postgresql: '14'
-  apt:
-    packages:
-      - postgresql-14
-      - postgresql-client-14
+
 services:
   - postgresql
 
