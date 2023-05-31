@@ -12,5 +12,11 @@ addons:
 services:
   - postgresql
 
+env:
+  global:
+    - PGPORT=5433
+  jobs:
+    - NODE_ENV=test DB_PORT=5433 DB_USERNAME=postgres
+
 before_script:
-  - sudo psql -p 5432 -U postgres -c 'create database shop;'
+  - sudo psql -p 5433 -U postgres -c 'create database shop;'
