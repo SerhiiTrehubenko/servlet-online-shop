@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.FileInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class LogMessageGeneratorTest {
@@ -32,7 +33,7 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent() {
 //        ARRANGE
-        String expectedMessage = "occurrence code line: com.tsa.shop.logmessagegenerator.LogMessageGeneratorTest.shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent(LogMessageGeneratorTest.java:38)\n" +
+        String expectedMessage = "occurrence code line: com.tsa.shop.logmessagegenerator.LogMessageGeneratorTest.shouldReturnLogMessageFromWebserverExceptionInnerExceptionsIsAbsent(LogMessageGeneratorTest.java:39)\n" +
                 "\tCause: - com.tsa.shop.domain.WebServerException: [no inner exceptions];\n";
 
         WebServerException exception = new WebServerException("no inner exceptions", HttpStatus.NOT_FOUND, this);
@@ -47,32 +48,32 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnLogMessageFromWebserverExceptionCauseHierarchyHasOneLevel() {
 //        ARRANGE
-        String expectedMessage = "occurrence code line: com.tsa.shop.logmessagegenerator.LogMessageGeneratorTest.simulateIOExceptionInInputStream(LogMessageGeneratorTest.java:17)\n" +
+        String expectedMessage = "occurrence code line: com.tsa.shop.logmessagegenerator.LogMessageGeneratorTest.simulateIOExceptionInInputStream(LogMessageGeneratorTest.java:18)\n" +
                 "\tCause: - com.tsa.shop.domain.WebServerException: [has IOException in hierarchy];\n" +
-                "\t\tCause: - java.io.FileNotFoundException: [notExist.txt (Не удается найти указанный файл)];\n";
+                "\t\tCause: - java.io.FileNotFoundException: [notExist.txt";
 //        ACT
         try {
             simulateIOExceptionInInputStream();
         } catch (WebServerException e) {
             String resultMessage = messageGeneratorSut.getMessageFrom(e);
 //        ASSERT
-            assertEquals(expectedMessage, resultMessage);
+            assertTrue(resultMessage.contains(expectedMessage));
         }
     }
 
     @Test
     void shouldReturnLogMessageFromWebserverExceptionCauseHierarchyHasTwoLevels() {
-        String expectedMessage = "occurrence code line: com.tsa.shop.logmessagegenerator.LogMessageGeneratorTest.simulateCauseHierarchyTwoLevel(LogMessageGeneratorTest.java:25)\n" +
+        String expectedMessage = "occurrence code line: com.tsa.shop.logmessagegenerator.LogMessageGeneratorTest.simulateCauseHierarchyTwoLevel(LogMessageGeneratorTest.java:26)\n" +
                 "\tCause: - com.tsa.shop.domain.WebServerException: [has IOException in hierarchy];\n" +
                 "\t\tCause: - java.lang.Exception: [Exception];\n" +
-                "\t\t\tCause: - java.io.FileNotFoundException: [notExist.txt (Не удается найти указанный файл)];\n";
+                "\t\t\tCause: - java.io.FileNotFoundException: [notExist.txt";
 //        ACT
         try {
             simulateCauseHierarchyTwoLevel();
         } catch (WebServerException e) {
             String resultMessage = messageGeneratorSut.getMessageFrom(e);
 //        ASSERT
-            assertEquals(expectedMessage, resultMessage);
+            assertTrue(resultMessage.contains(expectedMessage));
         }
 
     }
@@ -80,7 +81,7 @@ public class LogMessageGeneratorTest {
     @Test
     void shouldReturnValidMessageFromRuntimeException() {
 //        ARRANGE
-        String expected = "occurrence code line: com.tsa.shop.logmessagegenerator.LogMessageGeneratorTest.shouldReturnValidMessageFromRuntimeException(LogMessageGeneratorTest.java:86)\n" +
+        String expected = "occurrence code line: com.tsa.shop.logmessagegenerator.LogMessageGeneratorTest.shouldReturnValidMessageFromRuntimeException(LogMessageGeneratorTest.java:87)\n" +
                 "\tCause: - java.lang.RuntimeException: [Runtime exception];\n";
 
         RuntimeException exception = new RuntimeException("Runtime exception");

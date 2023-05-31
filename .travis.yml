@@ -1,6 +1,8 @@
 language: java
 jdk: oraclejdk17
 
+addons:
+  postgresql: "14.4"
 services:
   - postgresql
 before_script:
