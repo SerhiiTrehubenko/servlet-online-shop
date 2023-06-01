@@ -1,1 +1,1 @@
-web: java -jar target/servlet-online-shop-1.0-SNAPSHOT-jar-with-dependencies.jar -p 5000 -f heroku.properties
+web: java -jar target/servlet-online-shop-1.0-SNAPSHOT-jar-with-dependencies.jar -p $PORT -f heroku.properties
