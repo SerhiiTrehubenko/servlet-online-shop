@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class DefaultServletRequestParser implements ServletRequestParser {
     private final static Cookie NULL_COOKIE = new Cookie("null", "null");
@@ -36,6 +37,9 @@ public class DefaultServletRequestParser implements ServletRequestParser {
 
     private Object getCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
+        if (Objects.isNull(cookies)) {
+            return NULL_COOKIE;
+        }
         return Arrays.stream(cookies)
                 .filter(cookie -> cookie.getName().equals("user-token"))
                 .findFirst().orElse(NULL_COOKIE);
