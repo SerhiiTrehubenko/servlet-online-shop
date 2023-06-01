@@ -13,6 +13,7 @@ public class DefaultFlywayBridge implements FlywayBridge {
     @Override
     public void migrate() {
         Flyway flyway = configure();
+        flyway.baseline();
         flyway.migrate();
     }
 
