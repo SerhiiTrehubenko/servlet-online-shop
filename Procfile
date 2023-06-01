@@ -1,1 +1,1 @@
-web: java -jar target/java-getting-started-1.0.0-SNAPSHOT.jar -f heroku.properties
+web: java -jar target/servlet-online-shop-1.0-SNAPSHOT-jar-with-dependencies.jar -f heroku.properties
