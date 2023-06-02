@@ -32,7 +32,7 @@ before_script:
 deploy:
   provider: heroku
   api_key:
-    secure: "310a49e6-3ac5-4d04-b0c2-4bf5fbceb005"
+    secure: "04045f75-a87c-429c-be59-7f9e2ccfe650"
   app: fierce-journey-45235
   on:
     branch: main
