@@ -34,3 +34,5 @@ deploy:
   api_key:
     secure: "310a49e6-3ac5-4d04-b0c2-4bf5fbceb005"
   app: fierce-journey-45235
+  on:
+    branch: main
