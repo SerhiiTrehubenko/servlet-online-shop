@@ -1,5 +1,6 @@
 package com.tsa.shop.application;
 
+import com.tsa.shop.database.BasicDataSourceAdapter;
 import com.tsa.shop.database.jdbc.*;
 import com.tsa.shop.database.interfaces.*;
 import com.tsa.shop.domain.User;
@@ -55,7 +56,10 @@ public class ServletStarter {
         PropertyReader propertyReader = new DefaultPropertyReader(context);
 
 //        Db connection
-        DbConnector dbConnector = new DefaultDbConnector(propertyReader);
+//        DbConnector dbConnector = new DefaultDbConnector(propertyReader);
+
+//        Apache Commons DBCP + DataSource.java
+        DbConnector dbConnector = new BasicDataSourceAdapter(propertyReader);
 
 //        flyway
         FlywayBridge flywayBridge = new DefaultFlywayBridge(propertyReader);
