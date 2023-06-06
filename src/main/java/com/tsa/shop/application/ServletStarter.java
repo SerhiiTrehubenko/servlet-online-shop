@@ -37,11 +37,15 @@ import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.logmessagegenerator.LogMessageGeneratorImpl;
 import com.tsa.shop.service.DefaultProductService;
 import com.tsa.shop.domain.UriPageConnector;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.Filter;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.FilterHolder;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.security.Credential;
 
+import java.util.EnumSet;
 import java.util.UUID;
 
 public class ServletStarter {
@@ -54,9 +58,6 @@ public class ServletStarter {
         ArgsParser argsParser = new DefaultArgsParser(context);
         argsParser.parse(args);
         PropertyReader propertyReader = new DefaultPropertyReader(context);
-
-//        Db connection
-//        DbConnector dbConnector = new DefaultDbConnector(propertyReader);
 
 //        Apache Commons DBCP + DataSource.java
         DbConnector dbConnector = new BasicDataSourceAdapter(propertyReader);
@@ -103,10 +104,15 @@ public class ServletStarter {
 
 //        LogIn Servlets
         WebRequestHandler logInWebRequestHandler = new LogInWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, logInFacade);
-        WebRequestHandler logInDecoratorWebRequestHandler = new LogInDecoratorWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, tokenRepository, productAddRequestHandler);
+
+//        LogInFilter
+        Filter logInFilter = new LogInFilter(tokenRepository, servletRequestParser);
 
 //        Set Servlets
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+
+        servletContextHandler.addFilter(new FilterHolder(logInFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
+
         String homeUri = UriPageConnector.HOME.getUri();
         servletContextHandler.addServlet(new ServletHolder(homeRequestHandler), homeUri);
         String fileUri = UriPageConnector.SLASH.getUri();
@@ -124,7 +130,7 @@ public class ServletStarter {
         servletContextHandler.addServlet(new ServletHolder(productUpdateRequestHandler), updateProductPost);
 
         String addProductGet = UriPageConnector.PRODUCTS_ADD.getUri();
-        servletContextHandler.addServlet(new ServletHolder(logInDecoratorWebRequestHandler), addProductGet);
+        servletContextHandler.addServlet(new ServletHolder(productAddRequestHandler), addProductGet);
 
         String notFoundUri = UriPageConnector.PRODUCTS.getUri() + "/*";
         servletContextHandler.addServlet(new ServletHolder(pageNotFoundRequestHandler), notFoundUri);

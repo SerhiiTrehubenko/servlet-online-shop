@@ -4,7 +4,6 @@ import com.tsa.shop.domain.ProductDto;
 import com.tsa.shop.domain.Product;
 import com.tsa.shop.domain.ProductMapper;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Objects;
