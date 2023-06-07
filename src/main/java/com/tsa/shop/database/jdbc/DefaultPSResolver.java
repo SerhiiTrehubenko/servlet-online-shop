@@ -57,7 +57,8 @@ public class DefaultPSResolver implements PSResolver {
         try {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setLong(3, product.getId());
+            preparedStatement.setString(3, product.getDescription());
+            preparedStatement.setLong(4, product.getId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -78,6 +79,19 @@ public class DefaultPSResolver implements PSResolver {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setTimestamp(3, product.getDate());
+            preparedStatement.setString(4, product.getDescription());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public ResultSet resolveFindByCriteria(Serializable criteria) {
+        try {
+            String regEx = "%" + criteria + "%";
+            preparedStatement.setString(1, regEx);
+            preparedStatement.setString(2, regEx);
+            return preparedStatement.executeQuery();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

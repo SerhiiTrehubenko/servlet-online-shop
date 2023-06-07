@@ -30,6 +30,11 @@
                         Creation date: <input type="text" name="date" value="${productDto.getDate()?string["yyyy-MM-dd HH:mm:ss"]}" readonly>
                     </label>
                     <br>
+                    <br>
+                    <label>
+                        Description: <input type="text" name="description" value="${productDto.getDescription()}">
+                    </label>
+                    <br>
                     <input type="submit" value="edit">
                 </form>
                 <br>

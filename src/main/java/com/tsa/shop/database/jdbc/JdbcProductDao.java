@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 
 public class JdbcProductDao implements ProductDao {
 
@@ -54,19 +55,34 @@ public class JdbcProductDao implements ProductDao {
     @Override
     public Product findById(Serializable incomeId) {
         String findByIdQuery = QueryProvider.PRODUCT_FIND_BY_ID.getQuery();
-        Product product = null;
-        try (var connection = connector.getConnection();
-             var statment = psResolver.prepareStatement(connection, findByIdQuery);
-             ResultSet rows = statment.resolveFindById(incomeId)) {
+        final List<Product> products = processWithResult(PSResolver::resolveFindById, incomeId, findByIdQuery);
+        Product product = products.isEmpty() ? null : products.get(0);
 
+        checkPresence(product, incomeId);
+        return product;
+    }
+
+    @Override
+    public List<Product> findByCriteria(String criteria) {
+        String findByCriteria = QueryProvider.PRODUCT_FIND_BY_CRITERIA.getQuery();
+
+        return processWithResult(PSResolver::resolveFindByCriteria, criteria, findByCriteria);
+    }
+
+    private List<Product> processWithResult(BiFunction<PSResolver, Serializable, ResultSet> biFunction, Serializable criteria, String updateQuery) {
+        try (var connection = connector.getConnection();
+             var statment = psResolver.prepareStatement(connection, updateQuery);
+             ResultSet rows = biFunction.apply(statment, criteria)) {
+            List<Product> products = new LinkedList<>();
             while (rows.next()) {
-                product = productRowFetcher.getProduct(rows);
+                products.add(productRowFetcher.getProduct(rows));
             }
+            return products;
+        } catch (WebServerException e) {
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        checkPresence(product, incomeId);
-        return product;
     }
 
     private void checkPresence(Product product, Serializable incomeId) {

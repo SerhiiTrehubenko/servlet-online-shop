@@ -1,7 +1,5 @@
 package com.tsa.shop.domain;
 
-import com.tsa.shop.domain.ProductDto;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -16,4 +14,6 @@ public interface ProductService {
     void delete(Serializable id);
 
     void add(Map<String, String[]> parameters);
+
+    List<ProductDto> findByCriteria(String criteria);
 }

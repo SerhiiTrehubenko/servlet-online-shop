@@ -8,6 +8,7 @@ import com.tsa.shop.domain.WebServerException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Objects;
 
 public class ProductDtoExtractor implements DtoExtractor {
     private final static int VALUE = 0;
@@ -18,11 +19,15 @@ public class ProductDtoExtractor implements DtoExtractor {
         String name = getName(parameters);
         double price = parseDouble(parameters);
         Timestamp date = Timestamp.valueOf(parameters.get("date")[VALUE]);
-        return new ProductDto(id, name, price, date);
+        String description = getDescription(parameters);
+        return new ProductDto(id, name, price, date, description);
     }
 
     private String getName(Map<String, String[]> parameters) {
         return parameters.get("name")[VALUE];
+    }
+    private String getDescription(Map<String, String[]> parameters) {
+        return Objects.toString(parameters.get("description")[VALUE]);
     }
 
     private double parseDouble(Map<String, String[]> parameters) {
@@ -39,10 +44,12 @@ public class ProductDtoExtractor implements DtoExtractor {
         String name = getName(parameters);
         double price = parseDouble(parameters);
         Timestamp date = Timestamp.valueOf(LocalDateTime.now());
+        String description = getDescription(parameters);
         ProductDto productDto = new ProductDto();
         productDto.setName(name);
         productDto.setPrice(price);
         productDto.setDate(date);
+        productDto.setDescription(description);
         return productDto;
     }
 

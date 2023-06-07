@@ -7,6 +7,7 @@ public class ProductDto {
     private String name;
     private double price;
     private Timestamp date;
+    private String description;
 
     public ProductDto() {
     }
@@ -14,11 +15,13 @@ public class ProductDto {
     public ProductDto(Long id,
                       String name,
                       double price,
-                      Timestamp date) {
+                      Timestamp date,
+                      String description) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.date = date;
+        this.description = description;
     }
 
     public Long getId() {
@@ -51,6 +54,14 @@ public class ProductDto {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

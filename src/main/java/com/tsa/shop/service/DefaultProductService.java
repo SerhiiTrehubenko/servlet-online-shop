@@ -54,6 +54,13 @@ public class DefaultProductService implements ProductService {
         productDao.add(product);
     }
 
+    @Override
+    public List<ProductDto> findByCriteria(String criteria) {
+        List<Product> filteredProducts = productDao.findByCriteria(criteria);
+        return filteredProducts.stream()
+                .map(productMapper::toProductDto).toList();
+    }
+
     private Product getProductFrom(Map<String, String[]> parameters) {
         ProductDto productDto = dtoExtractor.createInstance().getFullDtoInstanceFrom(parameters);
         return productMapper.toProduct(productDto);

@@ -11,6 +11,19 @@
         </div>
         <div>
             <@layout.content>
+            <br>
+            <div>
+                <form method="post" action="/products/filter">
+                    <label>
+                        Search by: <input type="text" size="30" name="criteria">
+                    </label>
+                    <input type="submit" value="do search">
+                </form>
+                <a href="/products">
+                    <input type="submit" value="cancel search">
+                </a>
+            </div>
+            <br>
             <table>
                 <thead>
                     <th>Edit</th>
@@ -18,6 +31,7 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Creation date</th>
+                    <th>Description</th>
                     <th>Delete</th>
                 </thead>
                 <tbody>
@@ -35,6 +49,7 @@
                                 ${product.getPrice()}
                             </td>
                             <td>${product.getDate()?string["yyyy-MM-dd"]}</td>
+                            <td>${product.getDescription()}</td>
                             <td>
                                 <a href="/products/delete?id=${product.getId()}">
                                     <img src="/images/delete-button.png" width="75" height="35">

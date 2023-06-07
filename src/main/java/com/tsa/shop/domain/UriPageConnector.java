@@ -9,6 +9,7 @@ public enum UriPageConnector {
     PRODUCTS("/products", UriPageConnector.PRODUCTS_PAGE),
     PRODUCTS_DELETE("/products/delete", UriPageConnector.PRODUCTS_PAGE),
     ERROR_PAGE("stub-url", "error-page.html"),
+    PRODUCTS_FILTER("/products/filter", UriPageConnector.PRODUCTS_PAGE),
     LOG_IN_PAGE("/login", "log-in-page.html");
 
     final static String PRODUCTS_PAGE = "products.html";

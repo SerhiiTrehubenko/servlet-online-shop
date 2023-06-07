@@ -19,4 +19,5 @@ public interface PSResolver extends AutoCloseable {
     void resolveInsert(Product product);
 
     void execute();
+    ResultSet resolveFindByCriteria(Serializable criteria);
 }

@@ -11,7 +11,8 @@ import java.util.Objects;
 public class DefaultProductMapper implements ProductMapper {
     @Override
     public ProductDto toProductDto(Product entity) {
-        return new ProductDto(entity.getId(), entity.getName(), entity.getPrice(), entity.getDate());
+        final String description = entity.getDescription();
+        return new ProductDto(entity.getId(), entity.getName(), entity.getPrice(), entity.getDate(), description);
     }
 
     @Override
@@ -19,6 +20,6 @@ public class DefaultProductMapper implements ProductMapper {
         Long id = Objects.isNull(dto.getId()) ? 0L : dto.getId();
         Timestamp date = Objects.isNull(dto.getDate()) ? Timestamp.valueOf(LocalDateTime.now()) : dto.getDate();
 
-        return new Product(id, dto.getName(), dto.getPrice(), date);
+        return new Product(id, dto.getName(), dto.getPrice(), date, dto.getDescription());
     }
 }

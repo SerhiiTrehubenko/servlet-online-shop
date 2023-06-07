@@ -8,15 +8,28 @@ public class Product {
     private double price;
     private Timestamp date;
 
+    private String description;
+
     public Product() {
     }
 
+    public Product(Long id, String name, double price, Timestamp date, String description) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.date = date;
+        this.description = description;
+    }
+
     public Product(String name, double price) {
-        this(null, name, price, null);
+        this.name = name;
+        this.price = price;
     }
 
     public Product(Long id, String name, double price) {
-        this(id, name, price, null);
+        this.id = id;
+        this.name = name;
+        this.price = price;
     }
 
     public Product(Long id, String name, double price, Timestamp date) {
@@ -56,6 +69,14 @@ public class Product {
 
     public void setDate(Timestamp date) {
         this.date = date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

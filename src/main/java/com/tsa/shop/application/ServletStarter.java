@@ -102,6 +102,7 @@ public class ServletStarter {
         WebRequestHandler productAddRequestHandler = new ProductAddWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, productService);
         WebRequestHandler pageNotFoundRequestHandler = new PageNotFoundHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator);
 
+        WebRequestHandler productFilterRequestHandler = new ProductFilterWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, productService);
 //        LogIn Servlets
         WebRequestHandler logInWebRequestHandler = new LogInWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, logInFacade);
 
@@ -137,6 +138,10 @@ public class ServletStarter {
 
         String logInUri = UriPageConnector.LOG_IN_PAGE.getUri();
         servletContextHandler.addServlet(new ServletHolder(logInWebRequestHandler), logInUri);
+
+        String productsFilterUri = UriPageConnector.PRODUCTS_FILTER.getUri();
+        servletContextHandler.addServlet(new ServletHolder(productFilterRequestHandler), productsFilterUri);
+
 
 //        Start Application
         Server server = new Server(propertyReader.getPort());

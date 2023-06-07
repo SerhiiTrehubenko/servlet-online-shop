@@ -11,4 +11,6 @@ public interface ProductDao {
     void update(Product product);
     void delete(Product product);
     void add(Product product);
+
+    List<Product> findByCriteria(String criteria);
 }
