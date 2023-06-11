@@ -1,7 +1,7 @@
 package com.tsa.shop.logging;
 
 public interface DomainLogger {
-    void setClass(Class<?> classToBeLogged);
+    DomainLogger getLogger(Class<?> classToBeLogged);
     void debug(String message);
     void info(String message);
     void error(String message);

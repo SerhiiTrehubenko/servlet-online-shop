@@ -8,8 +8,10 @@ public class DomainLoggerImpl implements DomainLogger {
     private Logger logger;
 
     @Override
-    public void setClass(Class<?> classToBeLogged) {
-        logger = LoggerFactory.getLogger(classToBeLogged);
+    public DomainLogger getLogger(Class<?> classToBeLogged) {
+        DomainLoggerImpl domainLogger = new DomainLoggerImpl();
+        domainLogger.setLogger(LoggerFactory.getLogger(classToBeLogged));
+        return  domainLogger;
     }
 
     @Override
@@ -30,5 +32,9 @@ public class DomainLoggerImpl implements DomainLogger {
     @Override
     public void warn(String message) {
         logger.warn(message);
+    }
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
     }
 }

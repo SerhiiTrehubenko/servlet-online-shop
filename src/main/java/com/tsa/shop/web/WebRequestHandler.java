@@ -40,8 +40,7 @@ public abstract class WebRequestHandler extends HttpServlet {
         this.pageGenerator = pageGenerator;
         this.responseWriter = responseWriter;
         this.response = response;
-        this.logger = logger;
-        logger.setClass(this.getClass());
+        this.logger = logger.getLogger(this.getClass());
         this.logMessageGenerator = logMessageGenerator;
     }
 
