@@ -9,10 +9,12 @@ import jakarta.servlet.http.Cookie;
 import java.util.Map;
 
 public class LogInFacadeImpl implements LogInFacade {
-
     private final LogInFactory logInFactory;
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+    private final PasswordHashGenerator passwordValidator;
+    private final TokenGenerator tokenGenerator;
+    private final CookieFactory cookieFactory;
 
     public LogInFacadeImpl(LogInFactory logInFactory,
                            UserRepository userRepository,
@@ -20,16 +22,15 @@ public class LogInFacadeImpl implements LogInFacade {
         this.logInFactory = logInFactory;
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;
+        passwordValidator = logInFactory.makePasswordHashGenerator();
+        tokenGenerator = logInFactory.makeTokenGenerator();
+        cookieFactory = logInFactory.makeCookieGenerator();
     }
 
     @Override
     public Cookie process(Map<String, String[]> parameters) {
         IncomeDataProvider incomeDataProvider = logInFactory.makeDataProvider(parameters);
-        PasswordHashGenerator passwordValidator = logInFactory.makePasswordHashGenerator();
-        TokenGenerator tokenGenerator = logInFactory.makeTokenGenerator();
         Responder responder = logInFactory.makeResponder();
-        CookieFactory cookieFactory = logInFactory.makeCookieGenerator();
-
         Command loginTransaction =
                 logInFactory.makeLogInTransaction(incomeDataProvider,
                         userRepository,
