@@ -18,7 +18,7 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
+        <!-- LOGGING -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -26,17 +26,12 @@
             <scope>compile</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.31</version>
-        </dependency>
+        <!--   DB     -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>42.5.1</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-dbcp2 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
@@ -47,16 +42,25 @@
             <artifactId>flyway-core</artifactId>
             <version>9.16.0</version>
         </dependency>
+
+        <!--   WEB     -->
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>4.8.0</version>
-            <scope>test</scope>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.31</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-servlet</artifactId>
             <version>11.0.13</version>
+        </dependency>
+
+        <!--   TESTS     -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>4.8.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
