@@ -1,5 +1,6 @@
 package com.tsa.shop.login.impl;
 
+import com.tsa.shop.domain.Session;
 import com.tsa.shop.login.repoimpl.DefaultTokenRepository;
 import com.tsa.shop.login.repoimpl.UserRepositoryImpl;
 import com.tsa.shop.domain.User;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class LogInFacadeITest {
     private final String email = "tsa@gmaol.com";
@@ -36,7 +38,7 @@ public class LogInFacadeITest {
     void shouldReturnCookieAfterProcessOfAuthentication() {
 
         UUID expectedToken = UUID.randomUUID();
-        tokenRepository.add(expectedToken);
+        tokenRepository.add(new Session(mock(User.class), expectedToken, 3600));
 
         LogInFactory logInFactory = new LogInFactoryImpl();
         LogInFacade logInFacade = new LogInFacadeImpl(logInFactory, userRepository, tokenRepository);

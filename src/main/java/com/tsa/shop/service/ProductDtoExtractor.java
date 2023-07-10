@@ -31,7 +31,7 @@ public class ProductDtoExtractor implements DtoExtractor {
     }
 
     private double parseDouble(Map<String, String[]> parameters) {
-        String price = parameters.get("price")[VALUE];
+        String price = parameters.get("price")[VALUE].replaceAll(",", "");
         try {
             return Double.parseDouble(price);
         } catch (Exception e) {

@@ -1,5 +1,6 @@
 package com.tsa.shop.login.impl;
 
+import com.tsa.shop.domain.Session;
 import com.tsa.shop.login.repo.TokenRepository;
 import com.tsa.shop.login.repo.UserRepository;
 import com.tsa.shop.transaction.Command;
@@ -114,7 +115,7 @@ public class LogInTransactionTest {
 
         logInTransactionSut.execute();
 
-        verify(tokenRepository).add(expected);
+        verify(tokenRepository).add(any(Session.class));
     }
 
     @Test

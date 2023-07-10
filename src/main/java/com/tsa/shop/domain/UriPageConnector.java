@@ -10,7 +10,10 @@ public enum UriPageConnector {
     PRODUCTS_DELETE("/products/delete", UriPageConnector.PRODUCTS_PAGE),
     ERROR_PAGE("stub-url", "error-page.html"),
     PRODUCTS_FILTER("/products/filter", UriPageConnector.PRODUCTS_PAGE),
-    LOG_IN_PAGE("/login", "log-in-page.html");
+    LOG_IN_PAGE("/login", "log-in-page.html"),
+    CART_ADD ("/product/cart", "empty"),
+    CART_GET_ALL ("/cart", "cart.html"),
+    LOG_OUT_PAGE("/logout", UriPageConnector.PRODUCTS_PAGE);
 
     final static String PRODUCTS_PAGE = "products.html";
     final static String HOME_PAGE = "home.html";

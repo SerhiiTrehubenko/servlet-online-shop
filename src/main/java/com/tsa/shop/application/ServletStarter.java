@@ -1,5 +1,7 @@
 package com.tsa.shop.application;
 
+import com.tsa.shop.cart.CartRepository;
+import com.tsa.shop.cart.CartService;
 import com.tsa.shop.database.BasicDataSourceAdapter;
 import com.tsa.shop.database.jdbc.*;
 import com.tsa.shop.database.interfaces.*;
@@ -19,6 +21,8 @@ import com.tsa.shop.domain.DtoExtractor;
 import com.tsa.shop.domain.ProductService;
 import com.tsa.shop.login.repoimpl.DefaultTokenRepository;
 import com.tsa.shop.login.repoimpl.UserRepositoryImpl;
+import com.tsa.shop.logout.DefaultLogoutService;
+import com.tsa.shop.logout.LogoutService;
 import com.tsa.shop.web.WebRequestHandler;
 import com.tsa.shop.web.impl.*;
 import com.tsa.shop.web.interfaces.*;
@@ -105,9 +109,16 @@ public class ServletStarter {
         WebRequestHandler productFilterRequestHandler = new ProductFilterWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, productService);
 //        LogIn Servlets
         WebRequestHandler logInWebRequestHandler = new LogInWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, logInFacade);
-
+//        Logout
+        LogoutService logoutService = new DefaultLogoutService(tokenRepository);
+        WebRequestHandler logoutWebRequestHandler = new LogoutWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, logoutService);
 //        LogInFilter
         Filter logInFilter = new LogInFilter(tokenRepository, servletRequestParser);
+//        Cart
+        CartRepository cartRepository = new CartRepository();
+        CartService cartService = new CartService(cartRepository, tokenRepository, dtoExtractor);
+        WebRequestHandler cartWebRequestHandler = new CartWebRequestHandler(servletRequestParser, pageGenerator, responseWriter, response, domainLogger, logMessageGenerator, cartService);
+
 
 //        Set Servlets
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -141,6 +152,15 @@ public class ServletStarter {
 
         String productsFilterUri = UriPageConnector.PRODUCTS_FILTER.getUri();
         servletContextHandler.addServlet(new ServletHolder(productFilterRequestHandler), productsFilterUri);
+
+        String logoutUri = UriPageConnector.LOG_OUT_PAGE.getUri();
+        servletContextHandler.addServlet(new ServletHolder(logoutWebRequestHandler), logoutUri);
+
+        String cartUri = UriPageConnector.CART_ADD.getUri();
+        servletContextHandler.addServlet(new ServletHolder(cartWebRequestHandler), cartUri);
+
+        String cartFindAllUri = UriPageConnector.CART_GET_ALL.getUri();
+        servletContextHandler.addServlet(new ServletHolder(cartWebRequestHandler), cartFindAllUri);
 
 
 //        Start Application

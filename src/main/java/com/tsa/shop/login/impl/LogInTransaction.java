@@ -1,5 +1,6 @@
 package com.tsa.shop.login.impl;
 
+import com.tsa.shop.domain.Session;
 import com.tsa.shop.login.repo.TokenRepository;
 import com.tsa.shop.login.repo.UserRepository;
 import com.tsa.shop.domain.User;
@@ -68,7 +69,7 @@ public class LogInTransaction implements Command {
     }
 
     private void addTokenToRepository() {
-        tokenRepository.add(token);
+        tokenRepository.add(new Session(user, token, System.currentTimeMillis() + (2 * 3600_000)));
     }
 
     private void makeToken() {

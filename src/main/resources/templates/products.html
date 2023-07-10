@@ -33,6 +33,7 @@
                     <th>Creation date</th>
                     <th>Description</th>
                     <th>Delete</th>
+                    <th>Add to Cart</th>
                 </thead>
                 <tbody>
                     <#list products as product>
@@ -54,6 +55,26 @@
                                 <a href="/products/delete?id=${product.getId()}">
                                     <img src="/images/delete-button.png" width="75" height="35">
                                 </a>
+                            </td>
+                            <td>
+                                <form action="/product/cart" method="post">
+                                    <label>
+                                        <input type="text" name="id" value=${product.getId()} hidden>
+                                    </label>
+                                    <label>
+                                        <input type="text" name="name" value=${product.getName()} hidden>
+                                    </label>
+                                    <label>
+                                        <input type="text" name="price" value=${product.getPrice()} hidden>
+                                    </label>
+                                    <label>
+                                        <input type="text" name="date" value="${product.getDate()?string["yyyy-MM-dd HH:mm:ss"]}" hidden>
+                                    </label>
+                                    <label>
+                                        <input type="text" name="description" value=${product.getDescription()} hidden>
+                                    </label>
+                                    <input type="submit" value="add">
+                                </form>
                             </td>
                         </tr>
                     </#list>

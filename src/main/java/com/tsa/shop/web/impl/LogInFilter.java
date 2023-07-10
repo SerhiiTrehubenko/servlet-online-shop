@@ -37,6 +37,9 @@ public class LogInFilter implements Filter {
     private boolean requestForManipulationOnSite(UriPageConnector pageConnector) {
         return Objects.nonNull(pageConnector) &&
                 (pageConnector != UriPageConnector.LOG_IN_PAGE) &&
+                (pageConnector != UriPageConnector.LOG_OUT_PAGE) &&
+                (pageConnector != UriPageConnector.PRODUCTS) &&
+                (pageConnector != UriPageConnector.PRODUCTS_FILTER) &&
                 (pageConnector != UriPageConnector.HOME) &&
                 (pageConnector != UriPageConnector.SLASH);
     }

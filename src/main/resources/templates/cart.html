@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<#import "./fragments/layout.ftl" as layout/>
+<@layout.head title = "Cart"/>
+    <body>
+        <div>
+            <@layout.header/>
+        </div>
+        <div>
+            <@layout.menu/>
+        </div>
+        <div>
+            <@layout.content>
+            <br>
+            <table>
+                <thead>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Creation date</th>
+                    <th>Description</th>
+                </thead>
+                <tbody>
+                    <#list products as product>
+                        <tr>
+                            <td>${product.getId()}</td>
+                            <td>${product.getName()}</td>
+                            <td>
+                                <#setting locale="en_US">
+                                ${product.getPrice()}
+                            </td>
+                            <td>${product.getDate()?string["yyyy-MM-dd"]}</td>
+                            <td>${product.getDescription()}</td>
+                        </tr>
+                    </#list>
+                </tbody>
+            </table>
+            </@layout.content>
+        </div>
+
+        <div>
+            <@layout.footer/>
+        </div>
+    </body>
+</html>

@@ -1,5 +1,7 @@
 package com.tsa.shop.domain;
 
+import java.util.Objects;
+
 public class User {
     private final String email;
     private final String passwordMD5;
@@ -21,5 +23,22 @@ public class User {
 
     public String getSole() {
         return sole;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) return true;
+        if (that == null) return false;
+        if (!getClass().isAssignableFrom(that.getClass())) return false;
+        User user = (User) that;
+
+        return Objects.equals(email, user.email) &&
+                Objects.equals(passwordMD5, user.passwordMD5) &&
+                Objects.equals(sole, user.sole);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, passwordMD5, sole);
     }
 }

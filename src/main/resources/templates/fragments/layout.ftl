@@ -24,6 +24,12 @@
                 <li>
                     <span><a href="/products/add">Add Product</a></span>
                 </li>
+                <li>
+                    <span><a href="/cart">Cart</a></span>
+                </li>
+                <li>
+                    <span><a href="/logout">Logout</a></span>
+                </li>
             </ul>
         </div>
     </section>
