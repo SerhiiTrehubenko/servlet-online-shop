@@ -1,11 +1,9 @@
 package com.tsa.shop.web.impl;
 
 import com.tsa.shop.domain.UriPageConnector;
-import com.tsa.shop.web.impl.DefaultServletRequestParser;
-import com.tsa.shop.web.impl.UriCache;
 import com.tsa.shop.web.interfaces.ServletRequestParser;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

@@ -1,6 +1,6 @@
 package com.tsa.shop.logout;
 
-import jakarta.servlet.http.Cookie;
+import javax.servlet.http.Cookie;
 
 public interface LogoutService {
     void logout(Cookie tokenCookie);

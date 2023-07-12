@@ -7,7 +7,9 @@ import com.tsa.shop.transaction.Command;
 import com.tsa.shop.domain.User;
 import com.tsa.shop.login.interfaces.*;
 import com.tsa.shop.domain.WebServerException;
-import jakarta.servlet.http.Cookie;
+
+import javax.servlet.http.Cookie;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

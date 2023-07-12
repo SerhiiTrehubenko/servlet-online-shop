@@ -4,7 +4,7 @@ import com.tsa.shop.domain.HttpStatus;
 import com.tsa.shop.domain.WebServerException;
 import com.tsa.shop.web.interfaces.Response;
 import com.tsa.shop.web.interfaces.ResponseWriter;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,7 +1,7 @@
 package com.tsa.shop.login.interfaces;
 
 
-import jakarta.servlet.http.Cookie;
+import javax.servlet.http.Cookie;
 
 import java.util.Map;
 

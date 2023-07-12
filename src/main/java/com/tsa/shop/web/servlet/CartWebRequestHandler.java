@@ -1,16 +1,11 @@
 package com.tsa.shop.web.servlet;
 
+import com.tsa.shop.application.AppContext;
 import com.tsa.shop.cart.CartService;
 import com.tsa.shop.domain.ProductDto;
 import com.tsa.shop.domain.UriPageConnector;
-import com.tsa.shop.logging.DomainLogger;
-import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.web.WebRequestHandler;
-import com.tsa.shop.web.interfaces.PageGenerator;
-import com.tsa.shop.web.interfaces.Response;
-import com.tsa.shop.web.interfaces.ResponseWriter;
-import com.tsa.shop.web.interfaces.ServletRequestParser;
-import jakarta.servlet.http.Cookie;
+import javax.servlet.http.Cookie;
 
 import java.io.InputStream;
 import java.util.List;
@@ -18,19 +13,7 @@ import java.util.Map;
 
 public class CartWebRequestHandler extends WebRequestHandler {
 
-    private final CartService cartService;
-
-    public CartWebRequestHandler(ServletRequestParser servletRequestParser,
-                                 PageGenerator pageGenerator,
-                                 ResponseWriter responseWriter,
-                                 Response response,
-                                 DomainLogger logger,
-                                 LogMessageGenerator logMessageGenerator,
-                                 CartService cartService) {
-        super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
-
-        this.cartService = cartService;
-    }
+    private final CartService cartService = AppContext.get(CartService.class);
 
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {
         Cookie incomeToken = servletRequestParser.getTokenCookie(parsedRequest);

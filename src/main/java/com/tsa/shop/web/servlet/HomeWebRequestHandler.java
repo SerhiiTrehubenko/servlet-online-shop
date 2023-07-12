@@ -1,7 +1,6 @@
 package com.tsa.shop.web.servlet;
 
-import com.tsa.shop.logging.DomainLogger;
-import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
+import com.tsa.shop.application.AppContext;
 import com.tsa.shop.web.interfaces.*;
 import com.tsa.shop.web.WebRequestHandler;
 import com.tsa.shop.domain.UriPageConnector;
@@ -11,18 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class HomeWebRequestHandler extends WebRequestHandler {
-    private final ContentFileProvider contentFileProvider;
-
-    public HomeWebRequestHandler(ServletRequestParser servletRequestParser,
-                                 PageGenerator pageGenerator,
-                                 ResponseWriter responseWriter,
-                                 Response response,
-                                 DomainLogger logger,
-                                 LogMessageGenerator logMessageGenerator,
-                                 ContentFileProvider contentFileProvider) {
-        super(servletRequestParser, pageGenerator, responseWriter, response, logger, logMessageGenerator);
-        this.contentFileProvider = contentFileProvider;
-    }
+    private final ContentFileProvider contentFileProvider = AppContext.get(ContentFileProvider.class);
 
     @Override
     protected InputStream handleGetRequest(Map<String, Object> parsedRequest, UriPageConnector uriPageConnector) {

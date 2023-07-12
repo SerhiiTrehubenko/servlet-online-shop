@@ -1,5 +1,6 @@
 package com.tsa.shop.web;
 
+import com.tsa.shop.application.AppContext;
 import com.tsa.shop.logging.DomainLogger;
 import com.tsa.shop.logmessagegenerator.LogMessageGenerator;
 import com.tsa.shop.domain.HttpStatus;
@@ -9,9 +10,9 @@ import com.tsa.shop.web.interfaces.PageGenerator;
 import com.tsa.shop.web.interfaces.Response;
 import com.tsa.shop.web.interfaces.ResponseWriter;
 import com.tsa.shop.web.interfaces.ServletRequestParser;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,27 +23,12 @@ public abstract class WebRequestHandler extends HttpServlet {
     protected final static String URL_FOR_ERROR_MESSAGE = "URL";
     private final static String KEY_REQUEST = "HttpServletRequest";
     private final static String KEY_RESPONSE = "HttpServletResponse";
-    protected final ServletRequestParser servletRequestParser;
-    protected final PageGenerator pageGenerator;
-    protected final ResponseWriter responseWriter;
-    protected final Response response;
-    protected final DomainLogger logger;
-    protected final LogMessageGenerator logMessageGenerator;
-
-
-    public WebRequestHandler(ServletRequestParser servletRequestParser,
-                             PageGenerator pageGenerator,
-                             ResponseWriter responseWriter,
-                             Response response,
-                             DomainLogger logger,
-                             LogMessageGenerator logMessageGenerator) {
-        this.servletRequestParser = servletRequestParser;
-        this.pageGenerator = pageGenerator;
-        this.responseWriter = responseWriter;
-        this.response = response;
-        this.logger = logger.getLogger(this.getClass());
-        this.logMessageGenerator = logMessageGenerator;
-    }
+    protected final ServletRequestParser servletRequestParser = AppContext.get(ServletRequestParser.class);
+    protected final PageGenerator pageGenerator = AppContext.get(PageGenerator.class);
+    protected final ResponseWriter responseWriter = AppContext.get(ResponseWriter.class);
+    protected final Response response = AppContext.get(Response.class);
+    protected  DomainLogger logger = AppContext.get(DomainLogger.class).getLogger(this.getClass());
+    protected final LogMessageGenerator logMessageGenerator = AppContext.get(LogMessageGenerator.class);
 
     @Override
     protected void doGet(HttpServletRequest servletRequest, HttpServletResponse servletResponse) {

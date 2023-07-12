@@ -2,8 +2,8 @@ package com.tsa.shop.web.impl;
 
 import com.tsa.shop.domain.UriPageConnector;
 import com.tsa.shop.web.interfaces.ServletRequestParser;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 import java.util.Arrays;
 import java.util.HashMap;

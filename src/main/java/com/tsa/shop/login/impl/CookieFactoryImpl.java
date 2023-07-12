@@ -1,7 +1,7 @@
 package com.tsa.shop.login.impl;
 
 import com.tsa.shop.login.interfaces.CookieFactory;
-import jakarta.servlet.http.Cookie;
+import javax.servlet.http.Cookie;
 
 public class CookieFactoryImpl implements CookieFactory {
 

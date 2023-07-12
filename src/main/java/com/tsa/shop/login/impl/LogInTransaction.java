@@ -8,7 +8,8 @@ import com.tsa.shop.transaction.Command;
 import com.tsa.shop.login.interfaces.*;
 import com.tsa.shop.domain.HttpStatus;
 import com.tsa.shop.domain.WebServerException;
-import jakarta.servlet.http.Cookie;
+
+import javax.servlet.http.Cookie;
 
 import java.util.Objects;
 import java.util.UUID;

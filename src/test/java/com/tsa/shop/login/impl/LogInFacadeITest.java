@@ -9,7 +9,7 @@ import com.tsa.shop.login.interfaces.LogInFacade;
 import com.tsa.shop.login.interfaces.LogInFactory;
 import com.tsa.shop.login.repo.TokenRepository;
 import com.tsa.shop.login.repo.UserRepository;
-import jakarta.servlet.http.Cookie;
+import javax.servlet.http.Cookie;
 import org.eclipse.jetty.util.security.Credential;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

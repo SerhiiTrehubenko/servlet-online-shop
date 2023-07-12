@@ -1,7 +1,7 @@
 package com.tsa.shop.logout;
 
 import com.tsa.shop.login.repo.TokenRepository;
-import jakarta.servlet.http.Cookie;
+import javax.servlet.http.Cookie;
 
 public class DefaultLogoutService implements LogoutService {
 

@@ -1,28 +1,33 @@
 package com.tsa.shop.web.impl;
 
+import com.tsa.shop.application.AppContext;
 import com.tsa.shop.domain.UriPageConnector;
 import com.tsa.shop.login.repo.TokenRepository;
 import com.tsa.shop.web.interfaces.ServletRequestParser;
-import jakarta.servlet.*;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
+import javax.servlet.*;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
 public class LogInFilter implements Filter {
-    private final TokenRepository tokenRepository;
-    private final ServletRequestParser servletRequestParser;
-
-    public LogInFilter(TokenRepository tokenRepository, ServletRequestParser servletRequestParser) {
-        this.tokenRepository = tokenRepository;
-        this.servletRequestParser = servletRequestParser;
+    @Override
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)  {
+    public void destroy() {
+    }
+
+    private final TokenRepository tokenRepository = AppContext.get(TokenRepository.class);
+    private final ServletRequestParser servletRequestParser = AppContext.get(ServletRequestParser.class);
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         Map<String, Object> parsedRequest = servletRequestParser.parseRequest((HttpServletRequest) request);
         Host host = new Host(parsedRequest, request, response, chain);
         UriPageConnector pageConnector = servletRequestParser.getUriPageConnector(parsedRequest);
@@ -67,7 +72,7 @@ public class LogInFilter implements Filter {
 
     private void redirectToLogIn(Host host) {
         try {
-            ((HttpServletResponse)host.response).sendRedirect("/login");
+            ((HttpServletResponse) host.response).sendRedirect("/login");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -84,5 +89,6 @@ public class LogInFilter implements Filter {
     private record Host(Map<String, Object> parsedRequest,
                         ServletRequest request,
                         ServletResponse response,
-                        FilterChain chain) {}
+                        FilterChain chain) {
+    }
 }

@@ -4,7 +4,7 @@ import com.tsa.shop.login.repo.TokenRepository;
 import com.tsa.shop.login.repo.UserRepository;
 import com.tsa.shop.transaction.Command;
 import com.tsa.shop.login.interfaces.*;
-import jakarta.servlet.http.Cookie;
+import javax.servlet.http.Cookie;
 
 import java.util.Map;
 
